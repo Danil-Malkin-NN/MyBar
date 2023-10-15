@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Instruments {
+public class Instruments implements Enti {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

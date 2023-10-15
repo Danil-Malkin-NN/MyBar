@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Cocktail {
+public class Cocktail implements Enti {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

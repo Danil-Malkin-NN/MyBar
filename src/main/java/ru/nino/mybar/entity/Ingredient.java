@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Ingredient {
+public class Ingredient implements Enti {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
