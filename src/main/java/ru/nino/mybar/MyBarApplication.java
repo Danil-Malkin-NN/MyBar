@@ -7,4 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyBarApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MyBarApplication.class, args
+        SpringApplication.run(MyBarApplication.class, args);
+    }
+
+}

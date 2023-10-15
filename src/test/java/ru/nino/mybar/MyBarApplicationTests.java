@@ -8,3 +8,6 @@ class MyBarApplicationTests {
 
     @Test
     void contextLoads() {
+    }
+
+}
