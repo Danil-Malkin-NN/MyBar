@@ -4,7 +4,7 @@ package ru.nino.mybar.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class IngredientAndCount implements Enti {
+public class IngredientAndCount extends IdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

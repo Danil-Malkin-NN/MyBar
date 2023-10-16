@@ -10,7 +10,7 @@ public interface CRUDController<DTO, ENTITY> {
 
     DTO create(DTO newObject);
 
-    DTO delete(Integer id);
+    void delete(Integer id);
 
     DTO update(DTO newData);
 

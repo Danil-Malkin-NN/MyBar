@@ -3,6 +3,7 @@ package ru.nino.mybar.service;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import ru.nino.mybar.controller.CRUDController;
+import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.mapper.AllMapper;
 import ru.nino.mybar.repository.DefaultRepository;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class CRUDService<DTO, ENTITY> implements CRUDController<DTO, ENTITY> {
+public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDController<DTO, ENTITY> {
 
     private final DefaultRepository<ENTITY> repository;
 
@@ -41,10 +42,8 @@ public abstract class CRUDService<DTO, ENTITY> implements CRUDController<DTO, EN
     }
 
     @Override
-    public DTO delete(Integer id) {
-        return repository.deleteByIdAndReturn(id)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new ObjectNotFoundException(id, getEntityName()));
+    public void delete(Integer id) {
+        repository.deleteById(id);
     }
 
     @Override

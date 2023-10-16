@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Steps implements Enti {
+public class Steps extends IdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
