@@ -8,9 +8,6 @@ import jakarta.persistence.Id;
 @Entity
 public class Steps extends IdEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
 
 
 }

@@ -10,8 +10,5 @@ import lombok.Data;
 @Entity
 public class Ingredient extends IdEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
 
 }

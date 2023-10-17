@@ -10,10 +10,6 @@ import jakarta.persistence.Id;
 @Entity
 public class Instruments extends IdEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
-
     @Nonnull
     private String name;
 
