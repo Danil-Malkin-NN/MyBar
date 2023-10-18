@@ -12,4 +12,6 @@ public class Ingredient extends IdEntity {
 
     private String name;
 
+    private String description;
+
 }

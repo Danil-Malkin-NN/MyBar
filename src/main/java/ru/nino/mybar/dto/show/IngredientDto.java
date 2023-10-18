@@ -7,5 +7,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class IngredientDto extends DTO {
 
+    private String name;
+
+    private String description;
 
 }

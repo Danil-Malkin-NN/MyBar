@@ -29,7 +29,7 @@ public class Cocktail extends IdEntity {
     private List<IngredientAndCount> ingredients = new ArrayList<>();
 
     @ManyToMany
-    private List<Instruments> instruments = new ArrayList<>();
+    private List<Instrument> instruments = new ArrayList<>();
 
     @ManyToMany
     private List<Steps> steps = new ArrayList<>();

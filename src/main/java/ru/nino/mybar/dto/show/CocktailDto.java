@@ -20,7 +20,7 @@ public class CocktailDto extends DTO {
 
     private List<IngredientAndCountDto> ingredients = new ArrayList<>();
 
-    private List<InstrumentsDto> instruments = new ArrayList<>();
+    private List<InstrumentDto> instruments = new ArrayList<>();
 
     private List<StepsDto> steps = new ArrayList<>();
 }

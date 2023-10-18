@@ -1,13 +1,13 @@
 package ru.nino.mybar.entity;
 
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 @Entity
-public class Instruments extends IdEntity {
+@Data
+public class Instrument extends IdEntity {
 
-    @Nonnull
     private String name;
 
     private String description = "";
