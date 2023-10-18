@@ -1,14 +1,14 @@
 package ru.nino.mybar.dto.show;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CocktailDto implements DTO {
-
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class CocktailDto extends DTO {
 
     private String name;
 

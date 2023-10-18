@@ -1,10 +1,11 @@
 package ru.nino.mybar.dto.show;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class IngredientDto implements DTO {
+@EqualsAndHashCode(callSuper = true)
+public class IngredientDto extends DTO {
 
-    private Integer id;
 
 }

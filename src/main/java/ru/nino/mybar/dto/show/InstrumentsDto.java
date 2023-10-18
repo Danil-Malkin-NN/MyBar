@@ -3,11 +3,11 @@ package ru.nino.mybar.dto.show;
 
 import jakarta.annotation.Nonnull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class InstrumentsDto implements DTO {
-
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class InstrumentsDto extends DTO {
 
     @Nonnull
     private String name;

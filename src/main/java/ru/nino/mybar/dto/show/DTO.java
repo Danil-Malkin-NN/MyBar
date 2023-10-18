@@ -1,4 +1,11 @@
 package ru.nino.mybar.dto.show;
 
-public interface DTO {
+
+import lombok.Data;
+
+@Data
+public abstract class DTO {
+
+    private Integer id;
+
 }

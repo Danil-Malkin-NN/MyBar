@@ -4,12 +4,14 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Entity
 public class Cocktail extends IdEntity {

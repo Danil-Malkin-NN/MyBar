@@ -1,10 +1,11 @@
 package ru.nino.mybar.dto.show;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class StepsDto implements DTO {
+@EqualsAndHashCode(callSuper = true)
+public class StepsDto extends DTO {
 
-    private Integer id;
 
 }
