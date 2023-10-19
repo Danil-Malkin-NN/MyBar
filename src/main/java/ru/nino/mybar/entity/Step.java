@@ -1,5 +1,6 @@
 package ru.nino.mybar.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
@@ -15,7 +16,10 @@ public class Step extends IdEntity {
 
     private String description = "";
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<IngredientAndCount> usesIngredients = new ArrayList<>();
+
+    @ManyToMany
+    private List<Instrument> instruments = new ArrayList<>();
 
 }
