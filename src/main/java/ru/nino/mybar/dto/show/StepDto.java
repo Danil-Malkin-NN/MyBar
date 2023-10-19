@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class StepsDto extends DTO {
+public class StepDto extends DTO {
 
 
 }
