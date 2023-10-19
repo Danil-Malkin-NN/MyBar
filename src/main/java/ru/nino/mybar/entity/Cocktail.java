@@ -1,6 +1,7 @@
 package ru.nino.mybar.entity;
 
 import jakarta.annotation.Nonnull;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
@@ -25,12 +26,12 @@ public class Cocktail extends IdEntity {
 
     private int strength = 0;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<IngredientAndCount> ingredients = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Instrument> instruments = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Step> steps = new ArrayList<>();
 }

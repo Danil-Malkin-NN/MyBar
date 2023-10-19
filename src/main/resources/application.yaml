@@ -14,7 +14,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   datasource:
     url: jdbc:postgresql://${PG_URL:localhost:5432}/postgres
     username: ${PG_USER:postgres}

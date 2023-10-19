@@ -1,15 +1,14 @@
 package ru.nino.mybar.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 public class IngredientAndCount extends IdEntity {
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Ingredient ingredient;
 
     private Integer count;
