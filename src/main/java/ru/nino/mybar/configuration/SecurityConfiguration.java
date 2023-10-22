@@ -1,32 +1,37 @@
 package ru.nino.mybar.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import ru.nino.mybar.entity.user.Authorities;
-import ru.nino.mybar.entity.user.UserInfo;
+import ru.nino.mybar.entity.user.User;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder builder = new MvcRequestMatcher.Builder(introspector);
         http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest()
-                        .hasAuthority("USER")
+                .authorizeHttpRequests(
+                        (authorize) -> authorize
+                                .requestMatchers(builder.pattern(HttpMethod.POST, "/register/**"))
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
+                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
@@ -44,15 +49,17 @@ public class SecurityConfiguration {
     private void createDefaultUser(PostgresUserDetailsService userDetailsService) {
 
 
-        UserInfo user = UserInfo.builder()
+        User user = User.builder()
                 .name("user")
                 .password(passwordEncoder().encode("user"))
                 .authorities(new Authorities("USER"))
+                .enabled(true)
                 .build();
-        UserInfo admin = UserInfo.builder()
+        User admin = User.builder()
                 .name("admin")
                 .password(passwordEncoder().encode("admin"))
                 .authorities(new Authorities("USER"), new Authorities("ADMIN"))
+                .enabled(true)
                 .build();
 
 
@@ -61,7 +68,8 @@ public class SecurityConfiguration {
 
     }
 
-    private PasswordEncoder passwordEncoder() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
