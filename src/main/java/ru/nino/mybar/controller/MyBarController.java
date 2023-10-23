@@ -25,10 +25,9 @@ public class MyBarController {
         return userBarService.findAllUserIngredients(name);
     }
 
-    @GetMapping("availeble/coctails")
+    @GetMapping("available/cocktails")
     public List<CocktailDto> getAvailableCocktails(Principal user){
         return userBarService.getAvailableCocktails(user.getName());
-
     }
 
 
