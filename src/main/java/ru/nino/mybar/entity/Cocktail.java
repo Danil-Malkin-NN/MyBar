@@ -26,12 +26,12 @@ public class Cocktail extends IdEntity {
 
     private int strength = 0;
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<IngredientAndCount> ingredients = new ArrayList<>();
 
-    @ManyToMany()
+    @ManyToMany
     private List<Instrument> instruments = new ArrayList<>();
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Step> steps = new ArrayList<>();
 }

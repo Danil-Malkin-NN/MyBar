@@ -1,5 +1,6 @@
 package ru.nino.mybar.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import ru.nino.mybar.controller.CRUDController;
@@ -33,6 +34,7 @@ public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDC
     }
 
     @Override
+    @Transactional
     public DTO create(DTO newObject) {
         return Optional.ofNullable(newObject)
                 .map(mapper::toEntity)

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nino.mybar.entity.user.Authorities;
 import ru.nino.mybar.entity.user.User;
@@ -13,7 +14,8 @@ import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 import java.util.List;
 
-@RestController("register")
+@RequestMapping("register")
+@RestController()
 @RequiredArgsConstructor
 public class RegistryController {
 

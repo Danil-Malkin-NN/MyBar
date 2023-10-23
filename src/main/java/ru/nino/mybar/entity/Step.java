@@ -16,7 +16,7 @@ public class Step extends IdEntity {
 
     private String description = "";
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<IngredientAndCount> usesIngredients = new ArrayList<>();
 
     @ManyToMany
