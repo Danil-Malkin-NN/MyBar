@@ -10,3 +10,14 @@ services:
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
+  my-bar-end:
+    build: .
+    user: root
+    depends_on:
+      - postgres_bd
+    environment:
+      PG_URL: "postgres_bd:5432"
+    volumes:
+      - ./backend-data:/var/backend/data
+    ports:
+      - "8080:8080"
