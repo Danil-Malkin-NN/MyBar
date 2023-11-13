@@ -1,0 +1,91 @@
+@startuml
+
+entity "Users" {
+  *user_id : integer <<generated>>
+  --
+  username : varchar
+  email : varchar
+  password_hash : varchar
+  created_at : datetime
+  last_login : datetime
+}
+
+entity "Recipes" {
+  *recipe_id : integer <<generated>>
+  --
+  name : varchar
+  description : text
+  instructions : text
+  prep_time : integer
+  image_url : varchar
+  category_id : integer
+}
+
+entity "Ingredients" {
+  *ingredient_id : integer <<generated>>
+  --
+  name : varchar
+  type : varchar
+  alcoholic : boolean
+}
+
+entity "Tools" {
+  *tool_id : integer <<generated>>
+  --
+  name : varchar
+  description : text
+}
+
+entity "Recipe_Ingredients" {
+  *recipe_id : integer <<key>>
+  *ingredient_id : integer <<key>>
+  --
+  quantity : float
+  unit : varchar
+}
+
+entity "Recipe_Tools" {
+  *recipe_id : integer <<key>>
+  *tool_id : integer <<key>>
+}
+
+entity "User_Ingredients" {
+  *user_id : integer <<key>>
+  *ingredient_id : integer <<key>>
+  --
+  quantity : float
+  unit : varchar
+}
+
+entity "User_Favorites" {
+  *user_id : integer <<key>>
+  *recipe_id : integer <<key>>
+}
+
+entity "Categories" {
+  *category_id : integer <<generated>>
+  --
+  name : varchar
+}
+
+entity "Sessions" {
+  *session_id : integer <<generated>>
+  --
+  user_id : integer
+  session_token : varchar
+  created_at : datetime
+  expires_at : datetime
+}
+
+Recipes ||--o{ Recipe_Ingredients
+Recipe_Ingredients }|--|| Ingredients
+Users ||--o{ User_Ingredients
+User_Ingredients }|--|| Ingredients
+Users ||--o{ User_Favorites
+User_Favorites }|--|| Recipes
+Categories ||--|{ Recipes
+Recipes ||--o{ Recipe_Tools
+Recipe_Tools }|--|| Tools
+Users ||--|{ Sessions
+
+@enduml

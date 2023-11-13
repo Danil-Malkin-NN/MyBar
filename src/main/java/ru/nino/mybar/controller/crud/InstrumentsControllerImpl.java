@@ -1,36 +1,36 @@
-package ru.nino.mybar.controller.impl;
+package ru.nino.mybar.controller.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
-import ru.nino.mybar.dto.show.CocktailDto;
-import ru.nino.mybar.entity.Cocktail;
-import ru.nino.mybar.service.CocktailServiceImpl;
+import ru.nino.mybar.dto.show.InstrumentDto;
+import ru.nino.mybar.entity.Instrument;
+import ru.nino.mybar.service.InstrumentServiceImpl;
 
 import java.util.List;
 
-@RequestMapping("cocktails")
+@RequestMapping("instruments")
 @RestController
 @RequiredArgsConstructor
-public class CocktailControllerImpl implements CRUDController<CocktailDto, Cocktail> {
+public class InstrumentsControllerImpl implements CRUDController<InstrumentDto, Instrument> {
 
-    private final CocktailServiceImpl service;
+    private final InstrumentServiceImpl service;
 
     @Override
     @GetMapping("all")
-    public List<CocktailDto> getAll() {
+    public List<InstrumentDto> getAll() {
         return service.getAll();
     }
 
     @Override
     @GetMapping("{id}")
-    public CocktailDto getById(@PathVariable Integer id) {
+    public InstrumentDto getById(@PathVariable Integer id) {
         return service.getById(id);
     }
 
     @Override
     @PostMapping("create")
-    public CocktailDto create(@RequestBody CocktailDto newObject) {
+    public InstrumentDto create(@RequestBody InstrumentDto newObject) {
         return service.create(newObject);
     }
 
@@ -42,7 +42,7 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
 
     @Override
     @PutMapping("update")
-    public CocktailDto update(@RequestBody CocktailDto newData) {
+    public InstrumentDto update(@RequestBody InstrumentDto newData) {
         return service.update(newData);
     }
 }

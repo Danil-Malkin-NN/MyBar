@@ -1,36 +1,36 @@
-package ru.nino.mybar.controller.impl;
+package ru.nino.mybar.controller.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
-import ru.nino.mybar.dto.show.IngredientDto;
-import ru.nino.mybar.entity.Ingredient;
-import ru.nino.mybar.service.IngredientServiceImpl;
+import ru.nino.mybar.dto.show.StepDto;
+import ru.nino.mybar.entity.Step;
+import ru.nino.mybar.service.StepsServiceImpl;
 
 import java.util.List;
 
-@RequestMapping("ingredients")
+@RequestMapping("steps")
 @RestController
 @RequiredArgsConstructor
-public class IngredientsControllerImpl implements CRUDController<IngredientDto, Ingredient> {
+public class StepsControllerImpl implements CRUDController<StepDto, Step> {
 
-    private final IngredientServiceImpl service;
+    private final StepsServiceImpl service;
 
     @Override
     @GetMapping("all")
-    public List<IngredientDto> getAll() {
+    public List<StepDto> getAll() {
         return service.getAll();
     }
 
     @Override
     @GetMapping("{id}")
-    public IngredientDto getById(@PathVariable Integer id) {
+    public StepDto getById(@PathVariable Integer id) {
         return service.getById(id);
     }
 
     @Override
     @PostMapping("create")
-    public IngredientDto create(@RequestBody IngredientDto newObject) {
+    public StepDto create(@RequestBody StepDto newObject) {
         return service.create(newObject);
     }
 
@@ -42,7 +42,7 @@ public class IngredientsControllerImpl implements CRUDController<IngredientDto, 
 
     @Override
     @PutMapping("update")
-    public IngredientDto update(@RequestBody IngredientDto newData) {
+    public StepDto update(@RequestBody StepDto newData) {
         return service.update(newData);
     }
 }

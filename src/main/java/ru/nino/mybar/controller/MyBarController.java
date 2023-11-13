@@ -19,7 +19,6 @@ public class MyBarController {
     @GetMapping("ingredients")
     public List<IngredientDto> getMyIngredients(Principal user) {
         String name = user.getName();
-//        ingredientRepository.findAllByUserName(user.getName());
         return userBarService.findAllUserIngredients(name);
     }
 

@@ -1,14 +1,11 @@
-package ru.nino.mybar.controller.impl;
+package ru.nino.mybar.controller.crud;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.IngredientAndCountDto;
-import ru.nino.mybar.dto.show.IngredientDto;
-import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.entity.IngredientAndCount;
 import ru.nino.mybar.service.IngredientAndCountServiceImpl;
-import ru.nino.mybar.service.IngredientServiceImpl;
 
 import java.util.List;
 

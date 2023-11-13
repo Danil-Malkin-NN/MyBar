@@ -24,15 +24,19 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
         MvcRequestMatcher.Builder builder = new MvcRequestMatcher.Builder(introspector);
         http
+                .httpBasic(Customizer.withDefaults()) // Включает поддержку Basic Auth
                 .authorizeHttpRequests(
                         (authorize) -> authorize
                                 .requestMatchers(builder.pattern(HttpMethod.POST, "/register/**"))
+                                .permitAll()
+                                .requestMatchers(builder.pattern(HttpMethod.GET, "/**"))
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults());
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successForwardUrl("/my/ingredients")
+                        .defaultSuccessUrl("/my/ingredients"));
 
         return http.build();
     }
