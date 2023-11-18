@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-bar-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+        - name: java-app
+          image: danilmalkinnn/best_restaurants:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_HOST
+              value: postgres-service
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: mydatabase
+            - name: DATABASE_USER
+              value: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
