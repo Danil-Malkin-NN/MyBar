@@ -23,6 +23,6 @@ jobs:
           distribution: 'zulu'
 
       - name: Maven build
-        run: mvn --batch-mode --update-snapshots package
+        run: mvn package
 
 
