@@ -25,16 +25,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RegistryController {
 
-
-
     private final RegistryService registryService;
-
 
     @Operation(tags = "Метод регистрации пользователя")
     @PostMapping
     public UserRegistryDTO registry(@RequestBody @Valid UserRegistryDTO user) {
         return registryService.createUser(user);
     }
-
 
 }
