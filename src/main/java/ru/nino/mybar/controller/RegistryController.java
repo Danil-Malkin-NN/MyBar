@@ -1,5 +1,7 @@
 package ru.nino.mybar.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 import java.util.List;
 
+@Tag(name = "Контроллер для регистрации нового пользователя")
 @RequestMapping("register")
 @RestController()
 @RequiredArgsConstructor
@@ -25,6 +28,8 @@ public class RegistryController {
 
     private final PasswordEncoder passwordEncoder;
 
+
+    @Operation(tags = "Метод регистрации пользователя")
     @PostMapping
     public User registry(@RequestBody UserInfo user) {
         User authorityUser = user.getUser();

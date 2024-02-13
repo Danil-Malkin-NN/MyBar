@@ -1,6 +1,8 @@
 package ru.nino.mybar.entity.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +20,11 @@ public class User extends IdEntity implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Authorities> authorities = new ArrayList<>();
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String password;
     private boolean enabled = true;
 
