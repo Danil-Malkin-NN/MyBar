@@ -2,6 +2,7 @@ package ru.nino.mybar.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class RegistryController {
 
     @Operation(tags = "Метод регистрации пользователя")
     @PostMapping
-    public UserRegistryDTO registry(@RequestBody UserRegistryDTO user) {
+    public UserRegistryDTO registry(@RequestBody @Valid UserRegistryDTO user) {
         return registryService.createUser(user);
     }
 
