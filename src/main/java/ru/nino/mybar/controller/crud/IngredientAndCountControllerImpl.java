@@ -12,10 +12,11 @@ import ru.nino.mybar.service.IngredientAndCountServiceImpl;
 import java.util.List;
 
 @Tag(name = """
-        Контроллер для редактирования информации о ингредиентах и их количестве. 
-        Данная информация требуется в разрезе конкретного шага или рецепта.
-        Например 50 Мл Водки
-        """)
+        Контроллер для редактирования информации о ингредиентах и их количестве.
+        """,
+    description = """
+            Данная информация требуется в разрезе конкретного шага или рецепта. Например 50 Мл Водки
+            """)
 @RequestMapping("ingredientsAndCount")
 @RestController
 @RequiredArgsConstructor
