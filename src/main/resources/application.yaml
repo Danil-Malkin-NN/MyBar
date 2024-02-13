@@ -2,6 +2,16 @@ server:
   port: 8080
   servlet:
     context-path: /api
+management:
+  endpoint:
+    health:
+      probes.enabled: true
+      show-details: always
+  endpoints:
+    jmx:
+      exposure:
+        include: health, prometheus, liveness, readiness, mappings
+
 spring:
   servlet:
     multipart:
