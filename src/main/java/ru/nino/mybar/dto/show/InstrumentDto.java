@@ -1,6 +1,7 @@
 package ru.nino.mybar.dto.show;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class InstrumentDto extends DTO {
 
+    @NotBlank
     private String name;
 
     private String description = "";

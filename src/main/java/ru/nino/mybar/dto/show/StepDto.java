@@ -1,6 +1,7 @@
 package ru.nino.mybar.dto.show;
 
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.nino.mybar.entity.IngredientAndCount;
@@ -13,7 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class StepDto extends DTO {
 
-    private String goal = "";
+    @NotBlank
+    private String goal;
 
     private String description = "";
 
