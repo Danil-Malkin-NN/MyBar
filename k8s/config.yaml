@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: java-app-deployment
+  name: my-bar-project
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: java-app
+      app: my-bar-project
   template:
     metadata:
       labels:
-        app: java-app
+        app: my-bar-project
     spec:
       containers:
-        - name: java-app
-          image: danilmalkinnn/best_restaurants:latest
+        - name: my-bar-project
+          image: ${IMAGE_NAME}
           ports:
             - containerPort: 8080
           env:
@@ -22,11 +22,11 @@ spec:
               value: postgres-service
             - name: DATABASE_PORT
               value: "5432"
-            - name: DATABASE_NAME
-              value: mydatabase
-            - name: DATABASE_USER
-              value: username
-            - name: DATABASE_PASSWORD
+            - name: POSTGRES_DB
+              value: bar
+            - name: POSTGRES_USER
+              value: barman
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: java-app-service
+  name: my-bar-service
 spec:
   selector:
-    app: java-app
+    app: my-bar-project
   ports:
     - protocol: TCP
       port: 80
@@ -65,14 +65,14 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:16.2
           ports:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: mydatabase
+              value: bar
             - name: POSTGRES_USER
-              value: username
+              value: barman
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -102,4 +102,4 @@ metadata:
   name: postgres-secret
 type: Opaque
 data:
-  password: [Ваш зашифрованный пароль в base64] # Используйте команду `echo -n 'yourpassword' | base64` для создания этого значения
+  password: ${PG_PASS_BASE64} # Используйте команду `echo -n 'yourpassword' | base64` для создания этого значения
