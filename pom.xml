@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.nino</groupId>
-    <artifactId>MyBar</artifactId>
+    <artifactId>my_bar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MyBar</name>
     <description>MyBar</description>
