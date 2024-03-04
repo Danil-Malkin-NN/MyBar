@@ -11,7 +11,7 @@ env:
   VERSION: latest
 
 jobs:
-  Push in DockerHub:
+  Push_in_DockerHub:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,6 @@ jobs:
         run: echo "IMAGE=danilmalkinnn/my_bar" >> $GITHUB_ENV
       - name: Set Version
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-
 
       - name: Build Docker Image
         run: mvn spring-boot:build-image
