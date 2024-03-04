@@ -46,7 +46,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: Push_in_DockerHub
     steps:
 
       - name: Checkout Repository
