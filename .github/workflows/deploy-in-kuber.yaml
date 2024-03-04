@@ -37,7 +37,7 @@ jobs:
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Build Docker Image
-        run: docker build .
+        run: docker build -t ${{env.IMAGE}}:${{ env.VERSION }} .
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
