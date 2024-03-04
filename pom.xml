@@ -11,8 +11,8 @@
     <groupId>ru.nino</groupId>
     <artifactId>my_bar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MyBar</name>
-    <description>MyBar</description>
+    <name>my_bar</name>
+    <description>my_bar</description>
 
     <properties>
         <java.version>17</java.version>
