@@ -24,8 +24,11 @@ jobs:
           java-version: '21'
           distribution: 'liberica'
 
-#      - name: Setup Gradle
-#        uses: gradle/gradle-build-action@v3
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@< version >
+        with:
+          java-version: 21
+          maven-version: 3.8.1
 
       - name: Set repository name
         run: echo "IMAGE=danilmalkinnn/my_bar" >> $GITHUB_ENV
