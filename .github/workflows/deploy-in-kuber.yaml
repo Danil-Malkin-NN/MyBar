@@ -73,7 +73,7 @@ jobs:
       - name: Replace environment variables
         uses: nowactions/envsubst@v1
         with:
-          input: deploy/k8s-configuration.yaml
+          input: deploy/config.yaml
           output: deploy/ready/deployment.yaml
         env:
           IMAGE_NAME: ${{env.IMAGE}}:${{ env.VERSION }}
