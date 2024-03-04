@@ -24,8 +24,8 @@ jobs:
           java-version: '21'
           distribution: 'liberica'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+#      - name: Setup Gradle
+#        uses: gradle/gradle-build-action@v3
 
       - name: Set repository name
         run: echo "IMAGE=danilmalkinnn/my_bar" >> $GITHUB_ENV
@@ -33,7 +33,7 @@ jobs:
         run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Build Docker Image
-        run: mvn spring-boot:build-image
+        run: mvnw spring-boot:build-image
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
