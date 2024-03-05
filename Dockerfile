@@ -6,5 +6,5 @@ RUN ls ./target
 
 FROM bellsoft/liberica-openjdk-alpine:21
 RUN mkdir /app
-COPY --from=build target/my_bar-?.?.?-SNAPSHOT.jar /app/app.jar
+COPY --from=build target/my_bar-*.*.*-*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","app/app.jar"]
