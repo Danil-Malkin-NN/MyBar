@@ -4,7 +4,7 @@ metadata:
   name: my-ingress
 spec:
   rules:
-    - host: "my-bar.dvmalkin.online"
+    - host: "mybar.dvmalkin.online"
       http:
         paths:
           - path: /

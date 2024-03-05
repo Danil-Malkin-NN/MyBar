@@ -102,5 +102,5 @@ metadata:
   name: postgres-secret
 type: Opaque
 data:
-  password: ${PG_PASS_BASE64} # Используйте команду `echo -n 'yourpassword' | base64` для создания этого значения
+  password: postgres # Используйте команду `echo -n 'yourpassword' | base64` для создания этого значения
 #  password: postgres
