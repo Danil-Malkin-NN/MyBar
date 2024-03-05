@@ -33,19 +33,19 @@ spec:
                   key: password
 
 ---
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-bar-service
-spec:
-  selector:
-    app: my-bar-project
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: my-bar-service
+#spec:
+#  selector:
+#    app: my-bar-project
+#  ports:
+#    - protocol: TCP
+#      port: 80
+#      targetPort: 8080
+#  type: LoadBalancer
 
 ---
 
