@@ -11,12 +11,16 @@ services:
     ports:
       - "5432:5432"
   my-bar-end:
-    image: danilmalkinnn/my_bar:0.0.1-SNAPSHOT
+    image: danilmalkinnn/my_bar:0.0.5-SNAPSHOT
     user: root
     depends_on:
       - postgres_bd
     environment:
-      PG_URL: "postgres_bd:5432"
+      DATABASE_HOST: postgres_bd
+      DATABASE_PORT: "5432"
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - ./backend-data:/var/backend/data
     ports:

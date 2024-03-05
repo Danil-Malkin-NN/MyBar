@@ -23,9 +23,9 @@ spec:
             - name: DATABASE_PORT
               value: "5432"
             - name: POSTGRES_DB
-              value: bar
+              value: postgres
             - name: POSTGRES_USER
-              value: barman
+              value: postgres
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -70,9 +70,9 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: bar
+              value: postgres
             - name: POSTGRES_USER
-              value: barman
+              value: postgres
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
