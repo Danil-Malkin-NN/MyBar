@@ -74,6 +74,7 @@ jobs:
           output: k8s/ready/deployment.yaml
         env:
           IMAGE_NAME: ${{env.IMAGE}}:${{ env.VERSION }}
+          PG_PASS_BASE64: ${{env.PG_PASS_BASE64}}
 
       - name: Setup kubectl client
         uses: azure/setup-kubectl@v3
