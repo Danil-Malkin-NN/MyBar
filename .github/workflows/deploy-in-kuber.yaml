@@ -64,11 +64,8 @@ jobs:
           java-version: '21'
           distribution: 'liberica'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
       - name: Set Version
-        run: echo "VERSION=$(./gradlew -q printVersion)" >> $GITHUB_ENV
+        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Replace environment variables
         uses: nowactions/envsubst@v1
