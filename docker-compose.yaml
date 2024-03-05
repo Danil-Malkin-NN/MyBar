@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
   my-bar-end:
-    build: .
+    image: danilmalkinnn/my_bar:0.0.1-SNAPSHOT
     user: root
     depends_on:
       - postgres_bd
