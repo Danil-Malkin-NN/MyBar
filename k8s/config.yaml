@@ -29,23 +29,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: nextcloud-secret
+                  name: postgres-secret
                   key: password
-
----
-#
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: my-bar-service
-#spec:
-#  selector:
-#    app: my-bar-project
-#  ports:
-#    - protocol: TCP
-#      port: 80
-#      targetPort: 8080
-#  type: LoadBalancer
 
 ---
 
@@ -76,7 +61,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: nextcloud-secret
+                  name: postgres-secret
                   key: password
 
 ---
