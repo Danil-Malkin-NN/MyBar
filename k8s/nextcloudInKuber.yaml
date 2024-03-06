@@ -1,51 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-bar-project
+  name: nextcloud
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-bar-project
+      app: nextcloud
   template:
     metadata:
       labels:
-        app: my-bar-project
+        app: nextcloud
     spec:
       containers:
-        - name: my-bar-project
-          image: ${IMAGE_NAME}
+        - name: nextcloud
+          image: nextcloud:27.1.3
           ports:
-            - containerPort: 8080
-          env:
-            - name: DATABASE_HOST
-              value: postgres-service
-            - name: DATABASE_PORT
-              value: "5432"
-            - name: POSTGRES_DB
-              value: postgres
-            - name: POSTGRES_USER
-              value: postgres
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: nextcloud-secret
-                  key: password
-
+            - containerPort: 80
+            - containerPort: 433
+          volumeMounts:
+            - name: config-vol
+              mountPath: /DATA/AppData/nextcloud/var/www/html
 ---
-#
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: my-bar-service
-#spec:
-#  selector:
-#    app: my-bar-project
-#  ports:
-#    - protocol: TCP
-#      port: 80
-#      targetPort: 8080
-#  type: LoadBalancer
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-service
+spec:
+  selector:
+    app: nextcloud
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
 
 ---
 
@@ -84,7 +72,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service
+  name: nextcloud-postgres-service
 spec:
   selector:
     app: postgres
@@ -99,9 +87,28 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: postgres-secret
+  name: nextcloud-secret
 type: Opaque
 data:
   password: cG9zdGdyZXM=
 # Используйте команду `echo -n 'yourpassword' | base64` для создания этого значения
 #  password: postgres
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+    - host: "cloud.dvmalkin.online"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cloud-service
+                port:
+                  number: 8080
