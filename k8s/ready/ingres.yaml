@@ -7,7 +7,7 @@ spec:
     - host: "mybar.dvmalkin.online"
       http:
         paths:
-          - path: /
+          - path: /api
             pathType: Prefix
             backend:
               service:
