@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.nino</groupId>
     <artifactId>my_bar</artifactId>
-    <version>0.0.5-test</version>
+    <version>0.0.1-release</version>
     <name>my_bar</name>
     <description>my_bar</description>
 
