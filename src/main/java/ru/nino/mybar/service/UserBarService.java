@@ -34,7 +34,7 @@ public class UserBarService {
 
     public List<IngredientDto> findAllUserIngredients(String userName) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(() -> new RuntimeException("" + userName));
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
 
         List<Ingredient> ingredient = userInfo.getIngredient();
         return ingredient.stream()
