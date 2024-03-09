@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserBarService {
 
-    public static final Supplier<RuntimeException> USER_NOT_FOUND = () -> new RuntimeException("Информация о пользователе не найдена");
     private final UserInfoRepositoryImpl userInfoRepository;
 
     private final IngredientMapperImpl ingredientMapper;
@@ -35,7 +34,7 @@ public class UserBarService {
 
     public List<IngredientDto> findAllUserIngredients(String userName) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(USER_NOT_FOUND);
+                .orElseThrow(() -> new RuntimeException("" + userName));
 
         List<Ingredient> ingredient = userInfo.getIngredient();
         return ingredient.stream()
@@ -53,7 +52,8 @@ public class UserBarService {
 
     public List<IngredientDto> addIngredient(String userName, Integer ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(USER_NOT_FOUND);
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
+
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
                 .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));
 
@@ -69,7 +69,7 @@ public class UserBarService {
 
     public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Integer ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(USER_NOT_FOUND);
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
 
         List<Ingredient> userIngredients = userInfo.getIngredient();
 
