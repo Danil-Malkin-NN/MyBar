@@ -35,8 +35,7 @@ public class SecurityConfiguration {
                                 .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.successForwardUrl("/my/ingredients")
-                        .defaultSuccessUrl("/my/ingredients"));
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }

@@ -30,6 +30,7 @@ public class RegistryService {
         final UserInfo user = mapper.toEntity(userRegistryDTO);
 
         User authorityUser = user.getUser();
+        authorityUser.setEnabled(true);
         authorityUser.setPassword(passwordEncoder.encode(authorityUser.getPassword()));
         authorityUser.setAuthorities(List.of(new Authorities("USER")));
 
