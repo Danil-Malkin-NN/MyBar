@@ -3,12 +3,12 @@ package ru.nino.mybar.repository.impl;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.nino.mybar.entity.Cocktail;
-import ru.nino.mybar.repository.DefaultRepository;
+import ru.nino.mybar.repository.NameFinderRepository;
 
 import java.util.List;
 
 @Repository
-public interface CocktailRepositoryImpl extends DefaultRepository<Cocktail> {
+public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
     @Query(value = "select cocktail.* " +
             "from cocktail\n" +
@@ -29,4 +29,7 @@ public interface CocktailRepositoryImpl extends DefaultRepository<Cocktail> {
             "       left join ingredient i on uii.ingredient_id = i.id)) desc;",
             nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String name);
+
+    List<Cocktail> findByNameLikeIgnoreCase(String name);
+
 }

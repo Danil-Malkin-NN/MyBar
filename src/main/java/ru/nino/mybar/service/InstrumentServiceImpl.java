@@ -7,7 +7,7 @@ import ru.nino.mybar.mapper.impl.InstrumentsMapperImpl;
 import ru.nino.mybar.repository.impl.InstrumentsRepositoryImpl;
 
 @Service
-public class InstrumentServiceImpl extends CRUDService<InstrumentDto, Instrument> {
+public class InstrumentServiceImpl extends NameFindService<InstrumentDto, Instrument> {
 
     public InstrumentServiceImpl(InstrumentsRepositoryImpl repository, InstrumentsMapperImpl mapper) {
         super(repository, mapper);

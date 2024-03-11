@@ -16,6 +16,11 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
 
     private final CocktailServiceImpl service;
 
+    @GetMapping("search")
+    public List<CocktailDto> searchByName(String name) {
+        return service.searchByName(name);
+    }
+
     @Override
     @GetMapping("all")
     public List<CocktailDto> getAll() {
@@ -45,4 +50,5 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     public CocktailDto update(@RequestBody CocktailDto newData) {
         return service.update(newData);
     }
+
 }
