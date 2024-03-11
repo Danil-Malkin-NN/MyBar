@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - dev  # Триггер на пуш в ветку dev
+      - *  # Триггер на пуш в ветку dev
   pull_request:
     branches:
       - '*'  # Триггер на создание MR в любую ветку
