@@ -1,22 +1,30 @@
 package ru.nino.mybar.service;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
-import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.mapper.AllMapper;
-import ru.nino.mybar.repository.DefaultRepository;
+import ru.nino.mybar.repository.NameFinderRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDController<DTO, ENTITY> {
 
-    protected final DefaultRepository<ENTITY> repository;
+public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUDService<DTO, ENTITY> {
 
-    protected final AllMapper<DTO, ENTITY> mapper;
+    protected final NameFinderRepository<ENTITY> repository;
+
+    public NameFindService(NameFinderRepository<ENTITY> r, AllMapper<DTO, ENTITY> m) {
+        super(r, m);
+        repository = r;
+    }
+
+    public List<DTO> searchByName(String name) {
+        return repository.findByNameLikeIgnoreCase(name + "%")
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
 
     @Override
     public List<DTO> getAll() {

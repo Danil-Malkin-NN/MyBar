@@ -21,6 +21,11 @@ public class InstrumentsControllerImpl implements CRUDController<InstrumentDto, 
 
     private final InstrumentServiceImpl service;
 
+    @GetMapping("search")
+    public List<InstrumentDto> searchByName(@RequestParam String name) {
+        return service.searchByName(name);
+    }
+
     @Override
     @GetMapping("all")
     @Operation(description = "Отдаёт список барных инструментов")

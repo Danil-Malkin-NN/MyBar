@@ -7,7 +7,7 @@ import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 
 @Service
-public class CocktailServiceImpl extends CRUDService<CocktailDto, Cocktail> {
+public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
 
 
     public CocktailServiceImpl(CocktailRepositoryImpl repository, CocktailMapperImpl mapper) {

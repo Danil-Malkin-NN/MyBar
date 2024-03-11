@@ -7,7 +7,7 @@ import ru.nino.mybar.mapper.impl.IngredientMapperImpl;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 
 @Service
-public class IngredientServiceImpl extends CRUDService<IngredientDto, Ingredient> {
+public class IngredientServiceImpl extends NameFindService<IngredientDto, Ingredient> {
 
     public IngredientServiceImpl(IngredientRepositoryImpl repository, IngredientMapperImpl mapper) {
         super(repository, mapper);
