@@ -3,6 +3,8 @@ package ru.nino.mybar.controller.crud;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.StepDto;
@@ -26,6 +28,11 @@ public class StepsControllerImpl implements CRUDController<StepDto, Step> {
     @Operation(description = "Возвращает список всех шагов")
     public List<StepDto> getAll() {
         return service.getAll();
+    }
+
+    @Override
+    public Page<StepDto> getPage(Pageable pageable) {
+        return service.getPage(pageable);
     }
 
     @Override

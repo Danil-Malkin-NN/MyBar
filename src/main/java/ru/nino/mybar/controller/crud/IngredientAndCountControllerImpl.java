@@ -3,6 +3,8 @@ package ru.nino.mybar.controller.crud;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.IngredientAndCountDto;
@@ -29,6 +31,12 @@ public class IngredientAndCountControllerImpl implements CRUDController<Ingredie
     @Operation(description = "Отдаёт список ингредиентов и их количества")
     public List<IngredientAndCountDto> getAll() {
         return service.getAll();
+    }
+
+    @Override
+    @GetMapping
+    public Page<IngredientAndCountDto> getPage(Pageable pageable) {
+        return service.getPage(pageable);
     }
 
     @Override
