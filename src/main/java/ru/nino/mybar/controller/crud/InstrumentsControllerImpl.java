@@ -3,6 +3,8 @@ package ru.nino.mybar.controller.crud;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.InstrumentDto;
@@ -31,6 +33,12 @@ public class InstrumentsControllerImpl implements CRUDController<InstrumentDto, 
     @Operation(description = "Отдаёт список барных инструментов")
     public List<InstrumentDto> getAll() {
         return service.getAll();
+    }
+
+    @Override
+    @GetMapping
+    public Page<InstrumentDto> getPage(Pageable pageable) {
+        return service.getPage(pageable);
     }
 
     @Override

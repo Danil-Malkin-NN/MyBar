@@ -3,6 +3,8 @@ package ru.nino.mybar.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.mapper.AllMapper;
@@ -17,6 +19,12 @@ public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDC
     protected final DefaultRepository<ENTITY> repository;
 
     protected final AllMapper<DTO, ENTITY> mapper;
+
+    @Override
+    public Page<DTO> getPage(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toDto);
+    }
 
     @Override
     public List<DTO> getAll() {
