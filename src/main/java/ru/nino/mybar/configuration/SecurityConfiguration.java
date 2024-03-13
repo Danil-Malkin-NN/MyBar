@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                                 .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults());
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.defaultSuccessUrl("http://mybar.dvmalkin.online/mybar"));
 
         return http.build();
     }
