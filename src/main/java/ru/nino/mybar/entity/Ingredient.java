@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class Ingredient extends IdEntity {
 
+    @Column(name = "name", unique = true)
     @Schema(description = "Название ингредиента", example = "водка")
     private String name;
 
