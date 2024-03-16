@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface InstrumentsRepositoryImpl extends NameFinderRepository<Instrument> {
 
-    List<Instrument> findByNameLikeIgnoreCase(String name);
+    List<Instrument> findTop5ByNameLikeIgnoreCase(String name);
 
 }

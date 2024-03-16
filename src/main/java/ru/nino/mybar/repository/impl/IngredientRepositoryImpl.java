@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface IngredientRepositoryImpl extends NameFinderRepository<Ingredient> {
 
-    List<Ingredient> findByNameLikeIgnoreCase(String name);
+    List<Ingredient> findTop5ByNameLikeIgnoreCase(String name);
 
 }

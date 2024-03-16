@@ -20,7 +20,7 @@ public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUD
     }
 
     public List<DTO> searchByName(String name) {
-        return repository.findByNameLikeIgnoreCase(name + "%")
+        return repository.findTop5ByNameLikeIgnoreCase(name + "%")
                 .stream()
                 .map(mapper::toDto)
                 .toList();

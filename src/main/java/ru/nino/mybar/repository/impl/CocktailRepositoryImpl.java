@@ -30,6 +30,6 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
             nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String name);
 
-    List<Cocktail> findByNameLikeIgnoreCase(String name);
+    List<Cocktail> findTop5ByNameLikeIgnoreCase(String name);
 
 }

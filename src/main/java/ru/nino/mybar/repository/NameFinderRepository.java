@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface NameFinderRepository<ENTITY extends IdEntity> extends DefaultRepository<ENTITY> {
 
-    default List<ENTITY> findByNameLikeIgnoreCase(String name){
+    default List<ENTITY> findTop5ByNameLikeIgnoreCase(String name){
         return null;
     }
 
