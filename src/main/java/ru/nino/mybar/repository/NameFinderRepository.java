@@ -2,7 +2,6 @@ package ru.nino.mybar.repository;
 
 import ru.nino.mybar.entity.IdEntity;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public interface NameFinderRepository<ENTITY extends IdEntity> extends DefaultRepository<ENTITY> {
