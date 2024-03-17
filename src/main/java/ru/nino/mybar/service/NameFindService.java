@@ -12,58 +12,62 @@ import java.util.Optional;
 
 public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUDService<DTO, ENTITY> {
 
-    protected final NameFinderRepository<ENTITY> repository;
+	protected final NameFinderRepository<ENTITY> repository;
 
-    public NameFindService(NameFinderRepository<ENTITY> r, AllMapper<DTO, ENTITY> m) {
-        super(r, m);
-        repository = r;
-    }
+	public NameFindService(NameFinderRepository<ENTITY> r, AllMapper<DTO, ENTITY> m) {
+		super(r, m);
+		repository = r;
+	}
 
-    public List<DTO> searchByName(String name) {
-        return repository.findTop5ByNameLikeIgnoreCase(name + "%")
-                .stream()
-                .map(mapper::toDto)
-                .toList();
-    }
+	public DTO getByName(String name) {
+		return mapper.toDto(repository.findByName(name));
+	}
 
-    @Override
-    public List<DTO> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
-    }
+	public List<DTO> searchByName(String name) {
+		return repository.findTop5ByNameLikeIgnoreCase(name + "%")
+				.stream()
+				.map(mapper::toDto)
+				.toList();
+	}
 
-    @Override
-    public DTO getById(Integer id) {
-        return repository.findById(id)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new ObjectNotFoundException(id, getEntityName()));
-    }
+	@Override
+	public List<DTO> getAll() {
+		return repository.findAll()
+				.stream()
+				.map(mapper::toDto)
+				.toList();
+	}
 
-    @Override
-    @Transactional
-    public DTO create(DTO newObject) {
-        return Optional.ofNullable(newObject)
-                .map(mapper::toEntity)
-                .map(repository::save)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new ObjectNotFoundException(newObject, getEntityName()));
-    }
+	@Override
+	public DTO getById(Integer id) {
+		return repository.findById(id)
+				.map(mapper::toDto)
+				.orElseThrow(() -> new ObjectNotFoundException(id, getEntityName()));
+	}
 
-    @Override
-    public void delete(Integer id) {
-        repository.deleteById(id);
-    }
+	@Override
+	@Transactional
+	public DTO create(DTO newObject) {
+		return Optional.ofNullable(newObject)
+				.map(mapper::toEntity)
+				.map(repository::save)
+				.map(mapper::toDto)
+				.orElseThrow(() -> new ObjectNotFoundException(newObject, getEntityName()));
+	}
 
-    @Override
-    public DTO update(DTO newData) {
-        return Optional.ofNullable(newData)
-                .map(mapper::toEntity)
-                .map(repository::save)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new ObjectNotFoundException(newData, getEntityName()));
-    }
+	@Override
+	public void delete(Integer id) {
+		repository.deleteById(id);
+	}
 
-    protected abstract String getEntityName();
+	@Override
+	public DTO update(DTO newData) {
+		return Optional.ofNullable(newData)
+				.map(mapper::toEntity)
+				.map(repository::save)
+				.map(mapper::toDto)
+				.orElseThrow(() -> new ObjectNotFoundException(newData, getEntityName()));
+	}
+
+	protected abstract String getEntityName();
 }

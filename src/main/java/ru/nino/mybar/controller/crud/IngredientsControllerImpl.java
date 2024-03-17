@@ -28,6 +28,11 @@ public class IngredientsControllerImpl implements CRUDController<IngredientDto, 
         return service.searchByName(name);
     }
 
+    @GetMapping("name")
+    public IngredientDto searchIngredientByName(String name) {
+        return service.getByName(name);
+    }
+
     @Override
     @GetMapping("all")
     @Operation(description = "Отдаёт список ингредиентов")

@@ -1,6 +1,7 @@
 package ru.nino.mybar.repository.impl;
 
 import org.springframework.stereotype.Repository;
+import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.repository.NameFinderRepository;
 
@@ -10,5 +11,9 @@ import java.util.List;
 public interface IngredientRepositoryImpl extends NameFinderRepository<Ingredient> {
 
     List<Ingredient> findTop5ByNameLikeIgnoreCase(String name);
+
+    @Override
+    Ingredient findByName(String s);
+
 
 }

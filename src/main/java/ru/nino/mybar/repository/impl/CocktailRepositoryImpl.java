@@ -32,4 +32,6 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
     List<Cocktail> findTop5ByNameLikeIgnoreCase(String name);
 
+    @Override
+    Cocktail findByName(String s);
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.CocktailDto;
+import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.service.CocktailServiceImpl;
 
@@ -24,6 +25,11 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     @GetMapping("search")
     public List<CocktailDto> searchByName(String name) {
         return service.searchByName(name);
+    }
+
+    @GetMapping("name")
+    public CocktailDto searchIngredientByName(String name) {
+        return service.getByName(name);
     }
 
     @Override
