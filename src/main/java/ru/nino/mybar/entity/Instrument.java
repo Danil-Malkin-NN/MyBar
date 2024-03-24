@@ -10,12 +10,13 @@ import lombok.Data;
 @Data
 public class Instrument extends IdEntity {
 
-    @Schema(description = "Название инструмента", example = "Шейкер")
-    private String name;
+	@Column(columnDefinition = "TEXT")
+	@Schema(description = "Название инструмента", example = "Шейкер")
+	private String name;
 
-    @Column(length = 1000)
-    @Schema(description = "Описание инструмента", example = "Инструмент для смешивания коктейлей")
-    private String description = "";
+	@Column(columnDefinition = "TEXT")
+	@Schema(description = "Описание инструмента", example = "Инструмент для смешивания коктейлей")
+	private String description = "";
 
 
 }

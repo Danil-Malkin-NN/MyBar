@@ -2,6 +2,7 @@ package ru.nino.mybar.entity;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
@@ -18,8 +19,10 @@ import java.util.List;
 public class Cocktail extends IdEntity {
 
     @Nonnull
+    @Column(columnDefinition = "TEXT")
     private String name;
 
+    @Column(columnDefinition = "TEXT")
     private String description = "";
 
     private int volume = 0;
