@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  error:
+    include-message: always
 management:
   endpoint:
     health:
@@ -29,3 +31,6 @@ spring:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
+logging:
+  level:
+    root: debug
