@@ -5,6 +5,10 @@ import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.mapper.AllMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {IngredientAndCountMapperImpl.class,
+        InstrumentsMapperImpl.class,
+        StepsMapperImpl.class,
+        IngredientMapperImpl.class
+})
 public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
 }

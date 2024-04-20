@@ -21,5 +21,4 @@ public class UserRegistryDTO {
 
     private UserCredentialsDto userCredentialsDto;
 
-
 }

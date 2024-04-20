@@ -1,6 +1,5 @@
 package ru.nino.mybar.configuration;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -9,16 +8,20 @@ import ru.nino.mybar.entity.user.User;
 import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class PostgresUserDetailsService implements UserDetailsManager {
 
     private final UserRepositoryImpl userRepository;
+
+    public PostgresUserDetailsService(UserRepositoryImpl userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User byName = userRepository.findByName(username);
-        if(byName == null)
+        if (byName == null)
             throw new UsernameNotFoundException("User " + username + " not found");
         return byName;
     }
@@ -47,7 +50,6 @@ public class PostgresUserDetailsService implements UserDetailsManager {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        return;
     }
 
     @Override

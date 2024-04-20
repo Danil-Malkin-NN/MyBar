@@ -1,0 +1,322 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Danil (generated)" id="1713633722355-1">
+        <createTable tableName="authorities">
+            <column autoIncrement="true" name="id" startWith="4" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="authorities_pkey"/>
+            </column>
+            <column name="authorities" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-2">
+        <createTable tableName="cocktail">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="cocktail_pkey"/>
+            </column>
+            <column name="strength" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="volume" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="name" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-3">
+        <createTable tableName="custom_user">
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" startWith="3" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="custom_user_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-4">
+        <createTable tableName="ingredient">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ingredient_pkey"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="name" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-5">
+        <createTable tableName="ingredient_and_count">
+            <column name="count" type="INTEGER"/>
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ingredient_and_count_pkey"/>
+            </column>
+            <column name="ingredient_id" type="INTEGER"/>
+            <column name="unit_type" type="SMALLINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-6">
+        <createTable tableName="instrument">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="instrument_pkey"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="name" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-7">
+        <createTable tableName="step">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="step_pkey"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="goal" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-8">
+        <createTable tableName="user_info">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_info_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-9">
+        <addUniqueConstraint columnNames="name" constraintName="ingredient_name_key" tableName="ingredient"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-10">
+        <addUniqueConstraint columnNames="user_id" constraintName="user_info_user_id_key" tableName="user_info"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-11">
+        <createTable tableName="cocktail_ingredients">
+            <column name="cocktail_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ingredients_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-12">
+        <createTable tableName="cocktail_instruments">
+            <column name="cocktail_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instruments_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-13">
+        <createTable tableName="cocktail_steps">
+            <column name="cocktail_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="steps_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-14">
+        <createTable tableName="custom_user_authorities">
+            <column name="authorities_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-15">
+        <createTable tableName="step_instruments">
+            <column name="instruments_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="step_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-16">
+        <createTable tableName="step_uses_ingredients">
+            <column name="step_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uses_ingredients_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-17">
+        <createTable tableName="user_info_favorite_cocktail">
+            <column name="favorite_cocktail_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_info_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-18">
+        <createTable tableName="user_info_ingredient">
+            <column name="ingredient_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_info_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-19">
+        <addForeignKeyConstraint baseColumnNames="user_info_id" baseTableName="user_info_favorite_cocktail"
+                                 constraintName="fk35khgkpld2h8xf5jgq7p98f8m" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_info" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-20">
+        <addForeignKeyConstraint baseColumnNames="ingredients_id" baseTableName="cocktail_ingredients"
+                                 constraintName="fk4hx039vxylfw1va927nosucw7" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ingredient_and_count" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-21">
+        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="cocktail_instruments"
+                                 constraintName="fk62dru129q58yq2jlgs8ejk2p9" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="instrument" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-22">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_instruments"
+                                 constraintName="fk64h3e9k2291tskqwf53in94br" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="cocktail" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-23">
+        <addForeignKeyConstraint baseColumnNames="user_info_id" baseTableName="user_info_ingredient"
+                                 constraintName="fk69dyqafq4vtckalv55i0cxweu" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_info" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-24">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="custom_user_authorities"
+                                 constraintName="fk7hiiau28lyynikgggvwknyc7" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="custom_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-25">
+        <addForeignKeyConstraint baseColumnNames="authorities_id" baseTableName="custom_user_authorities"
+                                 constraintName="fk8h8p1gma5t9b9ujtumoxqlj4l" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="authorities" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-26">
+        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_uses_ingredients"
+                                 constraintName="fkcrik8dah5yuggg64pmlgag14v" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="step" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-27">
+        <addForeignKeyConstraint baseColumnNames="uses_ingredients_id" baseTableName="step_uses_ingredients"
+                                 constraintName="fkenfsj762nuqlvrj59tedmu0hq" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ingredient_and_count" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-28">
+        <addForeignKeyConstraint baseColumnNames="favorite_cocktail_id" baseTableName="user_info_favorite_cocktail"
+                                 constraintName="fkglkguqcf5a37o07cvhu0nyvyy" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="cocktail" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-29">
+        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_instruments"
+                                 constraintName="fkgo1rx7iyvyp42tm5li7crjfmb" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="step" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-30">
+        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="ingredient_and_count"
+                                 constraintName="fki8ahh0gritc9eesonsc2gdlyg" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ingredient" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-31">
+        <addForeignKeyConstraint baseColumnNames="steps_id" baseTableName="cocktail_steps"
+                                 constraintName="fkm67opqo32f7bw66rd3oko2jh1" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="step" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-32">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_steps"
+                                 constraintName="fkogigbl5i6qcxawa8gwln3h1d2" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="cocktail" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-33">
+        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="step_instruments"
+                                 constraintName="fkox8cll5c4li0rvxflv5vvloii" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="instrument" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-34">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_info"
+                                 constraintName="fkrodgoke5uhktabt7e5sy5uaqk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="custom_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-35">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_ingredients"
+                                 constraintName="fksnwwla334timk1jbf2blfdakr" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="cocktail" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil (generated)" id="1713633722355-36">
+        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_info_ingredient"
+                                 constraintName="fktpf2i23v87w9cjni4jeklnvj9" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="ingredient" validate="true"/>
+    </changeSet>
+    <changeSet author="Danil" id="111">
+        <insert tableName="ingredient">
+            <column name="name" value="Белый ром"/>
+            <column name="description" value="Крепкий напиток на основе тросника"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Сахарный сироп"/>
+            <column name="description" value="сахар"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Лаймовый сок"/>
+            <column name="description" value="Лаймовый сок"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Лед в кубиках"/>
+            <column name="description" value="Лед в кубиках"/>
+        </insert>
+    </changeSet>
+    <changeSet id="1713640147240-1" author="Danil">
+        <insert tableName="instrument">
+            <column name="name" value="Джиггер"/>
+            <column name="description" value="Джиггер"/>
+        </insert>
+        <insert tableName="instrument">
+            <column name="name" value="Шейкер"/>
+            <column name="description" value="Шейкер"/>
+        </insert>
+        <insert tableName="instrument">
+            <column name="name" value="Шампанское блюдце"/>
+            <column name="description" value="Шампанское блюдце"/>
+        </insert>
+        <insert tableName="instrument">
+            <column name="name" value="Стрейнер"/>
+            <column name="description" value="Стрейнер"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

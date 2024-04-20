@@ -1,17 +1,21 @@
 package ru.nino.mybar.dto.show;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.nino.mybar.entity.IngredientAndCount;
-import ru.nino.mybar.entity.Instrument;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class StepDto extends DTO {
 
@@ -23,9 +27,9 @@ public class StepDto extends DTO {
     private String description = "";
 
     @Schema(description = "Используемые в шаге ингредиенты и сколько нужно сейчас")
-    private List<IngredientAndCount> usesIngredients = new ArrayList<>();
+    private List<IngredientAndCountDto> usesIngredients = new ArrayList<>();
 
     @Schema(description = "Используемые в шаге инструменты")
-    private List<Instrument> instruments = new ArrayList<>();
+    private List<InstrumentDto> instruments = new ArrayList<>();
 
 }
