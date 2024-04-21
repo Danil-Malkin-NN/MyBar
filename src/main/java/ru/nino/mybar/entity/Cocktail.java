@@ -7,12 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Entity
@@ -29,12 +32,12 @@ public class Cocktail extends IdEntity {
 
     private int strength = 0;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<IngredientAndCount> ingredients = new ArrayList<>();
 
     @ManyToMany
     private List<Instrument> instruments = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Step> steps = new ArrayList<>();
 }

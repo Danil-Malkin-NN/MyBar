@@ -2,13 +2,21 @@ package ru.nino.mybar.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class IngredientAndCount extends IdEntity {
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @OneToOne()
     private Ingredient ingredient;
 
     private Integer count;

@@ -6,14 +6,14 @@ import ru.nino.mybar.dto.user.UserRegistryDTO;
 import ru.nino.mybar.entity.user.UserInfo;
 import ru.nino.mybar.mapper.AllMapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserRegistryMapper extends AllMapper<UserRegistryDTO, UserInfo> {
 
     @Override
-    @Mapping(target = "user", source = "userCredentialsDto")
+//    @Mapping(target = "user", source = "userCredentialsDto")
     UserInfo toEntity(UserRegistryDTO userRegistryDTO);
 
     @Override
-    @Mapping(target = "userCredentialsDto", ignore = true)
+//    @Mapping(target = "userCredentialsDto", ignore = true)
     UserRegistryDTO toDto(UserInfo userInfo);
 }

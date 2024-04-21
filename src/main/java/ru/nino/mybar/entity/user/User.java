@@ -26,6 +26,22 @@ public class User extends IdEntity implements UserDetails {
 
     @NotBlank
     private String password;
+
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     private boolean enabled = true;
 
     public User() {
