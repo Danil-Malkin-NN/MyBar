@@ -76,7 +76,24 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
-
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi  # Укажите требуемый размер объема
 ---
 
 apiVersion: v1
