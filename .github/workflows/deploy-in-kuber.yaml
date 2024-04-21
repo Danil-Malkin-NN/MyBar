@@ -13,7 +13,14 @@ env:
 jobs:
   Push_in_DockerHub:
     runs-on: ubuntu-latest
-
+    services:
+      docker:
+        # Это гарантирует, что Docker daemon доступен
+        image: docker:19.03.12-dind
+        options: --privileged # необходимо для Docker-in-Docker
+        ports:
+          - 2375:2375
+          -
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
