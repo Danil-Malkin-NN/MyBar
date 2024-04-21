@@ -13,13 +13,6 @@ env:
 jobs:
   Push_in_DockerHub:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        # Это гарантирует, что Docker daemon доступен
-        image: docker:19.03.12-dind
-        options: --privileged # необходимо для Docker-in-Docker
-        ports:
-          - 2375:2375
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -45,10 +38,6 @@ jobs:
 
       - name: Build Docker Image
         run: docker build -t ${{env.IMAGE}}:${{ env.VERSION }} .
-        env:
-          DOCKER_HOST: tcp://docker:2375
-          TESTCONTAINERS_RYUK_DISABLED: "true" # Отключить Ryuk, если необходимо
-          TESTCONTAINERS_CHECKS_DISABLE: "true" # Отключить проверки, если они вызывают проблемы
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
