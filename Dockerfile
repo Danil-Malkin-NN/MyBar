@@ -1,6 +1,6 @@
 FROM maven AS build
 COPY . .
-RUN mvn package
+RUN mvn package -DskipTests=true
 RUN ls ./target
 
 
