@@ -1,7 +1,6 @@
 package ru.nino.mybar;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -91,19 +90,6 @@ public class CocktailTest extends PostgresDbForTest {
                                 .unitType(MILLILITER)
                                 .build()))
                 .build();
-/*                Step(
-                    id = null,
-                    description = "Наполни шейкер кубиками льда и взбей",
-                    instruments = listOf(
-                        instrumentsApi.getInstrument("Шейкер"),
-                    ),
-                    goal = "Смешать ингредиенты",
-                    usesIngredients = listOf(
-                        UsesIngredient(
-                            null, 100, ingredientApi.getIngredient("Лед в кубиках"), unitType = "GRAM"
-                        )
-                    )
-                )*/
         StepDto secondStep = StepDto.builder()
                 .goal("Смешать ингредиенты")
                 .description("Наполни шейкер кубиками льда и взбей")
@@ -154,71 +140,4 @@ public class CocktailTest extends PostgresDbForTest {
 
         return List.of(whiteRom, sugar, limeJuice, ice);
     }
-
-
-    /*Cocktail(
-            id = null,
-            name = "Дайкири",
-            description = "Хотите попробовать \"Дайкири\"? Это кислый коктейль на основе рома с добавлением лаймового сока и сахарного сиропа. \"Дайкири\" придумал американец, посетивший Кубу, поэтому этот классический коктейль встречается на страницах многих произведений американской литературы ХХ века.",
-            ingredients = listOf(
-                ingredientApi.getIngredient("Белый ром"),
-                ingredientApi.getIngredient("Сахарный сироп"),
-                ingredientApi.getIngredient("Лаймовый сок"),
-                ingredientApi.getIngredient("Лед в кубиках")
-            ),
-            instruments = listOf(
-                instrumentsApi.getInstrument("Пресс для цитрусовых"),
-                instrumentsApi.getInstrument("Джиггер"),
-                instrumentsApi.getInstrument("Стрейнер"),
-                instrumentsApi.getInstrument("Шейкер"),
-                instrumentsApi.getInstrument("Шампанское блюдце")
-            ),
-            steps = listOf(
-                Step(
-                    id = null,
-                    description = "Налей в шейкер лаймовый сок 30 мл, сахарный сироп 15 мл и белый ром 60 мл",
-                    instruments = listOf(
-                        instrumentsApi.getInstrument("Шейкер"),
-                    ),
-                    goal = "",
-                    usesIngredients = listOf(
-                        UsesIngredient(
-                            null, 30, ingredientApi.getIngredient("Лаймовый сок"), unitType = "MILLILITER"
-                        ),
-                        UsesIngredient(
-                            null, 15, ingredientApi.getIngredient("Сахарный сироп"), unitType = "MILLILITER"
-                        ),
-                        UsesIngredient(
-                            null, 60, ingredientApi.getIngredient("Белый ром"), unitType = "MILLILITER"
-                        )
-                    )
-
-                ),
-                Step(
-                    id = null,
-                    description = "Наполни шейкер кубиками льда и взбей",
-                    instruments = listOf(
-                        instrumentsApi.getInstrument("Шейкер"),
-                    ),
-                    goal = "Смешать ингредиенты",
-                    usesIngredients = listOf(
-                        UsesIngredient(
-                            null, 100, ingredientApi.getIngredient("Лед в кубиках"), unitType = "GRAM"
-                        )
-                    )
-                ),
-                Step(
-                    id = null,
-                    description = "Перелей через стрейнер в охлажденное шампанское блюдце",
-                    instruments = listOf(
-                        instrumentsApi.getInstrument("Стрейнер"),
-                        instrumentsApi.getInstrument("Шампанское блюдцe"),
-                    ),
-                    goal = "Налить в бокал",
-                    usesIngredients = listOf(
-                    )
-                )
-            )
-
-        )*/
 }

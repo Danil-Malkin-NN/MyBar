@@ -38,6 +38,6 @@ public class Cocktail extends IdEntity {
     @ManyToMany
     private List<Instrument> instruments = new ArrayList<>();
 
-//    @ManyToMany()
-//    private List<Step> steps = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Step> steps = new ArrayList<>();
 }

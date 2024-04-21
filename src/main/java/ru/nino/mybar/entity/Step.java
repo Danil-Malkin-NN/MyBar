@@ -22,7 +22,7 @@ public class Step extends IdEntity {
     @Column(columnDefinition = "TEXT")
     private String description = "";
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<IngredientAndCount> usesIngredients = new ArrayList<>();
 
     @ManyToMany()
