@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi  # Укажите требуемый размер объема
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -84,18 +97,7 @@ spec:
           persistentVolumeClaim:
             claimName: postgres-pvc
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-pvc
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi  # Укажите требуемый размер объема
----
+
 
 apiVersion: v1
 kind: Service
