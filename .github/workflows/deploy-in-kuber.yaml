@@ -84,11 +84,10 @@ jobs:
         uses: Azure/k8s-set-context@v2
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
-          context: my-bar
-
 
       - name: Deploy to the Kubernetes cluster
         uses: Azure/k8s-deploy@v4
         with:
           manifests: k8s/ready/
+          namespace: my-bar
 
