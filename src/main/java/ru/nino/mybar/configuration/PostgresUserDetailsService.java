@@ -8,7 +8,6 @@ import ru.nino.mybar.entity.user.User;
 import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 @Service
-//@RequiredArgsConstructor
 public class PostgresUserDetailsService implements UserDetailsManager {
 
     private final UserRepositoryImpl userRepository;

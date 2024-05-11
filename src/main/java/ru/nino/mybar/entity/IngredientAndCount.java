@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IngredientAndCount extends IdEntity {
 
-    @OneToOne()
+    @ManyToOne()
     private Ingredient ingredient;
 
     private Integer count;

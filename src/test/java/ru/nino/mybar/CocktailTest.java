@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,6 +24,7 @@ import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 import ru.nino.mybar.service.IngredientServiceImpl;
 import ru.nino.mybar.service.InstrumentServiceImpl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static ru.nino.mybar.entity.UnitType.GRAM;
@@ -53,6 +57,18 @@ public class CocktailTest extends PostgresDbForTest {
                 )
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk());
+        var perform = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/cocktails/1")
+        );
+
+        var mvcResult = perform.andReturn();
+        var response = mvcResult.getResponse();
+        var contentAsString = response.getContentAsString(StandardCharsets.UTF_8);
+        var cocktailDto = mapper.readValue(contentAsString, CocktailDto.class);
+
+        System.out.println();
+
 
     }
 
