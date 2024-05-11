@@ -28,7 +28,7 @@ public class UserInfo extends IdEntity {
     private String lastName;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User user;
 
     @ManyToMany
