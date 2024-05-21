@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.CocktailDto;
-import ru.nino.mybar.dto.show.IngredientDto;
+import ru.nino.mybar.dto.show.CocktailIngredientDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.service.CocktailServiceImpl;
 
@@ -40,9 +40,14 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     }
 
     @Override
-    @GetMapping
+    @GetMapping("/all/page")
     public Page<CocktailDto> getPage(Pageable pageable) {
         return service.getPage(pageable);
+    }
+
+    @GetMapping
+    public Page<CocktailIngredientDto> getPageAll(Pageable pageable) {
+        return service.getPageAll(pageable);
     }
 
     @Override
