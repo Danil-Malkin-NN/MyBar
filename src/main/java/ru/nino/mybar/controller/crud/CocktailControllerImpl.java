@@ -40,7 +40,7 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     }
 
     @Override
-    @GetMapping("/aaaa")
+    @GetMapping("/all/data/pages")
     public Page<CocktailDto> getPage(Pageable pageable) {
         return service.getPage(pageable);
     }
