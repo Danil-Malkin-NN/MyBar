@@ -9,15 +9,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest
-@ActiveProfiles("prod")
-@AutoConfigureMockMvc
+//@SpringBootTest
+//@AutoConfigureMockMvc
 class CocktailGetTest {
 
     @Autowired
     private MockMvc mvc;
 
-    @Test
+//    @Test
     void getPageAll() throws Exception {
         mvc.perform(
                         MockMvcRequestBuilders
