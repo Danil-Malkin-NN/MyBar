@@ -1,4 +1,4 @@
-package ru.nino.mybar;
+package ru.nino.mybar.controller.crud;
 
 
 import org.junit.jupiter.api.Test;
@@ -66,9 +66,6 @@ public class CocktailTest extends PostgresDbForTest {
         var response = mvcResult.getResponse();
         var contentAsString = response.getContentAsString(StandardCharsets.UTF_8);
         var cocktailDto = mapper.readValue(contentAsString, CocktailDto.class);
-
-        System.out.println();
-
 
     }
 

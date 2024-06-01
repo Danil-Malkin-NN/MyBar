@@ -1,5 +1,8 @@
 package ru.nino.mybar.repository.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.nino.mybar.entity.Cocktail;
@@ -34,4 +37,11 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
     @Override
     Cocktail findByName(String s);
+
+    @Override
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = {"ingredients", "ingredients.ingredient"})
+    Page<Cocktail> findAll(Pageable pageable);
+
+
 }

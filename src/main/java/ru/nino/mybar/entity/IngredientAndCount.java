@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Getter
 @Setter
@@ -16,7 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IngredientAndCount extends IdEntity {
 
-    @ManyToOne()
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Ingredient ingredient;
 
     private Integer count;
