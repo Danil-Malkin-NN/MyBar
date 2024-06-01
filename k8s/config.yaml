@@ -32,6 +32,8 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service
@@ -79,6 +81,8 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
+      imagePullSecrets:
+        - name: regcred
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
