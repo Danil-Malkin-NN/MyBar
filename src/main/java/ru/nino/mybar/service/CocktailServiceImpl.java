@@ -13,10 +13,12 @@ import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
 
     private final CocktailMapperImpl mapper;
+    private final CocktailRepositoryImpl repository;
 
     public CocktailServiceImpl(CocktailRepositoryImpl repository, CocktailMapperImpl mapper) {
         super(repository, mapper);
         this.mapper = mapper;
+        this.repository = repository;
     }
 
     @Override
