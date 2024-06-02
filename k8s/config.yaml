@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: my-bar-project
-          image: ${IMAGE_NAME}
+          image: dockerhub.timeweb.cloud/${IMAGE_NAME}
           ports:
             - containerPort: 8080
           env:
@@ -32,8 +32,6 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
-      imagePullSecrets:
-        - name: regcred
 ---
 apiVersion: v1
 kind: Service
@@ -65,7 +63,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:16.2
+          image: dockerhub.timeweb.cloud/postgres:16.2
           ports:
             - containerPort: 5432
           env:
@@ -81,8 +79,6 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
-      imagePullSecrets:
-        - name: regcred
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
