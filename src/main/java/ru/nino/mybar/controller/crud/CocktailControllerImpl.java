@@ -45,7 +45,7 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
         return service.getPage(pageable);
     }
 
-    @GetMapping("/all/page")
+    @GetMapping
     public Page<CocktailIngredientDto> getPageAll(Pageable pageable) {
         return service.getPageAll(pageable);
     }
