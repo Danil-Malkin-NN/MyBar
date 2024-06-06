@@ -1,50 +1,45 @@
 package ru.nino.mybar.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Configuration
+@RequiredArgsConstructor
+@EnableWebSecurity
 public class KeyCloakConfig {
+
+
+    public static final String ADMIN = "ADMIN";
+    public static final String USER = "USER";
 
     private static final String GROUPS = "groups";
     private static final String REALM_ACCESS_CLAIM = "realm_access";
     private static final String ROLES_CLAIM = "roles";
 
+    private final JwtConverter jwtConverter;
     private final KeycloakLogoutHandler keycloakLogoutHandler;
-
-    public KeyCloakConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
-        this.keycloakLogoutHandler = keycloakLogoutHandler;
-    }
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -62,23 +57,24 @@ public class KeyCloakConfig {
     }
 
     @Bean
-    public SecurityFilterChain resourceServerFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+    public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
 
-        MvcRequestMatcher.Builder builder = new MvcRequestMatcher.Builder(introspector);
         http.authorizeHttpRequests(
                 (authorize) -> authorize
-                        .requestMatchers(builder.pattern(HttpMethod.POST, "/register/**"))
+                        .requestMatchers(HttpMethod.POST, "/register/**")
                         .permitAll()
-                        .requestMatchers(builder.pattern(HttpMethod.GET, "my/**"))
-                        .hasRole("ADMIN")
-                        .requestMatchers(builder.pattern(HttpMethod.GET, "/**"))
+                        .requestMatchers(HttpMethod.GET, "my/**")
+                        .hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
         );
 
-        http.oauth2ResourceServer((oauth2) ->
-                oauth2.jwt(Customizer.withDefaults()));
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
+//        http.oauth2ResourceServer((oauth2) ->
+//                oauth2.jwt(Customizer.withDefaults()));
+
         http.oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/cocktails"));
@@ -89,8 +85,7 @@ public class KeyCloakConfig {
     public GrantedAuthoritiesMapper userAuthoritiesMapperForKeycloak() {
         return authorities -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            var authority = authorities.iterator()
-                    .next();
+            var authority = authorities.iterator().next();
             boolean isOidc = authority instanceof OidcUserAuthority;
 
             if (isOidc) {
@@ -124,47 +119,7 @@ public class KeyCloakConfig {
     }
 
     Collection<GrantedAuthority> generateAuthoritiesFromClaim(Collection<String> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(
-                        Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(
+                Collectors.toList());
     }
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        var converter = new JwtAuthenticationConverter();
-        var jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        converter.setPrincipalClaimName("preferred_username");
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            var authorities = jwtGrantedAuthoritiesConverter.convert(jwt);
-            var roles = jwt.getClaimAsStringList("spring_sec_roles");
-
-            return Stream.concat(authorities.stream(),
-                            roles.stream()
-                                    .filter(role -> role.startsWith("ROLE_"))
-                                    .map(SimpleGrantedAuthority::new)
-                                    .map(GrantedAuthority.class::cast))
-                    .toList();
-        });
-
-        return converter;
-    }
-
-    @Bean
-    public OAuth2UserService<OidcUserRequest, OidcUser> oAuth2UserService() {
-        var oidcUserService = new OidcUserService();
-        return userRequest -> {
-            var oidcUser = oidcUserService.loadUser(userRequest);
-            var roles = oidcUser.getClaimAsStringList("realm_access");
-            var authorities = Stream.concat(oidcUser.getAuthorities().stream(),
-                            roles.stream()
-                                    .filter(role -> role.startsWith("ROLE_"))
-                                    .map(SimpleGrantedAuthority::new)
-                                    .map(GrantedAuthority.class::cast))
-                    .toList();
-
-            return new DefaultOidcUser(authorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-        };
-    }
-
-
 }
