@@ -29,3 +29,28 @@ services:
     volumes:
       - ./docker_config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./docker_config/prometheus:/prometheus
+
+  keycloak_web:
+    image: quay.io/keycloak/keycloak:24.0.4
+    container_name: keycloak_web
+    environment:
+#      KC_DB: postgres
+#      KC_DB_URL: jdbc:postgresql://postgres_bd:5432/keycloak
+#      KC_DB_USERNAME: "postgres"
+#      KC_DB_PASSWORD: "postgres"
+#
+#      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8081
+#      KC_HOSTNAME_STRICT: false
+#      KC_HOSTNAME_STRICT_HTTPS: false
+#
+#      KC_LOG_LEVEL: info
+#      KC_METRICS_ENABLED: true
+#      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    depends_on:
+      - postgres_bd
+    ports:
+      - "8081:8080"

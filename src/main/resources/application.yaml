@@ -10,13 +10,29 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings
 
-
-
 spring:
   security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: my-bar-app #Имя приложения в KeyCloak
+            client-secret: j6gPmgLz20pZKtgIaLKmG13eltwWXXIr
+            scope: openid
 
-    enabled: false
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/my-bar
+            user-name-attribute: preferred_username
 
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/my-bar
+
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yaml
   liquibase:
     enabled: false
   servlet:
