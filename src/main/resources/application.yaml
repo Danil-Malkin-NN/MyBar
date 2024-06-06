@@ -10,6 +10,13 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings
 
+# JWT Configuration
+jwt:
+  auth:
+    converter:
+      resource-id: my-super-client
+      principal-attribute: principal_username
+
 spring:
   security:
     oauth2:
@@ -28,6 +35,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081/realms/my-bar
+          jwk-set-uri: http://localhost:8081/realms/my-bar/protocol/openid-connect/token
 
   docker:
     compose:
