@@ -14,7 +14,13 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings
 
+
+
 spring:
+  security:
+
+    enabled: false
+
   liquibase:
     enabled: false
   servlet:

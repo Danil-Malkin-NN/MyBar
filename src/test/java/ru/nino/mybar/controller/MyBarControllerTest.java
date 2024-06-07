@@ -16,16 +16,17 @@ import ru.nino.mybar.config.PostgresDbForTest;
 @ActiveProfiles("test")
 class MyBarControllerTest extends PostgresDbForTest {
 
+    public static final String BASIC_AUTH = "Basic VGVzdFVzZXJOYW1lOlRlc3RQYXNzd29yZA==";
     @Autowired
     private MockMvc mvc;
 
-//    @Test
+    @Test
     void getAvailableCocktails() throws Exception {
         var answer = mvc.perform(
                         MockMvcRequestBuilders
-                                .get("my/available/cocktails")
+                                .get("/my/available/cocktails")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .header("Authorization", "Basic YWRtaW46YWRtaW4=")
+                                .header("Authorization", BASIC_AUTH)
                 )
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk());
