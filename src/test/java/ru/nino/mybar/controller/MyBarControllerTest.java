@@ -1,5 +1,7 @@
 package ru.nino.mybar.controller;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,7 +11,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.nino.mybar.config.PostgresDbForTest;
+import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
+import ru.nino.mybar.dto.show.IngredientAvailableDto;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -20,7 +29,10 @@ class MyBarControllerTest extends PostgresDbForTest {
     @Autowired
     private MockMvc mvc;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
+    @DisplayName("Проверка что ингредиенты доступные пользователю помечаются как доступные в ДТО коктейлей")
     void getAvailableCocktails() throws Exception {
         var answer = mvc.perform(
                         MockMvcRequestBuilders
@@ -31,7 +43,21 @@ class MyBarControllerTest extends PostgresDbForTest {
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk());
 
-        answer.andReturn().getResponse().getContentAsString();
+        var contentAsString = answer.andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+
+        List<CocktailUserIngredientsDto> list = objectMapper.readValue(contentAsString, new TypeReference<List<CocktailUserIngredientsDto>>() {
+        });
+
+        list.stream()
+                .flatMap(cocktailUserIngredientsDto -> cocktailUserIngredientsDto.getIngredients()
+                        .stream())
+                .filter(ingredientAvailableDto -> "Лондонский сухой джин".equals(ingredientAvailableDto.getName())
+                                || "Лаймовый кордиал".equals(ingredientAvailableDto.getName()))
+                .map(IngredientAvailableDto::isAvailable)
+                .forEach(Assertions::assertTrue);
 
 
     }
