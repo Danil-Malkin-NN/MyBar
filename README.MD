@@ -4,6 +4,8 @@
 ![deploy_work_flow](https://github.com/Danil-Malkin-NN/MyBar/actions/workflows/deploy-in-kuber.yaml/badge.svg)
 [![codecov](https://codecov.io/github/Danil-Malkin-NN/MyBar/graph/badge.svg?token=BSNFI965HC)](https://codecov.io/github/Danil-Malkin-NN/MyBar)
 
+![graph](https://codecov.io/github/Danil-Malkin-NN/MyBar/graphs/tree.svg?token=BSNFI965HC)
+
 ## Описание проекта
 CocktailServer - это система управления рецептами коктелей, разработанная на языке Java. Система позволяет пользователям создавать, просматривать, редактировать и удалять рецепты коктелей.
 
