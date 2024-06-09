@@ -9,4 +9,5 @@ public interface UserRepositoryImpl extends DefaultRepository<User> {
 
     User findByName(String username);
 
+
 }

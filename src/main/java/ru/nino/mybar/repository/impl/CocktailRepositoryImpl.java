@@ -29,7 +29,8 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
             "       from user_info\n" +
             "       left join custom_user cu on user_info.user_id = cu.id\n" +
             "       left join user_info_ingredient uii on user_info.id = uii.user_info_id\n" +
-            "       left join ingredient i on uii.ingredient_id = i.id)) desc;",
+            "       left join ingredient i on uii.ingredient_id = i.id)) desc\n" +
+            "limit 10;",
             nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String name);
 

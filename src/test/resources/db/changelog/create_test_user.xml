@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="Danil (generated)" id="0001">
+        <sqlFile path="db/sql/create_test/create user.sql"/>
+    </changeSet>
+
+    <changeSet author="Danil (generated)" id="0002">
+        <sqlFile path="db/sql/create_test/createCoctail.sql"/>
+    </changeSet>
+
+    <changeSet author="Danil (generated)" id="0003">
+        <sqlFile path="db/sql/create_test/add_ingredient_to_user.sql"/>
+    </changeSet>
+
+</databaseChangeLog>

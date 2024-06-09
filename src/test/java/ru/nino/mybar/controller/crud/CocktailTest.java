@@ -1,16 +1,14 @@
 package ru.nino.mybar.controller.crud;
 
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,6 +45,7 @@ public class CocktailTest extends PostgresDbForTest {
     private MockMvc mvc;
 
     @Test
+    @DisplayName("Создаётся коктейль дайкири из пред сохранённых данных в БД")
     public void createNewOrderWith2AcidWithOutExtraActionsSuccess() throws Exception {
         mvc.perform(
                         MockMvcRequestBuilders

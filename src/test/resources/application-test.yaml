@@ -19,7 +19,7 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:postgresql://${PG_URL:localhost:5432}/postgres
+    url: jdbc:postgresql://${PG_URL:localhost:5432}/test
     username: ${PG_USER:postgres}
     password: ${PG_PASSWORD:postgres}
 

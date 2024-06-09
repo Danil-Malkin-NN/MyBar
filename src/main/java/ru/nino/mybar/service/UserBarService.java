@@ -2,9 +2,10 @@ package ru.nino.mybar.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nino.mybar.dto.show.CocktailDto;
+import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.entity.Cocktail;
+import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.entity.user.UserInfo;
 import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
@@ -13,6 +14,7 @@ import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 import ru.nino.mybar.repository.impl.UserInfoRepositoryImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,7 +35,7 @@ public class UserBarService {
 
     public List<IngredientDto> findAllUserIngredients(String userName) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         List<Ingredient> ingredient = userInfo.getIngredient();
         return ingredient.stream()
@@ -41,17 +43,35 @@ public class UserBarService {
                 .collect(Collectors.toList());
     }
 
-    public List<CocktailDto> getAvailableCocktails(String name) {
+    public List<CocktailUserIngredientsDto> getAvailableCocktails(String userName) {
 
-        List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(name);
-        return cocktails.stream()
-                .map(cocktailMapper::toDto)
+        List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(userName);
+
+        var userIngredients = userInfoRepository.findByUser_NameIgnoreCase(userName)
+                .map(UserInfo::getIngredient)
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(IdEntity::getId)
+                .collect(Collectors.toSet());
+
+
+        var cocktailDtos = cocktails.stream()
+                .map(cocktailMapper::toUserIngredients)
                 .collect(Collectors.toList());
+
+
+        cocktailDtos.stream()
+                .flatMap(cocktailUserIngredientsDto -> cocktailUserIngredientsDto.getIngredients()
+                        .stream())
+                .forEach(ingredientAvailableDto -> ingredientAvailableDto.setAvailable(userIngredients.contains(ingredientAvailableDto.getId())));
+
+
+        return cocktailDtos;
     }
 
     public List<IngredientDto> addIngredient(String userName, Integer ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
                 .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));
@@ -68,7 +88,7 @@ public class UserBarService {
 
     public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Integer ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName +" не найдена"));
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         List<Ingredient> userIngredients = userInfo.getIngredient();
 
