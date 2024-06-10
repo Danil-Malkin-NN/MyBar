@@ -5,12 +5,8 @@ server:
   error:
     include-message: always
 management:
-  endpoint:
-    health:
-      probes.enabled: true
-      show-details: always
   endpoints:
-    jmx:
+    web:
       exposure:
         include: health, prometheus, liveness, readiness, mappings
 
