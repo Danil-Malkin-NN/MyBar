@@ -1,0 +1,6 @@
+microk8s helm install prometheus \
+--set alertmanager.enabled=false \
+--set server.service.type=ClusterIP \
+--values values.yaml \
+--namespace monitoring \
+oci://registry-1.docker.io/bitnamicharts/prometheus

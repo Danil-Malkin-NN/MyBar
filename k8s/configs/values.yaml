@@ -1,0 +1,7 @@
+server:
+  extraScrapeConfigs:
+    - job_name: 'sample_monitoring'
+      scrape_interval: 5s
+      metrics_path: '/api/actuator/prometheus'
+      static_configs:
+        - targets: [ 'my-bar-service.my-bar.svc.cluster.local:8080' ]
