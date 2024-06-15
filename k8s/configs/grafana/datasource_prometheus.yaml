@@ -1,0 +1,5 @@
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus-server.monitoring.svc.cluster.local:80
+    isDefault: true

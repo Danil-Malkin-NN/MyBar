@@ -1,0 +1,9 @@
+1.
+microk8s kubectl create configmap dashboard-10000 --from-file=10000_rev1.json --namespace monitoring
+2.
+microk8s kubectl create secret generic datasource-secret --from-file=datasource_prometheus.yaml --namespace monitoring
+3.
+microk8s helm install my-grafana bitnami/grafana --values grafana.values.yaml --namespace monitoring
+
+для получения пароля и подключения
+echo "Password: $(microk8s kubectl get secret my-grafana-admin --namespace monitoring -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d)"
