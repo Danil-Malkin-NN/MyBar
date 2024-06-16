@@ -5,6 +5,7 @@ services:
     user: root
     volumes:
       - ./db-data:/var/postgres/data
+      - ./docker_config/postgres:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
@@ -49,7 +50,9 @@ services:
 #      KC_HEALTH_ENABLED: true
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    command: start-dev
+    command: start-dev --import-realm
+    volumes:
+      - ./docker_config/KeyCloak/:/opt/keycloak/data/import
     depends_on:
       - postgres_bd
     ports:
