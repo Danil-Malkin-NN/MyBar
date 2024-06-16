@@ -37,11 +37,10 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
     @Query(value = """
                 with ingredient_id_users as (
                     select ingredient_id as id
-                    from user_info
-                             left join custom_user cu on user_info.user_id = cu.id
-                             left join user_info_ingredient uii on user_info.id = uii.user_info_id
-                             left join ingredient i on uii.ingredient_id = i.id
-                    where cu.name = ?1
+                    from keycloak.user_entity ue
+                            inner join user_entity_ingredient uei on ue.id = uei.user_id 
+                             left join ingredient i on uei.ingredient_id = i.id
+                    where ue.email = ?1
                 )
                 select
                     cocktail.*

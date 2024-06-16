@@ -37,10 +37,6 @@ spring:
           issuer-uri: http://localhost:8081/realms/my-bar
           jwk-set-uri: http://localhost:8081/realms/my-bar/protocol/openid-connect/token
 
-  docker:
-    compose:
-      enabled: true
-      file: docker-compose.yaml
   liquibase:
     enabled: false
   servlet:
