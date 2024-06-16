@@ -38,7 +38,9 @@ spring:
           jwk-set-uri: http://localhost:8081/realms/my-bar/protocol/openid-connect/token
 
   liquibase:
-    enabled: false
+    enabled: true
+    change-log: classpath:db/master.xml
+
   servlet:
     multipart:
       max-file-size: 10MB

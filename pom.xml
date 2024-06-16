@@ -177,6 +177,13 @@
                         <version>3.6</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <changeLogFile>changelog.xml</changeLogFile>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <username>postgres</username>
+                    <password>postgres</password>
+                    <outputChangeLogFile>src/main/resources/db/changelog-0.x.x/init.xml</outputChangeLogFile>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
