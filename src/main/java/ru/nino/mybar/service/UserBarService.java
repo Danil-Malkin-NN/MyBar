@@ -7,12 +7,12 @@ import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.entity.Ingredient;
-import ru.nino.mybar.entity.user.UserInfo;
+import ru.nino.mybar.entity.user.User;
 import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.mapper.impl.IngredientMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
-import ru.nino.mybar.repository.impl.UserInfoRepositoryImpl;
+import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserBarService {
 
-    private final UserInfoRepositoryImpl userInfoRepository;
+    private final UserRepositoryImpl userRepository;
 
     private final IngredientMapperImpl ingredientMapper;
 
@@ -34,7 +34,7 @@ public class UserBarService {
     private final IngredientRepositoryImpl ingredientRepository;
 
     public List<IngredientDto> findAllUserIngredients(String userName) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
+        User userInfo = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         List<Ingredient> ingredient = userInfo.getIngredient();
@@ -47,8 +47,8 @@ public class UserBarService {
 
         List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(userName);
 
-        var userIngredients = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .map(UserInfo::getIngredient)
+        var userIngredients = userRepository.findByEmail(userName)
+                .map(User::getIngredient)
                 .orElseGet(ArrayList::new)
                 .stream()
                 .map(IdEntity::getId)
@@ -70,7 +70,7 @@ public class UserBarService {
     }
 
     public List<IngredientDto> addIngredient(String userName, Integer ingredientsId) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
+        User userInfo = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
@@ -79,7 +79,7 @@ public class UserBarService {
         List<Ingredient> userIngredients = userInfo.getIngredient();
         userIngredients.add(ingredient);
 
-        userInfoRepository.save(userInfo);
+        userRepository.save(userInfo);
 
         return userIngredients.stream()
                 .map(ingredientMapper::toDto)
@@ -87,7 +87,7 @@ public class UserBarService {
     }
 
     public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Integer ingredientsId) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
+        User userInfo = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
         List<Ingredient> userIngredients = userInfo.getIngredient();
@@ -96,7 +96,7 @@ public class UserBarService {
                 .filter(ingr -> !Objects.equals(ingr.getId(), ingredientsId))
                 .collect(Collectors.toList()));
 
-        userInfoRepository.save(userInfo);
+        userRepository.save(userInfo);
 
         return userInfo.getIngredient()
                 .stream()

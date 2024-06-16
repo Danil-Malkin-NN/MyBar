@@ -24,7 +24,7 @@ spring:
         registration:
           keycloak:
             client-id: my-bar-app #Имя приложения в KeyCloak
-            client-secret: j6gPmgLz20pZKtgIaLKmG13eltwWXXIr
+            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
             scope: openid
 
         provider:
@@ -54,11 +54,11 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
 logging:
   level:
-    root: debug
+    root: info
