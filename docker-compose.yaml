@@ -40,7 +40,7 @@ services:
       KC_DB_USERNAME: "postgres"
       KC_DB_PASSWORD: "postgres"
 #
-#      KC_HOSTNAME: localhost
+      KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8081
 #      KC_HOSTNAME_STRICT: false
 #      KC_HOSTNAME_STRICT_HTTPS: false
