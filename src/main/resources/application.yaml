@@ -24,18 +24,18 @@ spring:
         registration:
           keycloak:
             client-id: my-bar-app #Имя приложения в KeyCloak
-            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
+#            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
             scope: openid
 
         provider:
           keycloak:
-            issuer-uri: http://localhost:8081/realms/my-bar
+            issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
             user-name-attribute: preferred_username
 
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/my-bar
-          jwk-set-uri: http://localhost:8081/realms/my-bar/protocol/openid-connect/token
+          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   docker:
     compose:
