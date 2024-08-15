@@ -13,6 +13,27 @@ import java.util.List;
 @Repository
 public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
+    @Override
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = {"ingredients", "ingredients.ingredient"})
+    Page<Cocktail> findAll(Pageable pageable);
+
+    @Query(value = """
+            select cocktail.*
+            from cocktail
+                     left join cocktail_ingredients ci on cocktail.id = ci.cocktail_id
+                     left join ingredient_and_count on ci.ingredients_id = ingredient_and_count.id
+            where ingredient_and_count.ingredient_id in (?1)
+            group by cocktail.id
+            order by count(ingredient_and_count.ingredient_id) desc
+            limit 10;
+            """, nativeQuery = true)
+    List<Cocktail> findByIngredientsList(List<Integer> ingreients);
+
+    @Override
+    Cocktail findByName(String s);
+
+    List<Cocktail> findTop5ByNameLikeIgnoreCase(String name);
+
     @Query(value = """
                 with ingredient_id_users as (
                     select ingredient_id as id
@@ -31,19 +52,7 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
                 group by cocktail.id
                 order by count(ingredient_and_count.ingredient_id) desc
                 limit 10;
-            """,
-            nativeQuery = true)
+            """, nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String name);
-
-    List<Cocktail> findTop5ByNameLikeIgnoreCase(String name);
-
-    @Override
-    Cocktail findByName(String s);
-
-    @Override
-    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
-            attributePaths = {"ingredients", "ingredients.ingredient"})
-    Page<Cocktail> findAll(Pageable pageable);
-
 
 }

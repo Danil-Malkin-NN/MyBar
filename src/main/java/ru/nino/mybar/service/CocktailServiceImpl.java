@@ -5,9 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.dto.show.CocktailIngredientDto;
+import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
+
+import java.util.List;
 
 @Service
 public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
@@ -19,6 +22,12 @@ public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> 
         super(repository, mapper);
         this.mapper = mapper;
         this.repository = repository;
+    }
+
+    public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
+        repository.findByIngredientsList(ingredients);
+
+        return null;
     }
 
     @Override
