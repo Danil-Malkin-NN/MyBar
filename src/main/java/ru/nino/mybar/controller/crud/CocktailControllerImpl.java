@@ -5,10 +5,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.nino.mybar.controller.CRUDController;
 import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.dto.show.CocktailIngredientDto;
+import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.service.CocktailServiceImpl;
 
@@ -22,14 +31,18 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
 
     private final CocktailServiceImpl service;
 
-    @GetMapping("search")
-    public List<CocktailDto> searchByName(String name) {
-        return service.searchByName(name);
+    @Override
+    @Operation(description = "Создаёт коктейль из DTO")
+    @PostMapping("create")
+    public CocktailDto create(@RequestBody CocktailDto newObject) {
+        return service.create(newObject);
     }
 
-    @GetMapping("name")
-    public CocktailDto searchIngredientByName(String name) {
-        return service.getByName(name);
+    @Override
+    @Operation(description = "Удаляет коктейль по идентификатору")
+    @DeleteMapping("delete")
+    public void delete(@RequestParam Integer id) {
+        service.delete(id);
     }
 
     @Override
@@ -37,6 +50,13 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     @GetMapping("all")
     public List<CocktailDto> getAll() {
         return service.getAll();
+    }
+
+    @Override
+    @Operation(description = "Отображает коктейль по его идентификатору")
+    @GetMapping("{id}")
+    public CocktailDto getById(@PathVariable Integer id) {
+        return service.getById(id);
     }
 
     @Override
@@ -50,25 +70,19 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
         return service.getPageAll(pageable);
     }
 
-    @Override
-    @Operation(description = "Отображает коктейль по его идентификатору")
-    @GetMapping("{id}")
-    public CocktailDto getById(@PathVariable Integer id) {
-        return service.getById(id);
+    @GetMapping("serch/by/ingredients")
+    public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
+        return service.searchByIngredientList(ingredients);
     }
 
-    @Override
-    @Operation(description = "Создаёт коктейль из DTO")
-    @PostMapping("create")
-    public CocktailDto create(@RequestBody CocktailDto newObject) {
-        return service.create(newObject);
+    @GetMapping("search")
+    public List<CocktailDto> searchByName(String name) {
+        return service.searchByName(name);
     }
 
-    @Override
-    @Operation(description = "Удаляет коктейль по идентификатору")
-    @DeleteMapping("delete")
-    public void delete(@RequestParam Integer id) {
-        service.delete(id);
+    @GetMapping("name")
+    public CocktailDto searchIngredientByName(String name) {
+        return service.getByName(name);
     }
 
     @Override

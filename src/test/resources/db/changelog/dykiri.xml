@@ -44,7 +44,7 @@
     </changeSet>
     <changeSet author="Danil (generated)" id="1713633722355-4">
         <createTable tableName="ingredient">
-            <column autoIncrement="true" name="id" type="INTEGER">
+            <column autoIncrement="true" name="id" type="INTEGER" startWith="5">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ingredient_pkey"/>
             </column>
             <column name="description" type="TEXT"/>
@@ -289,18 +289,22 @@
 
     <changeSet author="Danil" id="111">
         <insert tableName="ingredient">
+            <column name="id" value="1"/>
             <column name="name" value="Белый ром"/>
             <column name="description" value="Крепкий напиток на основе тросника"/>
         </insert>
         <insert tableName="ingredient">
+            <column name="id" value="2"/>
             <column name="name" value="Сахарный сироп"/>
             <column name="description" value="сахар"/>
         </insert>
         <insert tableName="ingredient">
+            <column name="id" value="3"/>
             <column name="name" value="Лаймовый сок"/>
             <column name="description" value="Лаймовый сок"/>
         </insert>
         <insert tableName="ingredient">
+            <column name="id" value="4"/>
             <column name="name" value="Лед в кубиках"/>
             <column name="description" value="Лед в кубиках"/>
         </insert>
