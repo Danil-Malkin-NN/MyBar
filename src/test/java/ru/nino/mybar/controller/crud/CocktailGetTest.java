@@ -8,10 +8,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import ru.nino.mybar.config.PostgresDbForTest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CocktailGetTest {
+class CocktailGetTest extends PostgresDbForTest {
 
     @Autowired
     private MockMvc mvc;
@@ -20,7 +21,7 @@ class CocktailGetTest {
     void getPageAll() throws Exception {
         mvc.perform(
                         MockMvcRequestBuilders
-                                .get("/cocktails/all/page")
+                                .get("/cocktails//all/data/pages")
                 )
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk());
