@@ -11,6 +11,7 @@ import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
@@ -24,19 +25,28 @@ public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> 
         this.repository = repository;
     }
 
-    public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
-        repository.findByIngredientsList(ingredients);
+    public Page<CocktailIngredientDto> getPageAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toIngredientDto);
+    }
 
-        return null;
+    public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
+        List<CocktailUserIngredientsDto> cocktailUserIngredientsDtos = repository.findByIngredientsList(ingredients)
+                .stream()
+                .map(mapper::toUserIngredients)
+                .toList();
+
+        cocktailUserIngredientsDtos.stream()
+                .flatMap(cocktailUserIngredientsDto -> cocktailUserIngredientsDto.getIngredients()
+                        .stream())
+                .forEach(ingredientAvailableDto -> ingredientAvailableDto.setAvailable(
+                        ingredients.contains(ingredientAvailableDto.getId())));
+
+        return cocktailUserIngredientsDtos;
     }
 
     @Override
     protected String getEntityName() {
         return "Cocktail";
-    }
-
-    public Page<CocktailIngredientDto> getPageAll(Pageable pageable) {
-        return repository.findAll(pageable)
-                .map(mapper::toIngredientDto);
     }
 }

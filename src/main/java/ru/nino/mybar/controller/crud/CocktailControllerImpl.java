@@ -72,7 +72,6 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
 
     @GetMapping("serch/by/ingredients")
     public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
-
         return service.searchByIngredientList(ingredients);
     }
 
