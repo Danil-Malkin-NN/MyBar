@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Бар</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Топбар */
+        .topbar {
+            background-color: #343a40;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .topbar a:hover {
+            color: #ffc107;
+        }
+
+        /* Основной контейнер */
+        .container {
+            padding: 30px;
+        }
+
+        /* Сетка карточек */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #343a40;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .ingredients {
+            margin-top: auto;
+            font-style: italic;
+            font-size: 13px;
+            color: #495057;
+        }
+
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .pagination button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Топбар -->
+<div class="topbar">
+    <a th:href="@{/ingredients}">Ингредиенты</a>
+    <a th:href="@{/tools}">Инструменты</a>
+    <a th:href="@{/mybar}">Мой Бар</a>
+</div>
+
+<!-- Основной контент -->
+<div class="container">
+
+    <!-- Сетка карточек -->
+    <div class="grid">
+        <div class="card" th:each="item : ${items}">
+            <h3 th:text="${item.name}">Название напитка</h3>
+            <p th:text="${item.description}">Описание напитка...</p>
+            <p><strong>Крепость:</strong> <span th:text="${item.strength}">15%</span></p>
+            <p class="ingredients">
+                <strong>Ингредиенты:</strong>
+                <span th:text="${item.ingredients}">Водка, Лимон, Сахар</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <button th:if="${currentPage > 1}" th:href="@{'/?page=' + (${currentPage} - 1)}">Назад</button>
+        <button th:href="@{'/?page=' + (${currentPage} + 1)}">Вперёд</button>
+    </div>
+
+</div>
+
+</body>
+</html>
