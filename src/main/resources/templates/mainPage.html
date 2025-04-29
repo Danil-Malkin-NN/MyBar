@@ -124,6 +124,9 @@
     <!-- Пагинация -->
     <div class="pagination">
         <button th:if="${currentPage > 1}" th:href="@{'/?page=' + (${currentPage} - 1)}">Назад</button>
+        <h3 th:text="(${pageNow} + 1)">1</h3>
+        <h3>из</h3>
+        <h3 th:text="${page.getTotalPages()}">0</h3>
         <button th:href="@{'/?page=' + (${currentPage} + 1)}">Вперёд</button>
     </div>
 

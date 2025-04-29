@@ -25,6 +25,7 @@ public class MainPageController {
 
         model.addAttribute("page", page);
         model.addAttribute("items", content);
+        model.addAttribute("pageNow", pageable.getPageNumber());
 
         return "mainPage";
 
