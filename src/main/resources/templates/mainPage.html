@@ -30,7 +30,6 @@
             color: #ffc107;
         }
 
-        /* Основной контейнер */
         .container {
             padding: 30px;
         }
@@ -39,10 +38,12 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 24px; /* раньше было 20px */
+            padding: 12px; /* отступ внутри сетки */
+            box-sizing: border-box;
         }
 
+        /* Карточка */
         .card {
             background-color: #ffffff;
             border-radius: 8px;
@@ -51,7 +52,12 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            box-sizing: border-box;
+
+            /* чтобы все карточки были одной высоты */
+            min-height: 200px;
         }
+
 
         .card h3 {
             margin-top: 0;
@@ -100,8 +106,8 @@
 
 <!-- Топбар -->
 <div class="topbar">
-    <a th:href="@{/ingredients}">Ингредиенты</a>
-    <a th:href="@{/tools}">Инструменты</a>
+    <a th:href="@{/page/ingredients}">Ингредиенты</a>
+    <a th:href="@{/page/tools}">Инструменты</a>
     <a th:href="@{/mybar}">Мой Бар</a>
 </div>
 
@@ -121,13 +127,14 @@
         </div>
     </div>
 
-    <!-- Пагинация -->
     <div class="pagination">
-        <button th:if="${currentPage > 1}" th:href="@{'/?page=' + (${currentPage} - 1)}">Назад</button>
-        <h3 th:text="(${pageNow} + 1)">1</h3>
-        <h3>из</h3>
-        <h3 th:text="${page.getTotalPages()}">0</h3>
-        <button th:href="@{'/?page=' + (${currentPage} + 1)}">Вперёд</button>
+        <a th:href="@{/(page=${page.number - 1}, size=${page.size})}"
+           th:if="${page.hasPrevious()}" class="btn">Назад</a>
+
+        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+
+        <a th:href="@{/(page=${page.number + 1}, size=${page.size})}"
+           th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 
 </div>

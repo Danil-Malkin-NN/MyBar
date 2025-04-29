@@ -35,7 +35,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:test}
     username: ${POSTGRES_USER:postgres}

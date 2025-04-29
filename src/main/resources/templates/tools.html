@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Инструменты</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .topbar {
+      background-color: #343a40;
+      padding: 12px 24px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .topbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+      min-height: 140px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+      color: #343a40;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95em;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .pagination a {
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+
+    .pagination a.disabled {
+      background-color: #ccc;
+      pointer-events: none;
+    }
+
+    .pagination span {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a th:href="@{/}">Главная</a>
+  <a th:href="@{/page/ingredients}">Ингредиенты</a>
+  <a th:href="@{/page/tools}">Инструменты</a>
+  <a th:href="@{/page/mybar}">Мой Бар</a>
+</div>
+
+<div class="container">
+  <div class="grid">
+    <div class="card" th:each="tool : ${tools}">
+      <h3 th:text="${tool.name}">Имя</h3>
+      <p th:text="${tool.description}">Описание...</p>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <a th:href="@{/tools(page=${page.number - 1}, size=${page.size})}"
+       th:if="${page.hasPrevious()}">Назад</a>
+
+    <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+
+    <a th:href="@{/tools(page=${page.number + 1}, size=${page.size})}"
+       th:if="${page.hasNext()}">Вперёд</a>
+  </div>
+</div>
+
+</body>
+</html>
