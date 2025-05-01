@@ -21,7 +21,7 @@ public class MainPageController {
     private final CocktailServiceImpl service;
 
     @GetMapping()
-    public String mainPage(@PageableDefault(size = 20) Pageable pageable, Model model) {
+    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model) {
 
         Page<CocktailsModel> page = service.getPageModels(pageable);
         List<CocktailsModel> content = page.getContent();
