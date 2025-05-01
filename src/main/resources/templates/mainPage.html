@@ -9,12 +9,8 @@
 <body>
 
 <!-- Топбар -->
-<div class="topbar">
-    <a th:href="@{/page}">Главная</a>
-    <a th:href="@{/page/ingredients}">Ингредиенты</a>
-    <a th:href="@{/page/tools}">Инструменты</a>
-    <a th:href="@{/page/mybar}">Мой Бар</a>
-</div>
+<div th:replace="fragments/topbar.html"></div>
+
 
 <!-- Основной контент -->
 <div class="container">
@@ -37,12 +33,12 @@
     </div>
 
     <div class="pagination">
-        <a th:href="@{/(page=${page.number - 1}, size=${page.size})}"
+        <a th:href="@{/page(page=${page.number - 1}, size=${page.size})}"
            th:if="${page.hasPrevious()}" class="btn">Назад</a>
 
         <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
 
-        <a th:href="@{/(page=${page.number + 1}, size=${page.size})}"
+        <a th:href="@{/page(page=${page.number + 1}, size=${page.size})}"
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 

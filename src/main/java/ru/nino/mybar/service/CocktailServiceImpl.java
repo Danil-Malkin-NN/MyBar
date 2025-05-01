@@ -34,9 +34,7 @@ public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> 
 
     public Page<CocktailsModel> getPageModels(Pageable pageable) {
         Page<Cocktail> all = repository.findAll(pageable);
-        List<Cocktail> content = all.getContent();
-        List<CocktailsModel> models = mapper.toModel(content);
-        return new PageImpl<CocktailsModel>(models, pageable, models.size());
+        return all.map(mapper::toModel);
     }
 
     public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {

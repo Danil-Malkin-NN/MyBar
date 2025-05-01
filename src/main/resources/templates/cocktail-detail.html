@@ -8,12 +8,8 @@
 
 <body>
 
-<div class="topbar">
-    <a th:href="@{/page}">Главная</a>
-    <a th:href="@{/page/ingredients}">Ингредиенты</a>
-    <a th:href="@{/page/tools}">Инструменты</a>
-    <a th:href="@{/page/mybar}">Мой Бар</a>
-</div>
+<div th:replace="fragments/topbar.html"></div>
+
 
 <div class="container">
     <h1 th:text="${cocktail.name}">Название коктейля</h1>

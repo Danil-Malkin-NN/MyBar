@@ -20,7 +20,9 @@ public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
 
     CocktailIngredientDto toIngredientDto(Cocktail cocktail);
 
-    List<CocktailsModel> toModel(List<Cocktail> cocktails);
+    CocktailsModel toModel(Cocktail cocktails);
+
+    List<CocktailsModel> toModelList(List<Cocktail> cocktails);
 
     default String toIngredientsString(List<IngredientAndCount> ingredientAndCounts){
         List<String> list = ingredientAndCounts.stream()

@@ -3,6 +3,7 @@ package ru.nino.mybar.controller.mwc;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class MainPageController {
     private final CocktailServiceImpl service;
 
     @GetMapping()
-    public String mainPage(Pageable pageable, Model model) {
+    public String mainPage(@PageableDefault(size = 20) Pageable pageable, Model model) {
 
         Page<CocktailsModel> page = service.getPageModels(pageable);
         List<CocktailsModel> content = page.getContent();
