@@ -11,11 +11,11 @@ public interface CRUDController<DTO, ENTITY> {
 
     Page<DTO> getPage(Pageable pageable);
 
-    DTO getById(Integer id);
+    DTO getById(Long id);
 
     DTO create(DTO newObject);
 
-    void delete(Integer id);
+    void delete(Long id);
 
     DTO update(DTO newData);
 

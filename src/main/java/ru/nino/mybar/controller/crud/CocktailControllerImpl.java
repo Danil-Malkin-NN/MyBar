@@ -31,18 +31,14 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
 
     private final CocktailServiceImpl service;
 
-    @Override
-    @Operation(description = "Создаёт коктейль из DTO")
-    @PostMapping("create")
-    public CocktailDto create(@RequestBody CocktailDto newObject) {
-        return service.create(newObject);
+    @GetMapping("search")
+    public List<CocktailDto> searchByName(String name) {
+        return service.searchByName(name);
     }
 
-    @Override
-    @Operation(description = "Удаляет коктейль по идентификатору")
-    @DeleteMapping("delete")
-    public void delete(@RequestParam Integer id) {
-        service.delete(id);
+    @GetMapping("name")
+    public CocktailDto searchIngredientByName(String name) {
+        return service.getByName(name);
     }
 
     @Override
@@ -50,13 +46,6 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     @GetMapping("all")
     public List<CocktailDto> getAll() {
         return service.getAll();
-    }
-
-    @Override
-    @Operation(description = "Отображает коктейль по его идентификатору")
-    @GetMapping("{id}")
-    public CocktailDto getById(@PathVariable Integer id) {
-        return service.getById(id);
     }
 
     @Override
@@ -70,20 +59,31 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
         return service.getPageAll(pageable);
     }
 
+    @Override
+    @Operation(description = "Отображает коктейль по его идентификатору")
+    @GetMapping("{id}")
+    public CocktailDto getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
     @GetMapping("serch/by/ingredients")
     public List<CocktailUserIngredientsDto> searchByIngredientList(List<Integer> ingredients) {
         return service.searchByIngredientList(ingredients);
     }
 
-    @GetMapping("search")
-    public List<CocktailDto> searchByName(String name) {
-        return service.searchByName(name);
+    @Override
+    @Operation(description = "Создаёт коктейль из DTO")
+    @PostMapping("create")
+    public CocktailDto create(@RequestBody CocktailDto newObject) {
+        return service.create(newObject);
     }
 
-    @GetMapping("name")
-    public CocktailDto searchIngredientByName(String name) {
-        return service.getByName(name);
+    @Override
+    @Operation(description = "Удаляет коктейль по идентификатору")
+    @DeleteMapping("delete")
+    public void delete(@RequestParam Long id) {
+        service.delete(id);
     }
+
 
     @Override
     @Operation(description = "Обновляет существующий коктейль")

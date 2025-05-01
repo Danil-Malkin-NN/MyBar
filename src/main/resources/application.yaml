@@ -23,6 +23,11 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  docker:
+    compose:
+      enabled: true
+      file: compose.yaml
+
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -30,11 +35,11 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:postgres}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:test}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
 logging:
   level:
-    root: debug
+    root: info

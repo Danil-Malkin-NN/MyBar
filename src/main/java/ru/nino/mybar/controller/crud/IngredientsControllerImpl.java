@@ -49,7 +49,7 @@ public class IngredientsControllerImpl implements CRUDController<IngredientDto, 
     @Override
     @GetMapping("{id}")
     @Operation(description = "Отдаёт ингредиент по идентификатору")
-    public IngredientDto getById(@PathVariable Integer id) {
+    public IngredientDto getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
@@ -63,7 +63,7 @@ public class IngredientsControllerImpl implements CRUDController<IngredientDto, 
     @Override
     @DeleteMapping("delete")
     @Operation(description = "Удаляет ингредиент по идентификатору")
-    public void delete(@RequestParam Integer id) {
+    public void delete(@RequestParam Long id) {
         service.delete(id);
     }
 

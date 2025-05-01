@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Моё приложение</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="fragments/topbar.html"></div>
+
+
+<div class="container">
+    <div class="grid">
+        <div class="card" th:each="ingredient : ${ingredients}">
+            <h3 th:text="${ingredient.name}">Название</h3>
+            <p th:text="${ingredient.description}">Описание ингредиента...</p>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <a th:href="@{/page/ingredients(page=${page.number - 1}, size=${page.size})}"
+           th:if="${page.hasPrevious()}" class="btn">Назад</a>
+
+        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+
+        <a th:href="@{/page/ingredients(page=${page.number + 1}, size=${page.size})}"
+           th:if="${page.hasNext()}" class="btn">Вперёд</a>
+    </div>
+</div>

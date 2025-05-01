@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.topbar {
+    background-color: #343a40;
+    padding: 12px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+.topbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+/* Основной стиль для сетки */
+.grid {
+    display: grid;
+    gap: 16px; /* отступы между карточками */
+    padding: 16px;
+    margin-top: 16px;
+}
+
+/* 5 колонок на больших экранах */
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* 3 колонки на средних экранах */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 1 колонка на мобильных экранах */
+@media (max-width: 767px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.pagination a, .pagination span {
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination .active {
+    background-color: #343a40;
+    color: white;
+}
+

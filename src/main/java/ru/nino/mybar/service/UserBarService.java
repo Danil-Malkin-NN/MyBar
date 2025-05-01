@@ -69,7 +69,7 @@ public class UserBarService {
         return cocktailDtos;
     }
 
-    public List<IngredientDto> addIngredient(String userName, Integer ingredientsId) {
+    public List<IngredientDto> addIngredient(String userName, Long ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
@@ -86,7 +86,7 @@ public class UserBarService {
                 .toList();
     }
 
-    public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Integer ingredientsId) {
+    public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Long ingredientsId) {
         UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 

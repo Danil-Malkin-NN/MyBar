@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Моё приложение</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="topbar">
+  <a th:href="@{/page}">Главная</a>
+  <a th:href="@{/page/ingredients}">Ингредиенты</a>
+  <a th:href="@{/page/tools}">Инструменты</a>
+  <a th:href="@{/page/mybar}">Мой Бар</a>
+</div>
+
+<div class="container">
+  <div class="grid">
+    <div class="card" th:each="tool : ${tools}">
+      <h3 th:text="${tool.name}">Имя</h3>
+      <p th:text="${tool.description}">Описание...</p>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <a th:href="@{/page/tools(page=${page.number - 1}, size=${page.size})}"
+       th:if="${page.hasPrevious()}">Назад</a>
+
+    <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+
+    <a th:href="@{/page/tools(page=${page.number + 1}, size=${page.size})}"
+       th:if="${page.hasNext()}">Вперёд</a>
+  </div>
+</div>
+
+</body>
+</html>

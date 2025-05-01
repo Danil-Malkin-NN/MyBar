@@ -38,7 +38,7 @@ public class StepsControllerImpl implements CRUDController<StepDto, Step> {
     @Override
     @GetMapping("{id}")
     @Operation(description = "Возвращать шаг по идентификатору")
-    public StepDto getById(@PathVariable Integer id) {
+    public StepDto getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
@@ -52,7 +52,7 @@ public class StepsControllerImpl implements CRUDController<StepDto, Step> {
     @Override
     @DeleteMapping("delete")
     @Operation(description = "Удаляет шаг по идентификатору")
-    public void delete(@RequestParam Integer id) {
+    public void delete(@RequestParam Long id) {
         service.delete(id);
     }
 

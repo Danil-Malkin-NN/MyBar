@@ -34,13 +34,13 @@ public class MyBarController {
     }
 
     @PostMapping("ingredients/add")
-    public List<IngredientDto> addIngredient(Principal user, Integer ingredientsId) {
+    public List<IngredientDto> addIngredient(Principal user, Long ingredientsId) {
 
         return userBarService.addIngredient(user.getName(),ingredientsId);
     }
 
     @DeleteMapping("ingredients/delete")
-    public List<IngredientDto> deleteIngredient(Principal user, Integer ingredientsId) {
+    public List<IngredientDto> deleteIngredient(Principal user, Long ingredientsId) {
 
         return userBarService.deleteIngredientsFromMyBar(user.getName(),ingredientsId);
     }
