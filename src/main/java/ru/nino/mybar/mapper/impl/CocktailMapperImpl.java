@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import ru.nino.mybar.dto.model.CocktailsModel;
 import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.dto.show.CocktailIngredientDto;
+import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.entity.IngredientAndCount;
@@ -32,4 +33,6 @@ public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
 
         return String.join(", ", list);
     }
+
+    CocktailUserIngredientsDto toUserIngredients(Cocktail cocktail);
 }
