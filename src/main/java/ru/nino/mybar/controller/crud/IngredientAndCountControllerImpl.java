@@ -42,7 +42,7 @@ public class IngredientAndCountControllerImpl implements CRUDController<Ingredie
     @Override
     @GetMapping("{id}")
     @Operation(description = "Отдаёт список ингредиентов и их количества")
-    public IngredientAndCountDto getById(@PathVariable Integer id) {
+    public IngredientAndCountDto getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
@@ -56,7 +56,7 @@ public class IngredientAndCountControllerImpl implements CRUDController<Ingredie
     @Override
     @DeleteMapping("delete")
     @Operation(description = "Удаляет по идентификатору ингредиент и его количество")
-    public void delete(@RequestParam Integer id) {
+    public void delete(@RequestParam Long id) {
         service.delete(id);
     }
 

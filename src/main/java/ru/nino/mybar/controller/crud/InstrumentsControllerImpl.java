@@ -49,7 +49,7 @@ public class InstrumentsControllerImpl implements CRUDController<InstrumentDto, 
 	@Override
 	@GetMapping("{id}")
 	@Operation(description = "Отдаёт барный инструмент по идентификатору")
-	public InstrumentDto getById(@PathVariable Integer id) {
+	public InstrumentDto getById(@PathVariable Long id) {
 		return service.getById(id);
 	}
 
@@ -63,7 +63,7 @@ public class InstrumentsControllerImpl implements CRUDController<InstrumentDto, 
 	@Override
 	@DeleteMapping("delete")
 	@Operation(description = "Удаляет барный инструмент по идентификатору")
-	public void delete(@RequestParam Integer id) {
+	public void delete(@RequestParam Long id) {
 		service.delete(id);
 	}
 

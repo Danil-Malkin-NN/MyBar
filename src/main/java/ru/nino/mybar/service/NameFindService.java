@@ -39,7 +39,7 @@ public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUD
 	}
 
 	@Override
-	public DTO getById(Integer id) {
+	public DTO getById(Long id) {
 		return repository.findById(id)
 				.map(mapper::toDto)
 				.orElseThrow(() -> new ObjectNotFoundException(id, getEntityName()));
@@ -56,7 +56,7 @@ public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUD
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 

@@ -2,110 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Мой Бар</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        /* Топбар */
-        .topbar {
-            background-color: #343a40;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .topbar a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        .topbar a:hover {
-            color: #ffc107;
-        }
-
-        .container {
-            padding: 30px;
-        }
-
-        /* Сетка карточек */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 24px; /* раньше было 20px */
-            padding: 12px; /* отступ внутри сетки */
-            box-sizing: border-box;
-        }
-
-        /* Карточка */
-        .card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            box-sizing: border-box;
-
-            /* чтобы все карточки были одной высоты */
-            min-height: 200px;
-        }
-
-
-        .card h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 20px;
-            color: #343a40;
-        }
-
-        .card p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #6c757d;
-        }
-
-        .ingredients {
-            margin-top: auto;
-            font-style: italic;
-            font-size: 13px;
-            color: #495057;
-        }
-
-        /* Пагинация */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .pagination button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .pagination button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Моё приложение</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
 <!-- Топбар -->
 <div class="topbar">
+    <a th:href="@{/page}">Главная</a>
     <a th:href="@{/page/ingredients}">Ингредиенты</a>
     <a th:href="@{/page/tools}">Инструменты</a>
     <a th:href="@{/page/mybar}">Мой Бар</a>
@@ -116,13 +21,17 @@
 
     <!-- Сетка карточек -->
     <div class="grid">
-        <div class="card" th:each="item : ${items}">
-            <h3 th:text="${item.name}">Название напитка</h3>
-            <p th:text="${item.description}">Описание напитка...</p>
-            <p><strong>Крепость:</strong> <span th:text="${item.strength}">15%</span></p>
+        <div class="card" th:each="cocktail : ${items}">
+            <h3>
+                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:text="${cocktail.name}"
+                   style="text-decoration: none; color: inherit;"></a>
+            </h3>
+            <p th:text="${cocktail.description}">Описание напитка...</p>
+            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
             <p class="ingredients">
                 <strong>Ингредиенты:</strong>
-                <span th:text="${item.ingredients}">Водка, Лимон, Сахар</span>
+                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
             </p>
         </div>
     </div>

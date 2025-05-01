@@ -35,7 +35,7 @@ public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDC
     }
 
     @Override
-    public DTO getById(Integer id) {
+    public DTO getById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new ObjectNotFoundException(id, getEntityName()));
@@ -52,7 +52,7 @@ public abstract class CRUDService<DTO, ENTITY extends IdEntity> implements CRUDC
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 
