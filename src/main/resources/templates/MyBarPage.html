@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Моё приложение</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<!-- Топбар -->
+<div th:replace="fragments/topbar.html"></div>
+
+
+<!-- Основной контент -->
+<div class="container">
+
+    <!-- Сетка карточек -->
+    <div class="grid">
+        <div class="card" th:each="cocktail : ${cocktails}">
+            <h3>
+                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:text="${cocktail.name}"
+                   style="text-decoration: none; color: inherit;"></a>
+            </h3>
+            <p th:text="${cocktail.description}">Описание напитка...</p>
+            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
+            <p class="ingredients">
+                <strong>Ингредиенты:</strong>
+                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

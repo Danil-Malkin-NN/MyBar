@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   postgres_bd:
-    image: postgres:latest
+    image: postgres:14.7-alpine
     user: root
     volumes:
       - ./db-data:/var/postgres/data
@@ -12,24 +12,24 @@ services:
     ports:
       - "5432:5432"
 
-  grafana:
-    build: './docker_config/grafana'
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./docker_config/grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-
-  prometheus:
-    image: prom/prometheus
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./docker_config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./docker_config/prometheus:/prometheus
+#  grafana:
+#    build: './docker_config/grafana'
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./docker_config/grafana:/var/lib/grafana
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#
+#  prometheus:
+#    image: prom/prometheus
+#    restart: always
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./docker_config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+#      - ./docker_config/prometheus:/prometheus
 
   keycloak_web:
     image: quay.io/keycloak/keycloak:24.0.4

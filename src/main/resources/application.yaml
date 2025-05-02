@@ -1,7 +1,7 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
+#  servlet:
+#    context-path: /api
   error:
     include-message: always
 management:
@@ -23,19 +23,21 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: my-bar-app #Имя приложения в KeyCloak
-#            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
+            client-id: my-bar-app
             scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/login/oauth2/code/keycloak"
+            provider: keycloak
 
         provider:
           keycloak:
             issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
             user-name-attribute: preferred_username
 
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+#          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
     enabled: true
@@ -48,7 +50,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: compose.yaml
+      file: docker-compose.yaml
 
   jpa:
     database: POSTGRESQL
@@ -57,7 +59,7 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:test}
     username: ${POSTGRES_USER:postgres}

@@ -38,7 +38,6 @@ public class KeyCloakConfig {
     private static final String REALM_ACCESS_CLAIM = "realm_access";
     private static final String ROLES_CLAIM = "roles";
 
-    private final JwtConverter jwtConverter;
     private final KeycloakLogoutHandler keycloakLogoutHandler;
 
     @Bean
@@ -61,19 +60,19 @@ public class KeyCloakConfig {
 
         http.authorizeHttpRequests(
                 (authorize) -> authorize
-                        .requestMatchers(HttpMethod.GET, "my/**")
-                        .hasRole(USER)
                         .requestMatchers(HttpMethod.GET, "/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/**")
                         .hasRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/**")
                         .hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/my/**")
+                        .authenticated()
                         .anyRequest()
                         .authenticated()
         );
 
-        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
+//        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
 //        http.oauth2ResourceServer((oauth2) ->
 //                oauth2.jwt(Customizer.withDefaults()));
 
