@@ -60,16 +60,18 @@ public class KeyCloakConfig {
 
         http.authorizeHttpRequests(
                 (authorize) -> authorize
-                        .requestMatchers(HttpMethod.GET, "/**")
-                        .permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/**")
+//                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/**")
                         .hasRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/**")
                         .hasRole(ADMIN)
                         .requestMatchers(HttpMethod.GET, "/my/**")
                         .authenticated()
-                        .anyRequest()
+                        .requestMatchers(HttpMethod.GET, "/page/my/**")
                         .authenticated()
+                        .anyRequest()
+                        .permitAll()
         );
 
 //        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
@@ -78,7 +80,7 @@ public class KeyCloakConfig {
 
         http.oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
-                        .logoutSuccessUrl("/cocktails"));
+                        .logoutSuccessUrl("/page"));
         return http.build();
     }
 
