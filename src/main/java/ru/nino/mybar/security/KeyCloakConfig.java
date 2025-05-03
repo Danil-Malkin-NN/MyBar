@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -60,7 +61,7 @@ public class KeyCloakConfig {
 //                        .requestMatchers(HttpMethod.GET, "/**")
 //                        .permitAll()
                 .requestMatchers(HttpMethod.POST, "/**")
-                .hasRole(ADMIN)
+                .permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/**")
                 .hasRole(ADMIN)
                 .requestMatchers(HttpMethod.GET, "/my/**")
@@ -70,14 +71,10 @@ public class KeyCloakConfig {
                 .anyRequest()
                 .permitAll());
 
-//        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
-//        http.oauth2ResourceServer((oauth2) ->
-//                oauth2.jwt(Customizer.withDefaults()));
-
-        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/bar", true))
+        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/", true))
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/page"));
-
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
