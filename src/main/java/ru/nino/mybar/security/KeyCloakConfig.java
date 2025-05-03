@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class KeyCloakConfig {
-
 
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
@@ -58,29 +56,28 @@ public class KeyCloakConfig {
     @Bean
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(
-                (authorize) -> authorize
+        http.authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers(HttpMethod.GET, "/**")
 //                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/**")
-                        .hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.DELETE, "/**")
-                        .hasRole(ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/my/**")
-                        .authenticated()
-                        .requestMatchers(HttpMethod.GET, "/page/my/**")
-                        .authenticated()
-                        .anyRequest()
-                        .permitAll()
-        );
+                .requestMatchers(HttpMethod.POST, "/**")
+                .hasRole(ADMIN)
+                .requestMatchers(HttpMethod.DELETE, "/**")
+                .hasRole(ADMIN)
+                .requestMatchers(HttpMethod.GET, "/my/**")
+                .authenticated()
+                .requestMatchers(HttpMethod.GET, "/page/my/**")
+                .authenticated()
+                .anyRequest()
+                .permitAll());
 
 //        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
 //        http.oauth2ResourceServer((oauth2) ->
 //                oauth2.jwt(Customizer.withDefaults()));
 
-        http.oauth2Login(Customizer.withDefaults())
+        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/bar", true))
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/page"));
+
         return http.build();
     }
 
@@ -88,7 +85,8 @@ public class KeyCloakConfig {
     public GrantedAuthoritiesMapper userAuthoritiesMapperForKeycloak() {
         return authorities -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            var authority = authorities.iterator().next();
+            var authority = authorities.iterator()
+                    .next();
             boolean isOidc = authority instanceof OidcUserAuthority;
 
             if (isOidc) {
@@ -102,8 +100,7 @@ public class KeyCloakConfig {
                     var roles = (Collection<String>) realmAccess.get(ROLES_CLAIM);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 } else if (userInfo.hasClaim(GROUPS)) {
-                    Collection<String> roles = (Collection<String>) userInfo.getClaim(
-                            GROUPS);
+                    Collection<String> roles = (Collection<String>) userInfo.getClaim(GROUPS);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
             } else {
@@ -111,8 +108,7 @@ public class KeyCloakConfig {
                 Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
 
                 if (userAttributes.containsKey(REALM_ACCESS_CLAIM)) {
-                    Map<String, Object> realmAccess = (Map<String, Object>) userAttributes.get(
-                            REALM_ACCESS_CLAIM);
+                    Map<String, Object> realmAccess = (Map<String, Object>) userAttributes.get(REALM_ACCESS_CLAIM);
                     Collection<String> roles = (Collection<String>) realmAccess.get(ROLES_CLAIM);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
@@ -122,7 +118,8 @@ public class KeyCloakConfig {
     }
 
     Collection<GrantedAuthority> generateAuthoritiesFromClaim(Collection<String> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(
-                Collectors.toList());
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
     }
 }
