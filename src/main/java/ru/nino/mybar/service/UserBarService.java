@@ -69,9 +69,9 @@ public class UserBarService {
         return cocktailDtos;
     }
 
-    public List<IngredientDto> addIngredient(String userName, Long ingredientsId) {
-        User userInfo = userRepository.findByEmail(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
+    public List<IngredientDto> addIngredient(String email, Long ingredientsId) {
+        User userInfo = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
 
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
                 .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));

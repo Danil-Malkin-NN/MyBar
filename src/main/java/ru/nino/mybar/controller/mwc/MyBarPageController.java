@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.service.UserBarService;
+import ru.nino.mybar.utils.UserUtils;
 
 import java.security.Principal;
 import java.util.List;
@@ -22,9 +23,7 @@ public class MyBarPageController {
 
     @GetMapping("my/bar")
     public String page(Principal user, Model model) {
-        String email = ((OAuth2AuthenticationToken) user).getPrincipal()
-                .getAttribute("email")
-                .toString();
+        String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
 
         List<IngredientDto> allUserIngredients = userBarService.findAllUserIngredients(email);
 
@@ -35,5 +34,6 @@ public class MyBarPageController {
 
         return "MyBarPage";
     }
+
 
 }

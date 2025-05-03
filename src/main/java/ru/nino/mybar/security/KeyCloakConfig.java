@@ -60,8 +60,8 @@ public class KeyCloakConfig {
         http.authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers(HttpMethod.GET, "/**")
 //                        .permitAll()
-                .requestMatchers(HttpMethod.POST, "/**")
-                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/my/**")
+                .hasRole(USER)
                 .requestMatchers(HttpMethod.DELETE, "/**")
                 .hasRole(ADMIN)
                 .requestMatchers(HttpMethod.GET, "/my/**")
