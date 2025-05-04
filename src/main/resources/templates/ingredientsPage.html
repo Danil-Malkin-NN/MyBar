@@ -12,10 +12,19 @@
 
 <div class="container">
     <div class="grid">
-        <div class="card" th:each="ingredient : ${ingredients}">
-            <h3 th:text="${ingredient.name}">Название</h3>
-            <p th:text="${ingredient.description}">Описание ингредиента...</p>
+        <div th:each="ingredient : ${ingredients}" class="ingredient-card">
+            <h3 th:text="${ingredient.name}" class="font-bold text-lg"></h3>
+            <p th:text="${ingredient.description}"></p>
+
+            <button th:attr="data-id=${ingredient.id}"
+                    th:if="${ingredient.available}"
+                    class="favorite-remove-btn">❤️</button>
+
+            <button th:attr="data-id=${ingredient.id}"
+                    th:if="${!ingredient.available}"
+                    class="favorite-add-btn">🤍</button>
         </div>
+
     </div>
 
     <div class="pagination">
@@ -28,3 +37,8 @@
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 </div>
+<script>
+    window.appContextPath = /*[[@{/}]]*/ '';
+</script>
+<script src="/js/favorite.js"></script>
+

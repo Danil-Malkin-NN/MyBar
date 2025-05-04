@@ -7,23 +7,24 @@ import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.entity.Ingredient;
-import ru.nino.mybar.entity.user.UserInfo;
+import ru.nino.mybar.entity.user.User;
 import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.mapper.impl.IngredientMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
-import ru.nino.mybar.repository.impl.UserInfoRepositoryImpl;
+import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserBarService {
 
-    private final UserInfoRepositoryImpl userInfoRepository;
+    private final UserRepositoryImpl userRepository;
 
     private final IngredientMapperImpl ingredientMapper;
 
@@ -34,22 +35,23 @@ public class UserBarService {
     private final IngredientRepositoryImpl ingredientRepository;
 
     public List<IngredientDto> findAllUserIngredients(String userName) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
+        User userInfo = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
-        List<Ingredient> ingredient = userInfo.getIngredient();
+        Set<Ingredient> ingredient = userInfo.getIngredient();
         return ingredient.stream()
                 .map(ingredientMapper::toDto)
+                .peek(ingredientDto -> ingredientDto.setAvailable(true))
                 .collect(Collectors.toList());
     }
 
-    public List<CocktailUserIngredientsDto> getAvailableCocktails(String userName) {
+    public List<CocktailUserIngredientsDto> getAvailableCocktails(String email) {
 
-        List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(userName);
+        List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(email);
 
-        var userIngredients = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .map(UserInfo::getIngredient)
-                .orElseGet(ArrayList::new)
+        var userIngredients = userRepository.findByEmail(email)
+                .map(User::getIngredient)
+                .orElseGet(HashSet::new)
                 .stream()
                 .map(IdEntity::getId)
                 .collect(Collectors.toSet());
@@ -69,17 +71,17 @@ public class UserBarService {
         return cocktailDtos;
     }
 
-    public List<IngredientDto> addIngredient(String userName, Long ingredientsId) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
+    public List<IngredientDto> addIngredient(String email, Long ingredientsId) {
+        User userInfo = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
 
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
                 .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));
 
-        List<Ingredient> userIngredients = userInfo.getIngredient();
+        Set<Ingredient> userIngredients = userInfo.getIngredient();
         userIngredients.add(ingredient);
 
-        userInfoRepository.save(userInfo);
+        userRepository.save(userInfo);
 
         return userIngredients.stream()
                 .map(ingredientMapper::toDto)
@@ -87,16 +89,16 @@ public class UserBarService {
     }
 
     public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Long ingredientsId) {
-        UserInfo userInfo = userInfoRepository.findByUser_NameIgnoreCase(userName)
+        User userInfo = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
 
-        List<Ingredient> userIngredients = userInfo.getIngredient();
+        Set<Ingredient> userIngredients = userInfo.getIngredient();
 
         userInfo.setIngredient(userIngredients.stream()
                 .filter(ingr -> !Objects.equals(ingr.getId(), ingredientsId))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toSet()));
 
-        userInfoRepository.save(userInfo);
+        userRepository.save(userInfo);
 
         return userInfo.getIngredient()
                 .stream()

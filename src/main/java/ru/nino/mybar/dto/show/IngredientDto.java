@@ -3,7 +3,6 @@ package ru.nino.mybar.dto.show;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,5 +21,7 @@ public class IngredientDto extends DTO {
 
     @Schema(description = "Описания ингредиента", example = "Кисло сладкий тропический фрукт")
     private String description;
+
+    private boolean available = false;
 
 }

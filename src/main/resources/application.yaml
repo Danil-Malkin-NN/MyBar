@@ -1,7 +1,7 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api
+#  servlet:
+#    context-path: /api
   error:
     include-message: always
 management:
@@ -10,15 +10,39 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings
 
-
+# JWT Configuration
+jwt:
+  auth:
+    converter:
+      resource-id: my-super-client
+      principal-attribute: principal_username
 
 spring:
   security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: my-bar-app
+            scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/login/oauth2/code/keycloak"
+            provider: keycloak
 
-    enabled: false
+        provider:
+          keycloak:
+            issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+            user-name-attribute: preferred_username
+
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+#          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
-    enabled: false
+    enabled: true
+    change-log: classpath:db/master.xml
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -26,7 +50,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: compose.yaml
+      file: docker-compose.yaml
 
   jpa:
     database: POSTGRESQL
@@ -35,11 +59,11 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:test}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
 logging:
   level:
-    root: info
+    root: debug
