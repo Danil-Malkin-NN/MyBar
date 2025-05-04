@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Мой бар</title>
+<!--    Порядок стилей важен-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -16,8 +17,12 @@
             <p th:text="${cocktail.description}">Описание</p>
             <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
             <ul>
-                <li th:each="ing : ${cocktail.ingredients}" th:text="${ing.ingredient.name}">Ингредиент</li>
+                <li th:each="ing : ${cocktail.ingredients}"
+                    th:text="${ing.name}"
+                    th:classappend="${ing.available} ? 'ingredient-available' : 'ingredient-unavailable'">
+                </li>
             </ul>
+
         </div>
     </div>
     <div th:if="${cocktails == null or cocktails.isEmpty()}" class="empty-message">

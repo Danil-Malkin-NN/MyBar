@@ -71,7 +71,7 @@ public class KeyCloakConfig {
                 .anyRequest()
                 .permitAll());
 
-        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/", true))
+        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/bar", true))
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/page"));
         http.csrf(AbstractHttpConfigurer::disable);

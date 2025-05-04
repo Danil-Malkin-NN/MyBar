@@ -14,6 +14,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public abstract class DTO {
 
-    private Integer id;
+    private Long id;
 
 }

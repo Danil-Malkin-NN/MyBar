@@ -52,6 +52,6 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
                 order by count(ingredient_and_count.ingredient_id) desc
                 limit 10;
             """, nativeQuery = true)
-    List<Cocktail> getAvailableCocktails(String name);
+    List<Cocktail> getAvailableCocktails(String email);
 
 }

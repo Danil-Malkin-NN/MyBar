@@ -100,5 +100,15 @@ body {
 .logout-button:hover {
     text-decoration: underline;
 }
+.ingredient-available {
+    color: green;
+    font-weight: bold;
+}
+
+.ingredient-unavailable {
+    color: red;
+    font-weight: bold;
+}
+
 
 
