@@ -43,10 +43,11 @@ public class MyBarController {
         return userBarService.addIngredient(email, ingredientsId);
     }
 
-    @DeleteMapping("ingredients/delete")
-    public List<IngredientDto> deleteIngredient(Principal user, Long ingredientsId) {
+    @DeleteMapping("ingredients/delete/{ingredientsId}")
+    public List<IngredientDto> deleteIngredient(Principal user, @PathVariable Long ingredientsId) {
+        String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
 
-        return userBarService.deleteIngredientsFromMyBar(user.getName(), ingredientsId);
+        return userBarService.deleteIngredientsFromMyBar(email, ingredientsId);
     }
 
 }

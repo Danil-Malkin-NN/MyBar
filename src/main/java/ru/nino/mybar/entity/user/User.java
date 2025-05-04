@@ -9,7 +9,9 @@ import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.Ingredient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -29,5 +31,5 @@ public class User {
     private List<Cocktail> favoriteCocktail = new ArrayList<>();
 
     @ManyToMany
-    private List<Ingredient> ingredient = new ArrayList<>();
+    private Set<Ingredient> ingredient = new HashSet<>();
 }
