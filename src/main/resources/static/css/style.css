@@ -88,3 +88,27 @@ body {
     color: white;
 }
 
+.logout-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    text-decoration: underline;
+}
+.ingredient-available {
+    color: green;
+    font-weight: bold;
+}
+
+.ingredient-unavailable {
+    color: red;
+    font-weight: bold;
+}
+
+
+

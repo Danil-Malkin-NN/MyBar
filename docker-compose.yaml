@@ -1,31 +1,59 @@
 version: "3.9"
 services:
   postgres_bd:
-    image: postgres:latest
+    image: postgres:14.7-alpine
     user: root
     volumes:
       - ./db-data:/var/postgres/data
+      - ./docker_config/postgres:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
 
-  grafana:
-    build: './docker_config/grafana'
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./docker_config/grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+#  grafana:
+#    build: './docker_config/grafana'
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./docker_config/grafana:/var/lib/grafana
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#
+#  prometheus:
+#    image: prom/prometheus
+#    restart: always
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./docker_config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+#      - ./docker_config/prometheus:/prometheus
 
-  prometheus:
-    image: prom/prometheus
-    restart: always
-    ports:
-      - "9090:9090"
+  keycloak_web:
+    image: quay.io/keycloak/keycloak:24.0.4
+    container_name: keycloak_web
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres_bd:5432/postgres?currentSchema=keycloak
+      KC_DB_USERNAME: "postgres"
+      KC_DB_PASSWORD: "postgres"
+#
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8081
+#      KC_HOSTNAME_STRICT: false
+#      KC_HOSTNAME_STRICT_HTTPS: false
+#
+#      KC_LOG_LEVEL: info
+#      KC_METRICS_ENABLED: true
+#      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev --import-realm
     volumes:
-      - ./docker_config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./docker_config/prometheus:/prometheus
+      - ./docker_config/KeyCloak/:/opt/keycloak/data/import
+    depends_on:
+      - postgres_bd
+    ports:
+      - "8081:8080"
