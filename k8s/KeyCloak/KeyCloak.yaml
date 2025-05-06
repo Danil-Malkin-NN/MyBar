@@ -69,7 +69,7 @@ metadata:
   namespace: my-bar
 spec:
   rules:
-    - host: "security.dvmalkin.online"
+    - host: "bouncer.dvmalkin.ru"
       http:
         paths:
           - path: /
