@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import java.util.Collection;
@@ -61,7 +62,7 @@ public class KeyCloakConfig {
 //                        .requestMatchers(HttpMethod.GET, "/**")
 //                        .permitAll()
                 .requestMatchers(HttpMethod.POST, "/my/**")
-                .hasRole(USER)
+                .authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/my/**")
                 .hasRole(USER)
                 .requestMatchers(HttpMethod.DELETE, "/**")
@@ -76,6 +77,10 @@ public class KeyCloakConfig {
         http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/bar", true))
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/page"));
+        http.headers(headers -> headers
+                .referrerPolicy(referrer -> referrer
+                        .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+                ));
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

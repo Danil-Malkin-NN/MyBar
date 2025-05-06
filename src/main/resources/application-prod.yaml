@@ -2,42 +2,42 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  error:
+    include-message: always
 management:
   endpoints:
     web:
       exposure:
-        include: health, prometheus, liveness, readiness, mappings
+        include: health, prometheus, liveness, readiness, mappings, env
 
 # JWT Configuration
-jwt:
-  auth:
-    converter:
-      resource-id: my-super-client
-      principal-attribute: principal_username
+#jwt:
+#  auth:
+#    converter:
+#      resource-id: my-super-client
+#      principal-attribute: principal_username
 
 spring:
-  liquibase:
-    enabled: true
-    change-log: classpath:db/master.xml
-
   security:
     oauth2:
       client:
         registration:
           keycloak:
             client-id: my-bar-app #Имя приложения в KeyCloak
-            #            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
             scope: openid
+            provider: keycloak
+            authorization-grant-type: authorization_code
+            redirect-uri: http://mybar.dvmalkin.ru/api/login/oauth2/code/my-bar-app
 
         provider:
           keycloak:
-            issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+            issuer-uri: http://bouncer.dvmalkin.ru/realms/my-bar
             user-name-attribute: preferred_username
 
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
+  liquibase:
+    enabled: true
+    change-log: classpath:db/master.xml
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -57,4 +57,4 @@ spring:
 
 logging:
   level:
-    root: info
+    root: ${LOG_LEVEL:DEBUG}

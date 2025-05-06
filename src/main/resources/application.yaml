@@ -8,14 +8,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, prometheus, liveness, readiness, mappings
-
-# JWT Configuration
-jwt:
-  auth:
-    converter:
-      resource-id: my-super-client
-      principal-attribute: principal_username
+        include: health, prometheus, liveness, readiness, mappings, env
 
 spring:
   security:
@@ -34,10 +27,10 @@ spring:
             issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
             user-name-attribute: preferred_username
 
-#      resourceserver:
-#        jwt:
-#          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-#          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
+  #      resourceserver:
+  #        jwt:
+  #          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+  #          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
     enabled: true

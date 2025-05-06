@@ -15,3 +15,13 @@ spec:
                 name: my-bar-service
                 port:
                   number: 80
+    - host: "debug.dvmalkin.ru"
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: my-bar-service
+                port:
+                  number: 80

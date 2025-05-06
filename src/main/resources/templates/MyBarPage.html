@@ -5,7 +5,8 @@
     <!--    Порядок стилей важен-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
+<body data-base-url="" th:attrappend="data-base-url=@{/}">
+
 <div th:replace="fragments/topbar.html"></div>
 
 <div class="container">
@@ -56,4 +57,4 @@
 <script>
     window.appContextPath = /*[[@{/}]]*/ '';
 </script>
-<script src="/js/favorite.js"></script>
+<script th:src="@{/js/favorite.js}"></script>
