@@ -21,7 +21,7 @@ public class MyBarPageController {
 
     private final UserBarService userBarService;
 
-    @GetMapping("my/bar")
+    @GetMapping("/my/bar")
     public String page(Principal user, Model model) {
         String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
 
