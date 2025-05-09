@@ -28,11 +28,11 @@ spring:
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
-            redirect-uri: http://${KEY_CLOAK_URL:localhost}/login/oauth2/code/keycloak
+            redirect-uri: http://${KEY_CLOAK_URL:localhost}:8080/login/oauth2/code/keycloak
 
         provider:
           keycloak:
-            issuer-uri: http://${KEY_CLOAK_URL:localhost}/realms/my-bar
+            issuer-uri: http://${KEY_CLOAK_URL:localhost}:8080/realms/my-bar
             user-name-attribute: preferred_username
 
 #      resourceserver:
