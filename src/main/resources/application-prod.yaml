@@ -28,7 +28,7 @@ spring:
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
-            redirect-uri: http://${KEY_CLOAK_URL:localhost}:8080/login/oauth2/code/keycloak
+            redirect-uri: http://${KEY_CLOAK_URL:localhost}/login/oauth2/code/keycloak
 
         provider:
           keycloak:
