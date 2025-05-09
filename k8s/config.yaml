@@ -28,7 +28,7 @@ spec:
             - name: POSTGRES_USER
               value: postgres
             - name: KEY_CLOAK_URL
-              value: keycloak-ser:8080
+              value: keycloak:8080
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
