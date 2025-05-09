@@ -32,7 +32,7 @@ spring:
 
         provider:
           keycloak:
-            issuer-uri: http://${KEY_CLOAK_URL:localhost}:8080/realms/my-bar
+            issuer-uri: http://${KEY_CLOAK_URL:localhost}/realms/my-bar
             user-name-attribute: preferred_username
 
 #      resourceserver:
