@@ -8,7 +8,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, prometheus, liveness, readiness, mappings
+        include: health, prometheus, liveness, readiness, mappings, env
 
 # JWT Configuration
 jwt:
