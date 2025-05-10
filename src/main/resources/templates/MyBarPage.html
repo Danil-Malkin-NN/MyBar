@@ -5,7 +5,7 @@
     <!--    Порядок стилей важен-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body data-base-url="@{/}">
+<body data-base-url="" th:attrappend="data-base-url=@{/}">
 
 <div th:replace="fragments/topbar.html"></div>
 
