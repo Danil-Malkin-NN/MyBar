@@ -10,13 +10,6 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings, env
 
-# JWT Configuration
-#jwt:
-#  auth:
-#    converter:
-#      resource-id: my-super-client
-#      principal-attribute: principal_username
-
 spring:
   security:
     oauth2:
@@ -27,12 +20,12 @@ spring:
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
-            redirect-uri: http://keycloak-serv:8080/realms/my-bar
+            redirect-uri: http://bouncer.dvmalkin.ru/realms/my-bar
 
 
         provider:
           keycloak:
-            issuer-uri: http://keycloak-serv:8080/realms/my-bar
+            issuer-uri: http://bouncer.dvmalkin.ru/realms/my-bar
             user-name-attribute: preferred_username
 
   liquibase:
