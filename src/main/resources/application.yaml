@@ -26,12 +26,12 @@ spring:
             client-id: my-bar-app
             scope: openid
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/login/oauth2/code/keycloak"
+            redirect-uri: http://bouncer.dvmalkin.ru/login/oauth2/code/keycloak
             provider: keycloak
 
         provider:
           keycloak:
-            issuer-uri: http://${KEY_CLOAK_URL:localhost}:8080/realms/my-bar
+            issuer-uri: http://bouncer.dvmalkin.ru/realms/my-bar
             user-name-attribute: preferred_username
 
   liquibase:
