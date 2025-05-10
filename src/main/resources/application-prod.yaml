@@ -11,11 +11,11 @@ management:
         include: health, prometheus, liveness, readiness, mappings, env
 
 # JWT Configuration
-jwt:
-  auth:
-    converter:
-      resource-id: my-super-client
-      principal-attribute: principal_username
+#jwt:
+#  auth:
+#    converter:
+#      resource-id: my-super-client
+#      principal-attribute: principal_username
 
 spring:
   security:
@@ -24,21 +24,16 @@ spring:
         registration:
           keycloak:
             client-id: my-bar-app #Имя приложения в KeyCloak
-            #            client-secret: ghjitBpmcgVOMj1tDd4DjwkfSE0wCxqd
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
             redirect-uri: http://${KEY_CLOAK_URL:localhost}:8080/login/oauth2/code/keycloak
 
+
         provider:
           keycloak:
             issuer-uri: http://${KEY_CLOAK_URL:localhost}:8080/realms/my-bar
             user-name-attribute: preferred_username
-
-#      resourceserver:
-#        jwt:
-#          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-#          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
     enabled: true
@@ -63,4 +58,4 @@ spring:
 
 logging:
   level:
-    root: debug
+    root: trace

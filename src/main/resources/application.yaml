@@ -34,11 +34,6 @@ spring:
             issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
             user-name-attribute: preferred_username
 
-#      resourceserver:
-#        jwt:
-#          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-#          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
-
   liquibase:
     enabled: true
     change-log: classpath:db/master.xml
