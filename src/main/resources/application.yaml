@@ -27,7 +27,7 @@ spring:
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
-            redirect-uri: http://bouncer.dvmalkin.ru/login/oauth2/code/my-bar-app
+            redirect-uri: http://mybar.dvmalkin.ru/api/login/oauth2/code/my-bar-app
 
         provider:
           keycloak:
