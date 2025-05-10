@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const id = this.dataset.id;
 
-            fetch(`${baseUrl}/my/ingredients/delete/${id}`, {
+            fetch(`${baseUrl}my/ingredients/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const id = this.dataset.id;
 
-            fetch(`${baseUrl}/my/ingredients/add/${id}`, {
+            fetch(`${baseUrl}my/ingredients/add/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
