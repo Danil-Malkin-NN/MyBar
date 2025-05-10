@@ -4,7 +4,7 @@ metadata:
   name: keycloak-serv
   namespace: my-bar
   labels:
-    app: keycloak-serv
+    app: keycloak
 spec:
   ports:
     - name: http
