@@ -34,6 +34,8 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
+            - name: LOG_LEVEL
+              value: DEBUG
 ---
 apiVersion: v1
 kind: Service
