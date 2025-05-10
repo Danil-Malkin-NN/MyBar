@@ -10,6 +10,13 @@ management:
       exposure:
         include: health, prometheus, liveness, readiness, mappings, env
 
+# JWT Configuration
+#jwt:
+#  auth:
+#    converter:
+#      resource-id: my-super-client
+#      principal-attribute: principal_username
+
 spring:
   security:
     oauth2:
@@ -20,7 +27,7 @@ spring:
             scope: openid
             provider: keycloak
             authorization-grant-type: authorization_code
-            redirect-uri: http://bouncer.dvmalkin.ru/realms/my-bar
+            redirect-uri: http://bouncer.dvmalkin.ru/login/oauth2/code/keycloak
 
 
         provider:
