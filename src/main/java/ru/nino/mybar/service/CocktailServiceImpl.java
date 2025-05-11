@@ -1,7 +1,6 @@
 package ru.nino.mybar.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.nino.mybar.dto.model.CocktailsModel;
@@ -13,7 +12,6 @@ import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
@@ -50,6 +48,16 @@ public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> 
                         ingredients.contains(ingredientAvailableDto.getId())));
 
         return cocktailUserIngredientsDtos;
+    }
+
+    public Page<CocktailDto> searchByName(String name, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCase(name, pageable)
+                .map(mapper::toDto);
+    }
+
+    public Page<CocktailsModel> getPageWithNameFilterModel(String name, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCase(name, pageable)
+                .map(mapper::toModel);
     }
 
     @Override

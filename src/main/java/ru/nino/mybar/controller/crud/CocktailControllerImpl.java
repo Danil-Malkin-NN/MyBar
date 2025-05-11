@@ -32,8 +32,8 @@ public class CocktailControllerImpl implements CRUDController<CocktailDto, Cockt
     private final CocktailServiceImpl service;
 
     @GetMapping("search")
-    public List<CocktailDto> searchByName(String name) {
-        return service.searchByName(name);
+    public Page<CocktailDto> searchByName(Pageable pageable, String name) {
+        return service.searchByName(name, pageable);
     }
 
     @GetMapping("name")

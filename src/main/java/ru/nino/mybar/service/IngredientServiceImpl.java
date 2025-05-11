@@ -25,8 +25,11 @@ public class IngredientServiceImpl extends NameFindService<IngredientDto, Ingred
         this.userBarService = userBarService;
     }
 
-    public Page<IngredientDto> getPage(Pageable pageable, String email) {
-        Page<IngredientDto> page = getPage(pageable);
+    public Page<IngredientDto> getPageWithUserInfo(Pageable pageable, String email){
+        return getPageWithUserInfo(pageable, email, "");
+    }
+    public Page<IngredientDto> getPageWithUserInfo(Pageable pageable, String email, String ingredientName) {
+        Page<IngredientDto> page = getPageWithNameFilter(pageable, ingredientName);
         Map<Long, IngredientDto> availableCocktails = userBarService.findAllUserIngredients(email)
                 .stream()
                 .collect(Collectors.toMap(DTO::getId, Function.identity()));
