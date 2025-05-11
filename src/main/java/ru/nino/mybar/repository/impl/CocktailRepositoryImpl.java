@@ -54,4 +54,6 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
             """, nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String email);
 
+    Page<Cocktail> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }

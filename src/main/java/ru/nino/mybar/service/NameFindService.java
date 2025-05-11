@@ -2,6 +2,8 @@ package ru.nino.mybar.service;
 
 import jakarta.transaction.Transactional;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.nino.mybar.entity.IdEntity;
 import ru.nino.mybar.mapper.AllMapper;
 import ru.nino.mybar.repository.NameFinderRepository;
@@ -28,6 +30,11 @@ public abstract class NameFindService<DTO, ENTITY extends IdEntity> extends CRUD
 				.stream()
 				.map(mapper::toDto)
 				.toList();
+	}
+
+	public Page<DTO> getPageWithNameFilter(Pageable pageable, String name ) {
+		return repository.findByNameContainingIgnoreCase(name, pageable)
+				.map(mapper::toDto);
 	}
 
 	@Override

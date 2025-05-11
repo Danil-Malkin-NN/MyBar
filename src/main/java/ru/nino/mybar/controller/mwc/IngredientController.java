@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.service.IngredientServiceImpl;
 import ru.nino.mybar.utils.UserUtils;
@@ -23,13 +24,14 @@ public class IngredientController {
     private final IngredientServiceImpl ingredientService;
 
     @GetMapping("/ingredients")
-    public String ingredients(@PageableDefault(size = 10) Pageable pageable, Model model, Principal user) {
+    public String ingredients(@PageableDefault(size = 10) Pageable pageable, Model model, Principal user,
+                              @RequestParam(required = false, defaultValue = "") String ingredientName) {
         Page<IngredientDto> page;
-        if(user == null) {
-             page = ingredientService.getPage(pageable);
-        }else {
+        if (user == null) {
+            page = ingredientService.getPageWithNameFilter(pageable, ingredientName);
+        } else {
             String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
-            page = ingredientService.getPage(pageable, email);
+            page = ingredientService.getPageWithUserInfo(pageable, email, ingredientName);
         }
         model.addAttribute("page", page);
 
