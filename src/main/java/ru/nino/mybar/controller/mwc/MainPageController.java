@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.nino.mybar.dto.model.CocktailsModel;
 import ru.nino.mybar.service.CocktailServiceImpl;
 
@@ -21,9 +22,10 @@ public class MainPageController {
     private final CocktailServiceImpl service;
 
     @GetMapping()
-    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model,
+                           @RequestParam(required = false, defaultValue = "") String cocktailName) {
 
-        Page<CocktailsModel> page = service.getPageModels(pageable);
+        Page<CocktailsModel> page = service.getPageWithNameFilterModel(cocktailName, pageable);
         List<CocktailsModel> content = page.getContent();
 
         model.addAttribute("page", page);
