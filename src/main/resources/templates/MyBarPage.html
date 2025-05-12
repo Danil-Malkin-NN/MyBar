@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Мой бар</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!--    Порядок стилей важен-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -51,10 +52,25 @@
     <div th:if="${ingredients == null or ingredients.isEmpty()}" class="empty-message">
         У вас нет ингредиентов. Добавьте имеющиеся ингредиенты.
     </div>
+
+    <!-- Блок "Мои коктейли" -->
+    <h2>Мои любимые коктейли</h2>
+    <div th:if="${favorites != null and !favorites.isEmpty()}" class="grid">
+        <div th:each="cocktail : ${favorites}" class="border rounded-lg p-4 shadow-sm mb-4">
+            <h3 th:text="${cocktail.name}">Название</h3>
+            <p th:text="${cocktail.description}">Описание</p>
+            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
+
+        </div>
+    </div>
+    <div th:if="${favorites == null or favorites.isEmpty()}" class="empty-message">
+        У вас пока нет любимых коктейлей. Ставьте им ❤️, а мы их запомним!
+    </div>
+
 </div>
 </body>
 </html>
 <script>
     window.appContextPath = /*[[@{/}]]*/ '';
 </script>
-<script th:src="@{/js/favorite.js}"></script>
+<script th:src="@{/js/favorite_ingredient.js}"></script>

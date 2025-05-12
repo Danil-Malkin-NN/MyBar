@@ -45,6 +45,14 @@
                 <strong>Ингредиенты:</strong>
                 <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
             </p>
+            <button th:attr="data-id=${cocktail.id}"
+                    th:if="${cocktail.favorite}"
+                    class="favorite-remove-btn">❤️</button>
+
+            <button th:attr="data-id=${cocktail.id}"
+                    th:if="${!cocktail.favorite}"
+                    class="favorite-add-btn">🤍</button>
+
         </div>
     </div>
 
@@ -62,3 +70,5 @@
 
 </body>
 </html>
+<script th:src="@{/js/favorite_cocktail.js}"></script>
+
