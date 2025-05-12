@@ -8,21 +8,29 @@ import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.dto.show.CocktailIngredientDto;
 import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.entity.Cocktail;
+import ru.nino.mybar.entity.IdEntity;
+import ru.nino.mybar.entity.user.User;
 import ru.nino.mybar.mapper.impl.CocktailMapperImpl;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
+import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> {
 
     private final CocktailMapperImpl mapper;
     private final CocktailRepositoryImpl repository;
+    private final UserRepositoryImpl userRepository;
 
-    public CocktailServiceImpl(CocktailRepositoryImpl repository, CocktailMapperImpl mapper) {
+    public CocktailServiceImpl(CocktailRepositoryImpl repository, CocktailMapperImpl mapper,
+                               UserRepositoryImpl userRepository) {
         super(repository, mapper);
         this.mapper = mapper;
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     public Page<CocktailIngredientDto> getPageAll(Pageable pageable) {
@@ -55,8 +63,26 @@ public class CocktailServiceImpl extends NameFindService<CocktailDto, Cocktail> 
                 .map(mapper::toDto);
     }
 
-    public Page<CocktailsModel> getPageWithNameFilterModel(String name, Pageable pageable) {
-        return repository.findByNameContainingIgnoreCase(name, pageable)
+    public Page<CocktailsModel> getPageWithNameFilterModel(String cocktailName, Pageable pageable, String email) {
+        User userInfo = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+
+        Map<Long, List<Cocktail>> collect = userInfo.getFavoriteCocktail()
+                .stream()
+                .collect(Collectors.groupingBy(IdEntity::getId));
+
+        Page<CocktailsModel> map = repository.findByNameContainingIgnoreCase(cocktailName, pageable)
+                .map(mapper::toModel);
+
+        map.stream()
+                .filter(cocktailsModel -> collect.containsKey(cocktailsModel.getId()))
+                .forEach(cocktailsModel -> cocktailsModel.setFavorite(true));
+
+        return map;
+    }
+
+    public Page<CocktailsModel> getPageWithNameFilterModel(String cocktailName, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCase(cocktailName, pageable)
                 .map(mapper::toModel);
     }
 
