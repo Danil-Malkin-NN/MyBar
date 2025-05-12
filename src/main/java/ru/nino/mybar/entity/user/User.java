@@ -8,9 +8,7 @@ import lombok.Data;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.entity.Ingredient;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -28,7 +26,7 @@ public class User {
     private String username;
 
     @ManyToMany
-    private List<Cocktail> favoriteCocktail = new ArrayList<>();
+    private Set<Cocktail> favoriteCocktail = new HashSet<>();
 
     @ManyToMany
     private Set<Ingredient> ingredient = new HashSet<>();

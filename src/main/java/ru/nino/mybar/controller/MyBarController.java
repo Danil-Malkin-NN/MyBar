@@ -31,6 +31,7 @@ public class MyBarController {
         return userBarService.findAllUserIngredients(name);
     }
 
+
     @GetMapping("available/cocktails")
     public List<CocktailUserIngredientsDto> getAvailableCocktails(Principal user) {
         return userBarService.getAvailableCocktails(user.getName());
@@ -50,4 +51,15 @@ public class MyBarController {
         return userBarService.deleteIngredientsFromMyBar(email, ingredientsId);
     }
 
+    @PostMapping("cocktails/favorite/add/{cocktailsId}")
+    public void addCocktailsFavorite(Principal user, @PathVariable Long cocktailsId) {
+        String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
+        userBarService.addCocktail(email, cocktailsId);
+    }
+
+    @DeleteMapping("cocktails/favorite/delete/{cocktailsId}")
+    public void deleteCocktailsFavorite(Principal user, @PathVariable Long cocktailsId) {
+        String email = UserUtils.getEmail((OAuth2AuthenticationToken) user);
+        userBarService.deleteFavoritCoctails(email, cocktailsId);
+    }
 }
