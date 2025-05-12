@@ -16,21 +16,16 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: my-bar-app
+            client-id: my-bar-app #Имя приложения в KeyCloak
             scope: openid
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/api/login/oauth2/code/keycloak"
             provider: keycloak
+            authorization-grant-type: authorization_code
+            redirect-uri: http://mybar.dvmalkin.ru/api/login/oauth2/code/my-bar-app
 
         provider:
           keycloak:
-            issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
+            issuer-uri: http://bouncer.dvmalkin.ru/realms/my-bar
             user-name-attribute: preferred_username
-
-  #      resourceserver:
-  #        jwt:
-  #          issuer-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}
-  #          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
     enabled: true
@@ -40,11 +35,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-  docker:
-    compose:
-      enabled: true
-      file: docker-compose.yaml
-
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -54,9 +44,10 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${POSTGRES_DB:postgres}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:55432}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
+
 logging:
   level:
-    root: debug
+    root: ${LOG_LEVEL:DEBUG}
