@@ -2,6 +2,8 @@ package ru.nino.mybar.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.nino.mybar.dto.model.CocktailsModel;
 import ru.nino.mybar.dto.show.CocktailUserIngredientsDto;
 import ru.nino.mybar.dto.show.IngredientDto;
 import ru.nino.mybar.entity.Cocktail;
@@ -56,17 +58,15 @@ public class UserBarService {
                 .map(IdEntity::getId)
                 .collect(Collectors.toSet());
 
-
         var cocktailDtos = cocktails.stream()
                 .map(cocktailMapper::toUserIngredients)
                 .collect(Collectors.toList());
 
-
         cocktailDtos.stream()
-                .flatMap(cocktailUserIngredientsDto -> cocktailUserIngredientsDto.getIngredients()
-                        .stream())
-                .forEach(ingredientAvailableDto -> ingredientAvailableDto.setAvailable(userIngredients.contains(ingredientAvailableDto.getId())));
-
+                .map(CocktailUserIngredientsDto::getIngredients)
+                .flatMap(List::stream)
+                .forEach(ingredientAvailableDto -> ingredientAvailableDto.setAvailable(
+                        userIngredients.contains(ingredientAvailableDto.getId())));
 
         return cocktailDtos;
     }
@@ -95,8 +95,8 @@ public class UserBarService {
         Set<Ingredient> userIngredients = userInfo.getIngredient();
 
         userInfo.setIngredient(userIngredients.stream()
-                .filter(ingr -> !Objects.equals(ingr.getId(), ingredientsId))
-                .collect(Collectors.toSet()));
+                                       .filter(ingr -> !Objects.equals(ingr.getId(), ingredientsId))
+                                       .collect(Collectors.toSet()));
 
         userRepository.save(userInfo);
 
@@ -104,5 +104,32 @@ public class UserBarService {
                 .stream()
                 .map(ingredientMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public List<CocktailsModel> addCocktail(String email, Long cocktailId) {
+        User userInfo = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+
+        cocktailRepository.findById(cocktailId)
+                .ifPresent(cocktail -> {
+                    userInfo.getFavoriteCocktail()
+                            .add(cocktail);
+                });
+        return userInfo.getFavoriteCocktail()
+                .stream()
+                .map(cocktailMapper::toModel)
+                .toList();
+    }
+
+    @Transactional
+    public void deleteFavoritCoctails(String email, Long cocktailsId) {
+        User userInfo = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+
+        userInfo.getIngredient()
+                .removeIf(ingredient -> ingredient.getId()
+                        .equals(cocktailsId));
+        userRepository.save(userInfo);
     }
 }
