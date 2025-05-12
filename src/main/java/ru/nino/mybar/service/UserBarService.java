@@ -1,6 +1,8 @@
 package ru.nino.mybar.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nino.mybar.dto.model.CocktailsModel;
@@ -131,5 +133,10 @@ public class UserBarService {
                 .removeIf(ingredient -> ingredient.getId()
                         .equals(cocktailsId));
         userRepository.save(userInfo);
+    }
+
+    public Page<CocktailsModel> getUserFavoritesCocktails(Pageable pageable, String email) {
+        Page<Cocktail> cocktailByUsersEmail = cocktailRepository.findCocktailByUsersEmail(pageable, email);
+        return cocktailByUsersEmail.map(cocktailMapper::toModel);
     }
 }
