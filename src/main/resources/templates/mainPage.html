@@ -9,6 +9,7 @@
 
     <!-- Ваши собственные стили -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
@@ -37,8 +38,10 @@
             <h3>
                 <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
                    th:text="${cocktail.name}"
-                   class="no-underline text-black hover:text-blue-600"></a>
+                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
+                </a>
             </h3>
+
             <p th:text="${cocktail.description}">Описание напитка...</p>
             <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
             <p class="ingredients">
@@ -47,11 +50,13 @@
             </p>
             <button th:attr="data-id=${cocktail.id}"
                     th:if="${cocktail.favorite}"
-                    class="favorite-remove-btn">❤️</button>
+                    class="favorite-remove-btn">❤️
+            </button>
 
             <button th:attr="data-id=${cocktail.id}"
                     th:if="${!cocktail.favorite}"
-                    class="favorite-add-btn">🤍</button>
+                    class="favorite-add-btn">🤍
+            </button>
 
         </div>
     </div>
@@ -71,4 +76,3 @@
 </body>
 </html>
 <script th:src="@{/js/favorite_cocktail.js}"></script>
-

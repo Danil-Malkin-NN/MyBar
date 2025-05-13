@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class CocktailUserIngredientsDto {
+    private Long id;
     @NotBlank
     @Schema(description = "Название коктейля", example = "Марго дайкири")
     private String name;

@@ -129,7 +129,7 @@ public class UserBarService {
         User userInfo = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
 
-        userInfo.getIngredient()
+        userInfo.getFavoriteCocktail()
                 .removeIf(ingredient -> ingredient.getId()
                         .equals(cocktailsId));
         userRepository.save(userInfo);
