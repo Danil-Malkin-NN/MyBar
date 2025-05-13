@@ -45,12 +45,12 @@
     </div>
 
     <div class="pagination">
-        <a th:href="@{/page/ingredients(page=${page.number - 1}, size=${page.size})}"
-           th:if="${page.hasPrevious()}" class="btn">Назад</a>
+        <a th:href="@{/page/ingredients(page=${page.number - 1}, size=${page.size}, ingredientName=${param.ingredientName})}"
+            th:if="${page.hasPrevious()}" class="btn">Назад</a>
 
         <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
 
-        <a th:href="@{/page/ingredients(page=${page.number + 1}, size=${page.size})}"
+        <a th:href="@{/page/ingredients(page=${page.number + 1}, size=${page.size}, ingredientName=${param.ingredientName})}"
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 </div>
