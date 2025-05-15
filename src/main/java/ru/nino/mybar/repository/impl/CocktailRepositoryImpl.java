@@ -58,7 +58,7 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
     @Query(value = """
         select c from User u
-        left join u.favoriteCocktail c
+        join u.favoriteCocktail c
         where u.email = ?1
         """)
     Page<Cocktail> findCocktailByUsersEmail(Pageable pageable, String email);
