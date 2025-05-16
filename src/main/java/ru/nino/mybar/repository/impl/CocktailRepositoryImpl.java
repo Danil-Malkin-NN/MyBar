@@ -1,13 +1,17 @@
 package ru.nino.mybar.repository.impl;
 
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.repository.NameFinderRepository;
 
+import java.io.Serializable;
+import java.lang.ScopedValue;
 import java.util.List;
 
 @Repository
@@ -55,5 +59,7 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
     List<Cocktail> getAvailableCocktails(String email);
 
     Page<Cocktail> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    ScopedValue<Object> findById(SingularAttribute<AbstractPersistable, Serializable> id);
 
 }

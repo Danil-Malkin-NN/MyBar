@@ -40,6 +40,17 @@
             <button th:attr="data-id=${ingredient.id}"
                     th:if="${!ingredient.available}"
                     class="favorite-add-btn">🤍</button>
+
+        <div>
+            <h3>
+                <a th:href="@{/ingredientsedit/{id}(id=${ingredient.id})}"
+                   th:text="edit"
+                   class="no-underline text-black hover:text-blue-600"></a>
+            </h3>
+
+        </div>
+
+
         </div>
 
     </div>

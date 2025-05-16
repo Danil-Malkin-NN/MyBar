@@ -59,4 +59,4 @@ spring:
     password: ${POSTGRES_PASSWORD:postgres}
 logging:
   level:
-    root: debug
+    root: info

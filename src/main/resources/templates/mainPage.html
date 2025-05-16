@@ -45,6 +45,11 @@
                 <strong>Ингредиенты:</strong>
                 <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
             </p>
+            <h3>
+                <a th:href="@{/cocktaill/{id}(id=${cocktail.id})}"
+                   th:text="edit"
+                   class="no-underline text-black hover:text-blue-600"></a>
+            </h3>
         </div>
     </div>
 
@@ -57,6 +62,10 @@
         <a th:href="@{/page(page=${page.number + 1}, size=${page.size})}"
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
+
+
+
+
 
 </div>
 

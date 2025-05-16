@@ -5,8 +5,10 @@ services:
     user: root
     volumes:
       - ./db-data:/var/postgres/data
+      - ./docker_config/postgres:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: "postgres"
+      POSTGRES_DATABASE: "postgres"
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
