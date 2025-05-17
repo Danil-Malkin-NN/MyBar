@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Моё приложение</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
@@ -14,7 +15,11 @@
 <div class="container">
   <div class="grid">
     <div th:each="tool : ${tools}" class="border rounded-lg p-4 shadow-sm mb-4">
-      <h3 th:text="${tool.name}">Имя</h3>
+      <h3>
+        <a th:text="${tool.name}"
+           class="text-xl font-semibold text-black">
+        </a>
+      </h3>
       <p th:text="${tool.description}">Описание...</p>
       <button>
         <a th:href="@{instrument/{id}(id=${tool.id})}"

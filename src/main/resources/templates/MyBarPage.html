@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Мой бар</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!--    Порядок стилей важен-->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -11,10 +12,15 @@
 
 <div class="container">
     <!-- Блок "Мои коктейли" -->
-    <h2>Мои коктейли</h2>
+    <h2 class="text-xl font-semibold text-black">Мои коктейли</h2>
     <div th:if="${cocktails != null and !cocktails.isEmpty()}" class="grid">
         <div th:each="cocktail : ${cocktails}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <h3 th:text="${cocktail.name}">Название</h3>
+            <h3>
+                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:text="${cocktail.name}"
+                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
+                </a>
+            </h3>
             <p th:text="${cocktail.description}">Описание</p>
             <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
             <ul>
@@ -23,7 +29,7 @@
                     th:classappend="${ing.available} ? 'ingredient-available' : 'ingredient-unavailable'">
                 </li>
             </ul>
-
+            </a>
         </div>
     </div>
     <div th:if="${cocktails == null or cocktails.isEmpty()}" class="empty-message">
@@ -31,7 +37,7 @@
     </div>
 
     <!-- Блок "Мои ингредиенты" -->
-    <h2>Мои ингредиенты</h2>
+    <h2 class="text-xl font-semibold text-black">Мои ингредиенты</h2>
     <div th:if="${ingredients != null and !ingredients.isEmpty()}" class="grid">
         <div th:each="ingredient : ${ingredients}" class="border rounded-lg p-4 shadow-sm mb-4">
             <h3 th:text="${ingredient.name}" class="font-bold text-lg"></h3>
@@ -51,10 +57,35 @@
     <div th:if="${ingredients == null or ingredients.isEmpty()}" class="empty-message">
         У вас нет ингредиентов. Добавьте имеющиеся ингредиенты.
     </div>
+
+    <!-- Блок "Мои коктейли" -->
+    <h3 class="text-xl font-semibold text-black">Мои любимые коктейли </h3>
+    <div th:if="${favorites != null and !favorites.isEmpty()}" class="grid">
+        <div th:each="cocktail : ${favorites}" class="border rounded-lg p-4 shadow-sm mb-4">
+            <h3>
+                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:text="${cocktail.name}"
+                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
+                </a>
+            </h3>
+            <p th:text="${cocktail.description}">Описание</p>
+            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
+
+            <p class="ingredients">
+                <strong>Ингредиенты:</strong>
+                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
+            </p>
+            </a>
+        </div>
+        <div th:if="${favorites == null or favorites.isEmpty()}" class="empty-message">
+            У вас пока нет любимых коктейлей. Ставьте им ❤️, а мы их запомним!
+        </div>
+
+    </div>
 </div>
 </body>
 </html>
 <script>
     window.appContextPath = /*[[@{/}]]*/ '';
 </script>
-<script th:src="@{/js/favorite.js}"></script>
+<script th:src="@{/js/favorite_ingredient.js}"></script>
