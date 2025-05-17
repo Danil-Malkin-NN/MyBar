@@ -67,5 +67,5 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
         left join u.favoriteCocktail c
         where u.email = ?1
         """)
-    Page<Cocktail> findCocktailByUsersEmail(Pageable pageable, String email)
+    Page<Cocktail> findCocktailByUsersEmail(Pageable pageable, String email);
 }
