@@ -19,7 +19,7 @@ public class AdminPanelIngredients {
 @Autowired
 private final IngredientRepositoryImpl ingredientRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/ingredients/{id}")
     public String EditIngredient(@PathVariable Long id, Model model) {
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(null);

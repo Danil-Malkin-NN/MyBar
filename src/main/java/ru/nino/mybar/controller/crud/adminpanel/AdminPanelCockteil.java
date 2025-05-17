@@ -22,7 +22,7 @@ public class AdminPanelCockteil {
     @Autowired
     private CocktailRepositoryImpl cocktailrepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/cocktaill/{id}")
     public String editCocktailForm(@PathVariable Long id, Model model) {
         model.addAttribute("cocktail", cocktailrepository.findById(id).orElse(null));

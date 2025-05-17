@@ -71,6 +71,8 @@ public class KeyCloakConfig {
                 .authenticated()
                 .requestMatchers(HttpMethod.GET, "/page/my/**")
                 .authenticated()
+                .requestMatchers(HttpMethod.GET, "/page/AdminPanel/**")
+                .hasRole(ADMIN)
                 .anyRequest()
                 .permitAll());
 
