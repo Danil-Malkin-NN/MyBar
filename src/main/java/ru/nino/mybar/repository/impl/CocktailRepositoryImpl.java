@@ -60,6 +60,4 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
 
     Page<Cocktail> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    ScopedValue<Object> findById(SingularAttribute<AbstractPersistable, Serializable> id);
-
 }
