@@ -1,11 +1,13 @@
 package ru.nino.mybar.dto.model;
 
-public record CocktailsModel(
-        Long id,
-        String name,
-        String description,
-        String strength,
-        String ingredients
-) {
+import lombok.Data;
 
+@Data
+public class CocktailsModel {
+    private Long id;
+    private String name;
+    private String description;
+    private String strength;
+    private String ingredients;
+    private boolean favorite;
 }
