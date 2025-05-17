@@ -22,7 +22,7 @@
       </h3>
       <p th:text="${tool.description}">Описание...</p>
       <button>
-        <a th:href="@{instrument/{id}(id=${tool.id})}"
+        <a th:href="@{AdminPanel/instrument/{id}(id=${tool.id})}"
            th:text="Edit"
            class="no-underline text-black hover:text-blue-600"></a>
       </button>

@@ -9,25 +9,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
-@Controller
-@RequiredArgsConstructor
-public class AdminpanelIngridients  {
 
-    @Autowired
+
+@Controller
+@RequestMapping("/page/AdminPanel")
+@RequiredArgsConstructor
+public class AdminPanelIngredients {
+
+@Autowired
 private final IngredientRepositoryImpl ingredientRepository;
+
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/ingredientsedit/{id}")
-    public String editIngredientForm(@PathVariable Long id, Model model) {
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
+    @GetMapping("/ingredients/{id}")
+    public String EditIngredient(@PathVariable Long id, Model model) {
+        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(null);
         model.addAttribute("ingredient", ingredient);
+
         return "editingred";
+
     }
-    @PostMapping("ingredients/edit")
+
+    @PostMapping("/ingredients/save")
     public String saveIngredient(@ModelAttribute Ingredient ingredient) {
         ingredientRepository.save(ingredient);
         return "redirect:/page/ingredients";
+
     }
-
-
 
 }

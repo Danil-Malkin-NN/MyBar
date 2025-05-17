@@ -1,23 +1,76 @@
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit Ingredient</title>
+    <meta charset="UTF-8">
+    <title>My Application</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .topbar {
+            background-color: #343a40; /* Темный фон */
+            padding: 10px 0; /* Верхний и нижний отступ */
+            position: fixed; /* Фиксированное положение */
+            width: 100%; /* Ширина на всю страницу */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            z-index: 1000; /* Уровень наложения */
+            position: relative; /* Относительное положение для псевдоэлемента */
+        }
+        .topbar::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 5px; /* Высота полоски */
+            background-color: #ffc107; /* Цвет полоски */
+        }
+        .topbar a {
+            color: #ffffff; /* Белый цвет текста */
+            margin: 0 15px; /* Отступы между ссылками */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .topbar a:hover {
+            color: #ffc107; /* Цвет текста при наведении */
+        }
+        .content {
+            margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
+            padding: 20px; /* Внутренние отступы */
+        }
+    </style>
 </head>
 <body>
-<h1>Edit Ingredient</h1>
-<form th:action="@{/ingredients/edit}" th:object="${ingredient}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <div>
-        <label>Name:</label>
-        <input type="text" th:field="*{name}"/>
+<div class="topbar">
+    <div class="container-fluid d-flex justify-content-start align-items-center">
+        <a th:href="@{/page}">Главная</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a th:href="@{/page/my/bar}">Мой Бар</a>
     </div>
-    <div>
-        <label>Description:</label>
-        <textarea th:field="*{description}"></textarea>
-    </div>
-    <button type="submit">Save</button>
-</form>
+</div>
+
+<div class="content">
+    <h1 class="mb-4">Edit Ingredient</h1>
+    <form th:action="@{/page/AdminPanel/ingredients/save}" th:object="${ingredient}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<!-- Подключение Bootstrap JS и зависимостей -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

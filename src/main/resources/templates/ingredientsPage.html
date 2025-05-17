@@ -48,9 +48,11 @@
 
         <div>
             <h3>
-                <a th:href="@{/ingredientsedit/{id}(id=${ingredient.id})}"
-                   th:text="edit"
+                <button><a
+                   th:href="@{AdminPanel/ingredients/{id}(id=${ingredient.id})}"
+                   th:text="EDIT"
                    class="no-underline text-black hover:text-blue-600"></a>
+                </button>
             </h3>
 
         </div>

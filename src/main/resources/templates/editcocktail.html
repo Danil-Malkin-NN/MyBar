@@ -1,63 +1,136 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Edit Cocktail</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .topbar {
+            background-color: #343a40; /* Темный фон */
+            padding: 10px 0; /* Верхний и нижний отступ */
+            position: fixed; /* Фиксированное положение */
+            width: 100%; /* Ширина на всю страницу */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            z-index: 1000; /* Уровень наложения */
+        }
+        .topbar::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 5px; /* Высота полоски */
+            background-color: rgba(255, 193, 7, 0); /* Цвет полоски */
+        }
+        .topbar a {
+            color: #ffffff; /* Белый цвет текста */
+            margin: 0 15px; /* Отступы между ссылками */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .topbar a:hover {
+            color: rgba(255, 193, 7, 0); /* Цвет текста при наведении */
+        }
+        .content {
+            margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
+            padding: 20px; /* Внутренние отступы */
+        }
+        .section-title {
+            position: relative; /* Относительное положение для псевдоэлемента */
+            padding-bottom: 10px; /* Нижний отступ для полоски */
+        }
+        .section-title::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            bottom: 0; /* Нижнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 3px; /* Высота полоски */
+            background-color: rgba(255, 193, 7, 0); /* Цвет полоски */
+        }
+    </style>
 </head>
 <body>
-<h1>Edit Cocktail</h1>
-<form th:action="@{save}" th:object="${cocktail}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <div>
-        <label>Name:</label>
-        <input type="text" th:field="*{name}"/>
+<div class="topbar">
+    <div class="container-fluid d-flex justify-content-start align-items-center">
+        <a th:href="@{/page}">Главная</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a th:href="@{/page/my/bar}">Мой Бар</a>
     </div>
-    <div>
-        <label>Description:</label>
-        <textarea th:field="*{description}"></textarea>
-    </div>
-    <div>
-        <label>Volume:</label>
-        <textarea th:field="*{volume}"></textarea>
-    </div>
-    <div>
-        <label>Strength:</label>
-        <textarea th:field="*{strength}"></textarea>
-    </div>
-    <div class="section">
-        <h2>Шаги приготовления</h2>
-        <div th:each="step, stepStat : *{steps}" class="step">
-            <input type="hidden" th:field="*{steps[__${stepStat.index}__].id}"/>
-            <div>
-                <label>Goal:</label>
-                <input type="text" th:field="*{steps[__${stepStat.index}__].goal}"/>
-            </div>
-            <div>
-                <label>Description:</label>
-                <textarea th:field="*{steps[__${stepStat.index}__].description}"></textarea>
-            </div>
-            <div>
-                <label>Ingredients:</label>
-                <ul>
-                    <li th:each="ing, ingStat : *{steps[__${stepStat.index}__].usesIngredients}">
-                        <input type="hidden" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].id}"/>
-                        <input type="text" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].ingredient.name}"/>
-                        <input type="text" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].count}"/>
-                        <input type="text" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].unitType}"/>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <label>Instruments:</label>
-                <ul>
-                    <li th:each="tool, toolStat : *{steps[__${stepStat.index}__].instruments}">
-                        <input type="hidden" th:field="*{steps[__${stepStat.index}__].instruments[__${toolStat.index}__].id}"/>
-                        <input type="text" th:field="*{steps[__${stepStat.index}__].instruments[__${toolStat.index}__].name}"/>
-                    </li>
-                </ul>
+</div>
+
+<div class="content">
+    <h1 class="mb-4 section-title">Edit Cocktail</h1>
+    <form th:action="@{/page/AdminPanel/cocktail/save}" th:object="${cocktail}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="volume">Volume:</label>
+            <textarea id="volume" class="form-control" th:field="*{volume}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="strength">Strength:</label>
+            <textarea id="strength" class="form-control" th:field="*{strength}"></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Шаги приготовления</h2>
+            <div th:each="step, stepStat : *{steps}" class="step mb-4">
+                <input type="hidden" th:field="*{steps[__${stepStat.index}__].id}"/>
+
+                <div class="form-group">
+                    <label for="goal">Goal:</label>
+                    <input type="text" id="goal" class="form-control" th:field="*{steps[__${stepStat.index}__].goal}"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="stepDescription">Description:</label>
+                    <textarea id="stepDescription" class="form-control" th:field="*{steps[__${stepStat.index}__].description}"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Ingredients:</label>
+                    <ul class="list-group">
+                        <li th:each="ing, ingStat : *{steps[__${stepStat.index}__].usesIngredients}" class="list-group-item">
+                            <input type="hidden" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].id}"/>
+                            <div class="form-group">
+                                <label for="ingredientName">Ingredient Name:</label>
+                                <input type="text" id="ingredientName" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].ingredient.name}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="count">Count:</label>
+                                <input type="text" id="count" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].count}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="unitType">Unit Type:</label>
+                                <input type="text" id="unitType" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].unitType}"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <button type="submit">Save</button>
-</form>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<!-- Подключение Bootstrap JS и зависимостей -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>ml>
+</html>

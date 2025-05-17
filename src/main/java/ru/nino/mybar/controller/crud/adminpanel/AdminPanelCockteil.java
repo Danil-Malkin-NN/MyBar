@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.entity.Cocktail;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
+@RequestMapping("/page/AdminPanel")
 @RequiredArgsConstructor
-public class AdminpanelCoctel {
+public class AdminPanelCockteil {
+
     @Autowired
-    private CocktailRepositoryImpl cocktailDto;
+    private CocktailRepositoryImpl cocktailrepository;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/cocktaill/{id}")
     public String editCocktailForm(@PathVariable Long id, Model model) {
-        model.addAttribute("cocktail", cocktailDto.findById(id).orElse(null));
+        model.addAttribute("cocktail", cocktailrepository.findById(id).orElse(null));
         return "editcocktail";
     }
 
-    @PostMapping("/cocktaill/save")
+    @PostMapping("/cocktail/save")
     public String saveCocktail(Cocktail cocktail) {
-        cocktailDto.save(cocktail);
+        cocktailrepository.save(cocktail);
         return "redirect:/page";
     }
 

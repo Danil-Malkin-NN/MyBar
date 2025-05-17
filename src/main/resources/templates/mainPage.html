@@ -47,11 +47,6 @@
             <p class="ingredients">
                 <strong>Ингредиенты:</strong>
                 <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
-              h3>
-                <a th:href="@{/cocktaill/{id}(id=${cocktail.id})}"
-                   th:text="edit"
-                   class="no-underline text-black hover:text-blue-600"></a>
-            </h3>
             <button th:attr="data-id=${cocktail.id}"
                     th:if="${cocktail.favorite}"
                     class="favorite-remove-btn">❤️
@@ -61,6 +56,14 @@
                     th:if="${!cocktail.favorite}"
                     class="favorite-add-btn">🤍
             </button>
+            <button>
+            <h5>
+                <a th:href="@{page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
+                   th:text="edit"
+                   class="no-underline text-black hover:text-blue-600"></a>
+            </h5>
+            </button>
+
             </p>
         </div>
     </div>

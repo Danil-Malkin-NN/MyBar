@@ -1,21 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit Instrument</title>
+    <meta charset="UTF-8">
+    <title>Редактирование инструмента</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .topbar {
+            background-color: #343a40; /* Темный фон */
+            padding: 10px 0; /* Верхний и нижний отступ */
+            position: fixed; /* Фиксированное положение */
+            width: 100%; /* Ширина на всю страницу */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            z-index: 1000; /* Уровень наложения */
+        }
+        .topbar::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 5px; /* Высота полоски */
+        }
+        .topbar a {
+            color: #ffffff; /* Белый цвет текста */
+            margin: 0 15px; /* Отступы между ссылками */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .topbar a:hover {
+            color: rgba(255, 193, 7, 0); /* Цвет текста при наведении */
+        }
+        .content {
+            margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
+            padding: 20px; /* Внутренние отступы */
+        }
+        .section-title {
+            position: relative; /* Относительное положение для псевдоэлемента */
+            padding-bottom: 10px; /* Нижний отступ для полоски */
+        }
+        .section-title::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            bottom: 0; /* Нижнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 3px; /* Высота полоски */
+            background-color: rgba(255, 7, 7, 0); /* Цвет полоски */
+        }
+    </style>
 </head>
 <body>
-<h1>Edit Instrument</h1>
-<form th:action="@{/instrument/save}" th:object="${instrument}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <div>
-        <label>Name:</label>
-        <input type="text" th:field="*{name}"/>
+<div class="topbar">
+    <div class="container-fluid d-flex justify-content-start align-items-center">
+        <a th:href="@{/page}">Главная</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a th:href="@{/page/my/bar}">Мой Бар</a>
     </div>
-    <div>
-        <label>Description:</label>
-        <textarea th:field="*{description}"></textarea>
-    </div>
-    <button type="submit">Save</button>
-</form>
+</div>
+
+<div class="content">
+    <h1 class="mb-4 section-title">Редактировать инструмент</h1>
+    <form th:action="@{save}" th:object="${instrument}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+
+<!-- Подключение Bootstrap JS и зависимостей -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
