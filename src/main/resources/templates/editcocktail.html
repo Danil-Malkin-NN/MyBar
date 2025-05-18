@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Cocktail</title>
+    <title>Редактировать коктейль</title>
     <!-- Подключение Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -22,7 +22,6 @@
             left: 0; /* Левое положение */
             width: 100%; /* Ширина на всю панель */
             height: 5px; /* Высота полоски */
-            background-color: rgba(255, 193, 7, 0); /* Цвет полоски */
         }
         .topbar a {
             color: #ffffff; /* Белый цвет текста */
@@ -30,7 +29,7 @@
             text-decoration: none; /* Убираем подчеркивание */
         }
         .topbar a:hover {
-            color: rgba(255, 193, 7, 0); /* Цвет текста при наведении */
+            color: #076aff; /* Цвет текста при наведении */
         }
         .content {
             margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
@@ -47,7 +46,6 @@
             left: 0; /* Левое положение */
             width: 100%; /* Ширина на всю панель */
             height: 3px; /* Высота полоски */
-            background-color: rgba(255, 193, 7, 0); /* Цвет полоски */
         }
     </style>
 </head>
@@ -62,60 +60,60 @@
 </div>
 
 <div class="content">
-    <h1 class="mb-4 section-title">Edit Cocktail</h1>
+    <h1 class="mb-4 section-title">Редактировать коктейль</h1>
     <form th:action="@{/page/AdminPanel/cocktail/save}" th:object="${cocktail}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name">Имя:</label>
             <input type="text" id="name" class="form-control" th:field="*{name}"/>
         </div>
 
         <div class="form-group">
-            <label for="description">Description:</label>
+            <label for="description">Описание:</label>
             <textarea id="description" class="form-control" th:field="*{description}"></textarea>
         </div>
 
         <div class="form-group">
-            <label for="volume">Volume:</label>
+            <label for="volume">Объем:</label>
             <textarea id="volume" class="form-control" th:field="*{volume}"></textarea>
         </div>
 
         <div class="form-group">
-            <label for="strength">Strength:</label>
+            <label for="strength">крепкость:</label>
             <textarea id="strength" class="form-control" th:field="*{strength}"></textarea>
         </div>
-
         <div class="section">
             <h2>Шаги приготовления</h2>
             <div th:each="step, stepStat : *{steps}" class="step mb-4">
+                <h3>Шаг <span th:text="${stepStat.index + 1}"></span></h3>
                 <input type="hidden" th:field="*{steps[__${stepStat.index}__].id}"/>
 
                 <div class="form-group">
-                    <label for="goal">Goal:</label>
+                    <label for="goal">Задача:</label>
                     <input type="text" id="goal" class="form-control" th:field="*{steps[__${stepStat.index}__].goal}"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="stepDescription">Description:</label>
+                    <label for="stepDescription">Описание:</label>
                     <textarea id="stepDescription" class="form-control" th:field="*{steps[__${stepStat.index}__].description}"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Ingredients:</label>
+                    <label>Ингредиенты:</label>
                     <ul class="list-group">
                         <li th:each="ing, ingStat : *{steps[__${stepStat.index}__].usesIngredients}" class="list-group-item">
                             <input type="hidden" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].id}"/>
                             <div class="form-group">
-                                <label for="ingredientName">Ingredient Name:</label>
+                                <label for="ingredientName">Имя ингредиента:</label>
                                 <input type="text" id="ingredientName" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].ingredient.name}"/>
                             </div>
                             <div class="form-group">
-                                <label for="count">Count:</label>
+                                <label for="count">Количество:</label>
                                 <input type="text" id="count" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].count}"/>
                             </div>
                             <div class="form-group">
-                                <label for="unitType">Unit Type:</label>
+                                <label for="unitType">Тип единицы:</label>
                                 <input type="text" id="unitType" class="form-control" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].unitType}"/>
                             </div>
                         </li>
@@ -124,7 +122,8 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>
 
