@@ -26,7 +26,7 @@ private final IngredientRepositoryImpl ingredientRepository;
         Ingredient ingredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
         model.addAttribute("ingredient", ingredient);
-        return "editIngridients";
+        return "edit-Ingridients";
 
     }
 

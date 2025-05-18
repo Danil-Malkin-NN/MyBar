@@ -30,7 +30,7 @@ public class AdminPanelCockteil {
         Cocktail cocktail = cocktailrepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
         model.addAttribute("cocktail", cocktail);
-        return "editcocktail";
+        return "edit-cocktail";
     }
 
     @PostMapping("/cocktail/save")

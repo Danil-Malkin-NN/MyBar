@@ -28,7 +28,7 @@ public class AdminPanelTool {
        Instrument instrument = instrumentsRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
         model.addAttribute("instrument", instrument);
-        return "editinstrument";
+        return "edit-instrument";
     }
 
     @PostMapping("/instrument/save")
@@ -37,6 +37,5 @@ public class AdminPanelTool {
 
         return "redirect:/page";
     }
-
-
+    
 }
