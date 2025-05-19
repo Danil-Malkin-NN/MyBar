@@ -6,12 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
-
 <div th:replace="fragments/topbar.html"></div>
-
-
 <div class="container">
     <h3>
         <a th:text="${cocktail.name}"
@@ -58,7 +54,6 @@
         <div th:each="step : ${cocktail.steps}" class="step">
             <h4 th:text="${step.goal}">Название шага</h4>
             <p th:text="${step.description}">Описание шага</p>
-
             <ul>
                 <li th:each="ing : ${step.usesIngredients}"
                     th:text="'Ингредиент: ' + ${ing.ingredient.name} + ' (' + ${ing.count} + ' ' + ${ing.unitType} + ')'">

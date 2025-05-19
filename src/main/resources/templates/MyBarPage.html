@@ -1,91 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Мой бар</title>
+    <meta charset="UTF-8">
+    <title>Моё приложение</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!--    Порядок стилей важен-->
+    <!-- Библиотека стилей (например, Tailwind CSS) -->
+    <!-- Ваши собственные стили -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
-
+<!-- Топбар -->
 <div th:replace="fragments/topbar.html"></div>
-
+<!-- Основной контент -->
 <div class="container">
-    <!-- Блок "Мои коктейли" -->
-    <h2 class="text-xl font-semibold text-black">Мои коктейли</h2>
-    <div th:if="${cocktails != null and !cocktails.isEmpty()}" class="grid">
-        <div th:each="cocktail : ${cocktails}" class="border rounded-lg p-4 shadow-sm mb-4">
+    <form method="get" th:action="@{/page}" class="mb-6 flex items-center gap-4">
+        <input type="text" name="cocktailName" placeholder="Поиск по имени"
+               class="px-4 py-2 rounded-2xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               th:value="${param.cocktailName}">
+        <button type="submit"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-2xl shadow-md transition-all duration-200">
+            Найти
+        </button>
+    </form>
+    <!-- Сетка карточек -->
+    <div class="grid">
+        <div th:each="cocktail : ${items}" class="border rounded-lg p-4 shadow-sm mb-4">
             <h3>
                 <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
                    th:text="${cocktail.name}"
                    class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
                 </a>
             </h3>
-            <p th:text="${cocktail.description}">Описание</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
-            <ul>
-                <li th:each="ing : ${cocktail.ingredients}"
-                    th:text="${ing.name}"
-                    th:classappend="${ing.available} ? 'ingredient-available' : 'ingredient-unavailable'">
-                </li>
-            </ul>
-            </a>
-        </div>
-    </div>
-    <div th:if="${cocktails == null or cocktails.isEmpty()}" class="empty-message">
-        У вас пока нет коктейлей. Добавьте доступные вам ингредиенты, а мы покажем доступные коктейли!
-    </div>
-
-    <!-- Блок "Мои ингредиенты" -->
-    <h2 class="text-xl font-semibold text-black">Мои ингредиенты</h2>
-    <div th:if="${ingredients != null and !ingredients.isEmpty()}" class="grid">
-        <div th:each="ingredient : ${ingredients}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <h3 th:text="${ingredient.name}" class="font-bold text-lg"></h3>
-            <p th:text="${ingredient.description}"></p>
-
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${ingredient.available}"
-                    class="favorite-remove-btn">❤️
-            </button>
-
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${!ingredient.available}"
-                    class="favorite-add-btn">🤍
-            </button>
-        </div>
-    </div>
-    <div th:if="${ingredients == null or ingredients.isEmpty()}" class="empty-message">
-        У вас нет ингредиентов. Добавьте имеющиеся ингредиенты.
-    </div>
-
-    <!-- Блок "Мои коктейли" -->
-    <h3 class="text-xl font-semibold text-black">Мои любимые коктейли </h3>
-    <div th:if="${favorites != null and !favorites.isEmpty()}" class="grid">
-        <div th:each="cocktail : ${favorites}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <h3>
-                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
-                   th:text="${cocktail.name}"
-                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
-                </a>
-            </h3>
-            <p th:text="${cocktail.description}">Описание</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
-
+            <p th:text="${cocktail.description}">Описание напитка...</p>
+            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
             <p class="ingredients">
                 <strong>Ингредиенты:</strong>
                 <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
             </p>
-            </a>
-        </div>
-        <div th:if="${favorites == null or favorites.isEmpty()}" class="empty-message">
-            У вас пока нет любимых коктейлей. Ставьте им ❤️, а мы их запомним!
-        </div>
+            <button th:attr="data-id=${cocktail.id}"
+                    th:if="${cocktail.favorite}"
+                    class="favorite-remove-btn">❤️
+            </button>
+            <button th:attr="data-id=${cocktail.id}"
+                    th:if="${!cocktail.favorite}"
+                    class="favorite-add-btn">🤍
+            </button>
+            <meta charset="UTF-8">
+            <title>Редактировать ингредиент</title>
+            <!-- Подключение Bootstrap -->
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                .custom-button {
+                    display: inline-block;
+                    padding: 0px 0px; /* Отступы внутри кнопки */
+                    border: 2px solid #000; /* Черная обводка */
+                    border-radius: 5px; /* Скругленные углы */
+                    text-decoration: none; /* Убираем подчеркивание */
+                    color: #000; /* Черный цвет текста */
+                    background-color: transparent; /* Прозрачный фон */
+                    transition: background-color 0.3s, color 0.3s; /* Плавный переход цвета фона и текста */
+                }
+                .custom-button:hover {
+                    background-color: #007bff; /* Синий фон при наведении */
+                    color: #fff; /* Белый цвет текста при наведении */
+                }
+            </style>
+            </head>
+            <body>
+            <div>
+                <h3>
+                    <button class="custom-button"
+                            th:if="${('hasRole(''ROLE_ADMIN'')')}" >
+                        <a th:href="@{page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}" th:text="EDIT" class="no-underline text-black hover:text-blue-600"></a>
+                    </button>
+                </h3>
+            </div>
 
+        </div>
+    </div>
+    <div class="pagination">
+        <a th:href="@{/page(page=${page.number - 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
+           th:if="${page.hasPrevious()}" class="btn">Назад</a>
+        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+        <a th:href="@{/page(page=${page.number + 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
+           th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 </div>
 </body>
 </html>
-<script>
-    window.appContextPath = /*[[@{/}]]*/ '';
-</script>
-<script th:src="@{/js/favorite_ingredient.js}"></script>
+<script th:src="@{/js/favorite_cocktail.js}"></script>
