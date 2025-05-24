@@ -2,76 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Редактировать коктейль</title>
-    <!-- Подключение Tailwind CSS -->
-
-    <!-- Подключение вашего собственного CSS -->
-
+    <title>My Application</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Убираем ограничение по ширине контейнера контента */
+        .topbar {
+            background-color: #343a40; /* Темный фон */
+            padding: 10px 0; /* Верхний и нижний отступ */
+            position: fixed; /* Фиксированное положение */
+            width: 100%; /* Ширина на всю страницу */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            z-index: 1000; /* Уровень наложения */
+            position: relative; /* Относительное положение для псевдоэлемента */
+        }
+        .topbar::before {
+            content: '';
+            position: absolute; /* Абсолютное положение */
+            top: 0; /* Верхнее положение */
+            left: 0; /* Левое положение */
+            width: 100%; /* Ширина на всю панель */
+            height: 5px; /* Высота полоски */
+        }
+        .topbar a {
+            color: #ffffff; /* Белый цвет текста */
+            margin: 0 15px; /* Отступы между ссылками */
+            text-decoration: none; /* Убираем подчеркивание */
+        }
+        .topbar a:hover {
+            color: #0730ff; /* Цвет текста при наведении */
+        }
         .content {
-            max-width: 100%;
-            padding: 20px;
-        }
-
-        /* Стили для иконок редактирования */
-        .edit-icon {
-            margin-right: 10px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .edit-icon:hover {
-            color: #007bff;
-        }
-
-        /* Стили для формы */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .section-title {
-            margin-bottom: 20px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .list-group {
-            list-style: none;
-            padding: 0;
-        }
-
-        .list-group-item {
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .section {
-            margin-bottom: 30px;
+            margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
+            padding: 20px; /* Внутренние отступы */
         }
     </style>
 </head>
 <body>
+<div class="topbar">
+    <div class="container-fluid d-flex justify-content-start align-items-center">
+        <a th:href="@{/page}">Главная</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a th:href="@{/page/my/bar}">Мой Бар</a>
+    </div>
+</div>
+
 <div class="content">
     <h1 class="mb-4 section-title">Редактировать коктейль</h1>
     <form th:action="@{/page/AdminPanel/cocktail/save}" th:object="${cocktail}" method="post">
