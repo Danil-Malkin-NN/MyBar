@@ -56,7 +56,16 @@
                     th:if="${!cocktail.favorite}"
                     class="favorite-add-btn">🤍
             </button>
-                <meta charset="UTF-8">
+            <div>
+                <h3>
+                    <button class="custom-button"
+                            th:if="${('hasRole(''ROLE_ADMIN'')')}" >
+                        <a th:href="@{page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}" th:text="EDIT" class="no-underline text-black hover:text-blue-600"></a>
+                    </button>
+                </h3>
+            </div>
+
+            <meta charset="UTF-8">
                 <title>Редактировать ингредиент</title>
                 <!-- Подключение Bootstrap -->
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -78,15 +87,6 @@
                 </style>
                 </head>
                 <body>
-                <div>
-                    <h3>
-                        <button class="custom-button"
-                                th:if="${('hasRole(''ROLE_ADMIN'')')}" >
-                            <a th:href="@{page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}" th:text="EDIT" class="no-underline text-black hover:text-blue-600"></a>
-                        </button>
-                    </h3>
-                </div>
-
         </div>
     </div>
 

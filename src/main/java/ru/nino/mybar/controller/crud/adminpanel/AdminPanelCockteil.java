@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import ru.nino.mybar.entity.Cocktail;
+import ru.nino.mybar.entity.IngredientAndCount;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
+import ru.nino.mybar.repository.impl.IngredientAndCountRepositoryImpl;
 
 
 @Controller
@@ -21,6 +23,7 @@ public class AdminPanelCockteil {
 
     @Autowired
     private final CocktailRepositoryImpl cocktailrepository;
+    private final IngredientAndCountRepositoryImpl ingredientAndCountRepository;
 
 
     @GetMapping("/cocktaill/{id}")
@@ -32,7 +35,8 @@ public class AdminPanelCockteil {
     }
 
     @PostMapping("/cocktail/save")
-    public String saveCocktail(Cocktail cocktail) {
+    public String saveCocktail(Cocktail cocktail, IngredientAndCount ingredientAndCount) {
+        ingredientAndCountRepository.save(ingredientAndCount);
         cocktailrepository.save(cocktail);
         return "redirect:/page";
     }
