@@ -39,5 +39,27 @@ public class AdminPanelCockteil {
         cocktailrepository.save(cocktail);
         return "redirect:/page";
     }
+    @PostMapping("/cocktail/{cocktailId}/removeIngredient/{ingredientId}")
+    public String removeIngredientFromCocktail(@PathVariable Long cocktailId, @PathVariable Long ingredientId) {
+        Cocktail cocktail = cocktailrepository.findById(cocktailId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
+
+        cocktail.getIngredients().removeIf(ingredientAndCount -> ingredientAndCount.getIngredient().getId().equals(ingredientId));
+
+        cocktailrepository.save(cocktail);
+        return "redirect:/page/AdminPanel/cocktaill/" + cocktailId;
+    }
+
+    @PostMapping("/cocktail/{cocktailId}/removeTool/{toolId}")
+    public String removeToolFromCocktail(@PathVariable Long cocktailId, @PathVariable Long toolId) {
+        Cocktail cocktail = cocktailrepository.findById(cocktailId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
+
+        cocktail.getInstruments().removeIf(instrument -> instrument.getId().equals(toolId));
+
+        cocktailrepository.save(cocktail);
+        return "redirect:/page/AdminPanel/cocktail/" + cocktailId;
+    }
+
 
 }
