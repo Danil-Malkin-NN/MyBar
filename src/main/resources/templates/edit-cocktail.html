@@ -109,6 +109,13 @@
                         <input type="text" th:id="'ingredientName' + ${ingStat.index}" class="form-control"
                                th:field="*{ingredients[__${ingStat.index}__].ingredient.name}"/>
                     </div>
+
+                    <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].ingredient.id}"/>
+                    <div class="form-group">
+                        <label th:for="'ingredientDesc' + ${ingStat.index}">Описание ингредиента:</label>
+                        <input type="text" th:id="'ingredientDesc' + ${ingStat.index}" class="form-control"
+                               th:field="*{ingredients[__${ingStat.index}__].ingredient.description}"/>
+                    </div>
                     <div class="form-group">
                         <label th:for="'ingredientCount' + ${ingStat.index}">Количество:</label>
                         <input type="text" th:id="'ingredientCount' + ${ingStat.index}" class="form-control"
