@@ -2,43 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>My Application</title>
-    <!-- Подключение Bootstrap -->
+    <title>Редактировать коктейль</title>
+    <!-- Подключение Bootstrap и Tailwind -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        /* Стили для топ-бара */
         .topbar {
-            background-color: #343a40; /* Темный фон */
-            padding: 10px 0; /* Верхний и нижний отступ */
-            position: fixed; /* Фиксированное положение */
-            width: 100%; /* Ширина на всю страницу */
-            top: 0; /* Верхнее положение */
-            left: 0; /* Левое положение */
-            z-index: 1000; /* Уровень наложения */
-            position: relative; /* Относительное положение для псевдоэлемента */
-        }
-        .topbar::before {
-            content: '';
-            position: absolute; /* Абсолютное положение */
-            top: 0; /* Верхнее положение */
-            left: 0; /* Левое положение */
-            width: 100%; /* Ширина на всю панель */
-            height: 5px; /* Высота полоски */
+            background-color: #343a40;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
         .topbar a {
-            color: #ffffff; /* Белый цвет текста */
-            margin: 0 15px; /* Отступы между ссылками */
-            text-decoration: none; /* Убираем подчеркивание */
+            color: #ffffff;
+            margin: 0 15px;
+            text-decoration: none;
         }
         .topbar a:hover {
-            color: #0730ff; /* Цвет текста при наведении */
+            color: #0730ff;
         }
+
+        /* Стили для формы */
         .content {
-            margin-top: 60px; /* Отступ для контента, чтобы не перекрывался topbar */
-            padding: 20px; /* Внутренние отступы */
+            margin-top: 60px; /* Отступ сверху для основного контента */
+            padding: 20px;
         }
+        .form-group { margin-bottom: 15px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .section-title { margin-bottom: 20px; }
+        .btn-primary { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-primary:hover { background-color: #0056b3; }
+        .list-group { list-style: none; padding: 0; }
+        .list-group-item { padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .section { margin-bottom: 30px; }
     </style>
 </head>
 <body>
+<!-- Топ-бар -->
 <div class="topbar">
     <div class="container-fluid d-flex justify-content-start align-items-center">
         <a th:href="@{/page}">Главная</a>
@@ -47,7 +51,6 @@
         <a th:href="@{/page/my/bar}">Мой Бар</a>
     </div>
 </div>
-
 <div class="content">
     <h1 class="mb-4">Edit Ingredient</h1>
     <form th:action="@{/page/AdminPanel/ingredients/save}" th:object="${ingredient}" method="post">
