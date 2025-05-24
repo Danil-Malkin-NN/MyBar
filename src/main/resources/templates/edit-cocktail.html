@@ -72,21 +72,15 @@
     </style>
 </head>
 <body>
-<div th:replace="fragments/topbar.html"></div>
-
 <div class="content">
     <h1 class="mb-4 section-title">Редактировать коктейль</h1>
     <form th:action="@{/page/AdminPanel/cocktail/save}" th:object="${cocktail}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
+        <!-- Поля коктейля, которые можно редактировать -->
         <div class="form-group">
             <label for="name">Имя:</label>
             <input type="text" id="name" class="form-control" th:field="*{name}"/>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Описание:</label>
-            <textarea id="description" class="form-control" th:field="*{description}"></textarea>
         </div>
 
         <div class="form-group">
@@ -99,28 +93,69 @@
             <input type="text" id="strength" class="form-control" th:field="*{strength}"/>
         </div>
 
+        <!-- Описание коктейля (только для чтения) -->
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" class="form-control" th:field="*{description}" readonly></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700">Инструменты:</label>
+            <ul class="list-group">
+                <li th:each="ing, ingStat : *{ingredients}" class="list-group-item">
+                    <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].id}"/>
+                    <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].ingredient.id}"/>
+
+                    <!-- Название инструмента (только для чтения) -->
+                    <div class="form-group">
+                        <label>Имя инструмента:</label>
+                        <input type="text" class="form-control"
+                               th:value="${ing.ingredient.name}" readonly/>
+                    </div>
+
+                    <!-- Описание инструмента (только для чтения) -->
+                    <div class="form-group">
+                        <label>Описание инструмента:</label>
+                        <input type="text" class="form-control"
+                               th:value="${ing.ingredient.description}" readonly/>
+                    </div>
+
+
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- Ингредиенты (редактируется только количество и тип единицы) -->
         <div class="form-group">
             <label>Ингредиенты:</label>
             <ul class="list-group">
                 <li th:each="ing, ingStat : *{ingredients}" class="list-group-item">
                     <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].id}"/>
+                    <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].ingredient.id}"/>
+
+                    <!-- Название ингредиента (только для чтения) -->
                     <div class="form-group">
-                        <label th:for="'ingredientName' + ${ingStat.index}">Имя ингредиента:</label>
-                        <input type="text" th:id="'ingredientName' + ${ingStat.index}" class="form-control"
-                               th:field="*{ingredients[__${ingStat.index}__].ingredient.name}"/>
+                        <label>Имя ингредиента:</label>
+                        <input type="text" class="form-control"
+                               th:value="${ing.ingredient.name}" readonly/>
                     </div>
 
-                    <input type="hidden" th:field="*{ingredients[__${ingStat.index}__].ingredient.id}"/>
+                    <!-- Описание ингредиента (только для чтения) -->
                     <div class="form-group">
-                        <label th:for="'ingredientDesc' + ${ingStat.index}">Описание ингредиента:</label>
-                        <input type="text" th:id="'ingredientDesc' + ${ingStat.index}" class="form-control"
-                               th:field="*{ingredients[__${ingStat.index}__].ingredient.description}"/>
+                        <label>Описание ингредиента:</label>
+                        <input type="text" class="form-control"
+                               th:value="${ing.ingredient.description}" readonly/>
                     </div>
+
+                    <!-- Количество (редактируемое) -->
                     <div class="form-group">
                         <label th:for="'ingredientCount' + ${ingStat.index}">Количество:</label>
                         <input type="text" th:id="'ingredientCount' + ${ingStat.index}" class="form-control"
                                th:field="*{ingredients[__${ingStat.index}__].count}"/>
                     </div>
+
+                    <!-- Тип единицы (редактируемый) -->
                     <div class="form-group">
                         <label th:for="'ingredientUnitType' + ${ingStat.index}">Тип единицы:</label>
                         <input type="text" th:id="'ingredientUnitType' + ${ingStat.index}" class="form-control"
@@ -130,54 +165,51 @@
             </ul>
         </div>
 
-
-
-
+        <!-- Шаги приготовления (только для чтения) -->
         <div class="section">
             <h2>Шаги приготовления</h2>
             <div th:each="step, stepStat : *{steps}" class="step mb-4">
                 <h3>Шаг <span th:text="${stepStat.index + 1}"></span></h3>
                 <input type="hidden" th:field="*{steps[__${stepStat.index}__].id}"/>
 
+                <!-- Задача шага (только для чтения) -->
                 <div class="form-group">
-                    <label th:for="'goal' + ${stepStat.index}">Задача:</label>
-                    <input type="text" th:id="'goal' + ${stepStat.index}" class="form-control"
-                           th:field="*{steps[__${stepStat.index}__].goal}"/>
+                    <label>Задача:</label>
+                    <input type="text" class="form-control"
+                           th:value="${step.goal}" readonly/>
                 </div>
 
+                <!-- Описание шага (только для чтения) -->
                 <div class="form-group">
-                    <label th:for="'stepDescription' + ${stepStat.index}">Описание:</label>
-                    <textarea th:id="'stepDescription' + ${stepStat.index}" class="form-control"
-                              th:field="*{steps[__${stepStat.index}__].description}"></textarea>
+                    <label>Описание:</label>
+                    <textarea class="form-control" th:text="${step.description}" readonly></textarea>
                 </div>
 
+                <!-- Ингредиенты шага (только для чтения) -->
                 <div class="form-group">
                     <label>Ингредиенты:</label>
                     <ul class="list-group">
-                        <li th:each="ing, ingStat : *{steps[__${stepStat.index}__].usesIngredients}" class="list-group-item">
-                            <input type="hidden" th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].id}"/>
+                        <li th:each="ing, ingStat : ${step.usesIngredients}" class="list-group-item">
                             <div class="form-group">
-                                <label th:for="'stepIngredientName' + ${stepStat.index} + ${ingStat.index}">Имя ингредиента:</label>
-                                <input type="text" th:id="'stepIngredientName' + ${stepStat.index} + ${ingStat.index}" class="form-control"
-                                       th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].ingredient.name}"/>
+                                <label>Имя ингредиента:</label>
+                                <input type="text" class="form-control"
+                                       th:value="${ing.ingredient.name}" readonly/>
                             </div>
                             <div class="form-group">
-                                <label th:for="'stepCount' + ${stepStat.index} + ${ingStat.index}">Количество:</label>
-                                <input type="text" th:id="'stepCount' + ${stepStat.index} + ${ingStat.index}" class="form-control"
-                                       th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].count}"/>
+                                <label>Количество:</label>
+                                <input type="text" class="form-control"
+                                       th:value="${ing.count}" readonly/>
                             </div>
                             <div class="form-group">
-                                <label th:for="'stepUnitType' + ${stepStat.index} + ${ingStat.index}">Тип единицы:</label>
-                                <input type="text" th:id="'stepUnitType' + ${stepStat.index} + ${ingStat.index}" class="form-control"
-                                       th:field="*{steps[__${stepStat.index}__].usesIngredients[__${ingStat.index}__].unitType}"/>
+                                <label>Тип единицы:</label>
+                                <input type="text" class="form-control"
+                                       th:value="${ing.unitType}" readonly/>
                             </div>
-
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-
 
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>

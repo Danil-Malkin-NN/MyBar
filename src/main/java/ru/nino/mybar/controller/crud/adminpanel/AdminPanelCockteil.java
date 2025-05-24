@@ -35,8 +35,7 @@ public class AdminPanelCockteil {
     }
 
     @PostMapping("/cocktail/save")
-    public String saveCocktail(Cocktail cocktail, IngredientAndCount ingredientAndCount) {
-        ingredientAndCountRepository.save(ingredientAndCount);
+    public String saveCocktail(Cocktail cocktail) {
         cocktailrepository.save(cocktail);
         return "redirect:/page";
     }
