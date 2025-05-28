@@ -2,8 +2,7 @@ package ru.nino.mybar.s3;
 
 import io.minio.GetObjectResponse;
 import org.apache.coyote.BadRequestException;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
 @RequestMapping("/media")
@@ -31,17 +31,28 @@ public class MediaController {
         return minioService.getStringResponseEntity(category, file);
     }
 
-    @GetMapping("/{category}/{filename:.+}")
-    public ResponseEntity<Resource> getImage(@PathVariable String category, @PathVariable String filename) {
-
+    @GetMapping("/images/{category}/{filename}")
+    public ResponseEntity<StreamingResponseBody> downloadImage(@PathVariable String category,
+                                                               @PathVariable String filename) {
         String key = category + "/" + filename;
-        GetObjectResponse image = minioService.getFile("images", key);
-        InputStreamResource resource = new InputStreamResource(image);
+        try {
+            GetObjectResponse response = minioService.getFile("images", key);
 
-        return ResponseEntity.ok()
-                .contentType(getContentType(filename))
-                .body(resource);
+            StreamingResponseBody stream = outputStream -> {
+                try (response) { // закрываем корректно
+                    response.transferTo(outputStream);
+                }
+            };
+
+            return ResponseEntity.ok()
+                    .contentType(getContentType(filename))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                    .body(stream);
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при получении файла из MinIO", e);
+        }
     }
+
 
     private MediaType getContentType(String filename) {
         if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {

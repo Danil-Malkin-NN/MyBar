@@ -26,7 +26,7 @@ import static io.minio.ObjectWriteArgs.MIN_MULTIPART_SIZE;
 public class SimpleMinioUsageTest {
 
     public static final String БЕЛЫЙ_РУССКИЙ_PNG = "Белый русский.png";
-    public static final String USER_1 = "user1";
+    public static final String BUCKET = "images";
     @Autowired
     MinioClient minioClient;
 
@@ -36,14 +36,20 @@ public class SimpleMinioUsageTest {
         
     }
 
-
+    @Test
+    @SneakyThrows
+    public void createBucket() {
+        minioClient.makeBucket(MakeBucketArgs.builder()
+                                       .bucket(BUCKET)
+                                       .build());
+    }
 
     @SneakyThrows
     @Test
     public void deleteTest(){
 
         minioClient.removeObject(RemoveObjectArgs.builder()
-                                         .bucket(USER_1)
+                                         .bucket(BUCKET)
                                          .object(БЕЛЫЙ_РУССКИЙ_PNG)
                                          .build());
     }
@@ -57,19 +63,11 @@ public class SimpleMinioUsageTest {
 
         minioClient.putObject(PutObjectArgs
                                       .builder()
-                                      .bucket(USER_1)
+                                      .bucket(BUCKET)
                                       .object(БЕЛЫЙ_РУССКИЙ_PNG)
                                       .stream(resource, resource.available(), MIN_MULTIPART_SIZE)
                                                       .build());
 
-    }
-
-    @Test
-    @SneakyThrows
-    public void createBucket() {
-        minioClient.makeBucket(MakeBucketArgs.builder()
-                                       .bucket("user1")
-                                       .build());
     }
 
 }
