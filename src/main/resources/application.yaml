@@ -62,7 +62,7 @@ minio:
   url: http://localhost:9000
   access-key: minioadmin
   secret-key: minioadmin
-  bucket: my_bar
+  bucket: my-bar
 
 
 

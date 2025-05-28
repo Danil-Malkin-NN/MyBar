@@ -26,7 +26,7 @@ import static io.minio.ObjectWriteArgs.MIN_MULTIPART_SIZE;
 public class SimpleMinioUsageTest {
 
     public static final String БЕЛЫЙ_РУССКИЙ_PNG = "Белый русский.png";
-    public static final String BUCKET = "images";
+    public static final String BUCKET = "my-bar";
     @Autowired
     MinioClient minioClient;
 

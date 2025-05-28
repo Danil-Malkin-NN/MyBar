@@ -26,15 +26,18 @@ public class MediaController {
 
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("category") String category,
-                                         @RequestParam("file") MultipartFile file) throws BadRequestException {
+                              @RequestParam("file") MultipartFile file) throws BadRequestException {
 
         return minioService.getStringResponseEntity(category, file);
     }
 
-    @GetMapping("/images/{filename}")
-    public ResponseEntity<StreamingResponseBody> downloadImage(@PathVariable String filename) {
+    @GetMapping("/images/{category}/{filename:.+}")
+    public ResponseEntity<StreamingResponseBody> downloadImage(@PathVariable String category,
+                                                               @PathVariable String filename) {
+
+        String name = category + "/" + filename;
         try {
-            GetObjectResponse response = minioService.getFile(filename);
+            GetObjectResponse response = minioService.getFile(name);
 
             StreamingResponseBody stream = outputStream -> {
                 try (response) {
@@ -50,7 +53,6 @@ public class MediaController {
             throw new RuntimeException("Ошибка при получении файла из MinIO", e);
         }
     }
-
 
     private MediaType getContentType(String filename) {
         if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
