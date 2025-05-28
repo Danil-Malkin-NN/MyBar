@@ -13,6 +13,7 @@ import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import org.apache.coyote.BadRequestException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +27,14 @@ public class MinioService {
 
 	private final MinioClient minioClient;
 
+	@Value("${minio.bucket}")
+	private String bucket;
+
 	public MinioService(MinioClient minioClient) {
 		this.minioClient = minioClient;
 	}
 
-	public GetObjectResponse getFile(String bucket, String key) throws ServerException, InsufficientDataException,
+	public GetObjectResponse getFile(String key) throws ServerException, InsufficientDataException,
 																	   ErrorResponseException, IOException,
 																	   NoSuchAlgorithmException, InvalidKeyException,
 																	   InvalidResponseException, XmlParserException,
@@ -50,7 +54,7 @@ public class MinioService {
 
 		try (InputStream is = file.getInputStream()) {
 			ObjectWriteResponse images = minioClient.putObject(PutObjectArgs.builder()
-																	   .bucket("images")
+																	   .bucket(bucket)
 																	   .object(key)
 																	   .stream(is, file.getSize(), -1)
 																	   .contentType(file.getContentType())

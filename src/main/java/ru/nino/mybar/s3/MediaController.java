@@ -36,7 +36,7 @@ public class MediaController {
                                                                @PathVariable String filename) {
         String key = category + "/" + filename;
         try {
-            GetObjectResponse response = minioService.getFile("images", key);
+            GetObjectResponse response = minioService.getFile(key);
 
             StreamingResponseBody stream = outputStream -> {
                 try (response) { // закрываем корректно
