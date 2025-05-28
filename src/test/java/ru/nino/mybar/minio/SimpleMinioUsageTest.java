@@ -3,6 +3,7 @@ package ru.nino.mybar.minio;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;
@@ -24,8 +25,28 @@ import static io.minio.ObjectWriteArgs.MIN_MULTIPART_SIZE;
 @SpringBootTest
 public class SimpleMinioUsageTest {
 
+    public static final String БЕЛЫЙ_РУССКИЙ_PNG = "Белый русский.png";
+    public static final String USER_1 = "user1";
     @Autowired
     MinioClient minioClient;
+
+    @Test
+    public void getTest(){
+
+        
+    }
+
+
+
+    @SneakyThrows
+    @Test
+    public void deleteTest(){
+
+        minioClient.removeObject(RemoveObjectArgs.builder()
+                                         .bucket(USER_1)
+                                         .object(БЕЛЫЙ_РУССКИЙ_PNG)
+                                         .build());
+    }
 
     @Test
     public void saveTest() throws ServerException, InsufficientDataException, ErrorResponseException, IOException,
@@ -36,8 +57,8 @@ public class SimpleMinioUsageTest {
 
         minioClient.putObject(PutObjectArgs
                                       .builder()
-                                      .bucket("user1")
-                                      .object("Белый русский.png")
+                                      .bucket(USER_1)
+                                      .object(БЕЛЫЙ_РУССКИЙ_PNG)
                                       .stream(resource, resource.available(), MIN_MULTIPART_SIZE)
                                                       .build());
 
