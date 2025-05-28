@@ -31,15 +31,13 @@ public class MediaController {
         return minioService.getStringResponseEntity(category, file);
     }
 
-    @GetMapping("/images/{category}/{filename}")
-    public ResponseEntity<StreamingResponseBody> downloadImage(@PathVariable String category,
-                                                               @PathVariable String filename) {
-        String key = category + "/" + filename;
+    @GetMapping("/images/{filename}")
+    public ResponseEntity<StreamingResponseBody> downloadImage(@PathVariable String filename) {
         try {
-            GetObjectResponse response = minioService.getFile(key);
+            GetObjectResponse response = minioService.getFile(filename);
 
             StreamingResponseBody stream = outputStream -> {
-                try (response) { // закрываем корректно
+                try (response) {
                     response.transferTo(outputStream);
                 }
             };

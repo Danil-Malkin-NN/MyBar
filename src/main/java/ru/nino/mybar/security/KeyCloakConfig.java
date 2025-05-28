@@ -3,7 +3,6 @@ package ru.nino.mybar.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -61,16 +60,16 @@ public class KeyCloakConfig {
         http.authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers(HttpMethod.GET, "/**")
 //                        .permitAll()
-                .requestMatchers(HttpMethod.POST, "/my/**")
-                .authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/my/**")
-                .hasRole(USER)
-                .requestMatchers(HttpMethod.DELETE, "/**")
-                .hasRole(ADMIN)
-                .requestMatchers(HttpMethod.GET, "/my/**")
-                .authenticated()
-                .requestMatchers(HttpMethod.GET, "/page/my/**")
-                .authenticated()
+//                .requestMatchers(HttpMethod.POST, "/my/**")
+//                .authenticated()
+//                .requestMatchers(HttpMethod.DELETE, "/my/**")
+//                .hasRole(USER)
+//                .requestMatchers(HttpMethod.DELETE, "/**")
+//                .hasRole(ADMIN)
+//                .requestMatchers(HttpMethod.GET, "/my/**")
+//                .authenticated()
+//                .requestMatchers(HttpMethod.GET, "/page/my/**")
+//                .authenticated()
                 .anyRequest()
                 .permitAll());
 

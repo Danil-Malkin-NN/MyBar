@@ -8,7 +8,7 @@ import ru.nino.mybar.entity.Ingredient;
 import ru.nino.mybar.entity.IngredientAndCount;
 import ru.nino.mybar.mapper.AllMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ImageMapper.class})
 public interface IngredientMapperImpl extends AllMapper<IngredientDto, Ingredient> {
 
     @Override
