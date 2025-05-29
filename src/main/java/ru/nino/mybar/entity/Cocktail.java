@@ -6,7 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
-import lombok.Data;
+import jakarta.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,4 +44,7 @@ public class Cocktail extends IdEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Step> steps = new ArrayList<>();
+
+    @OneToOne
+    private Image image;
 }

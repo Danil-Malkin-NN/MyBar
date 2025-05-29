@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1748452045381-1" author="Danil">
+    <changeSet id="1748504082769-1" author="dvmalkin">
         <createTable tableName="cocktail">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_cocktail"/>
@@ -18,10 +18,10 @@
             <column name="strength" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="image_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-2" author="Danil">
+    <changeSet id="1748504082769-2" author="dvmalkin">
         <createTable tableName="cocktail_ingredients">
             <column name="cocktail_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -31,8 +31,7 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-3" author="Danil">
+    <changeSet id="1748504082769-3" author="dvmalkin">
         <createTable tableName="cocktail_instruments">
             <column name="cocktail_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -42,8 +41,7 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-4" author="Danil">
+    <changeSet id="1748504082769-4" author="dvmalkin">
         <createTable tableName="cocktail_steps">
             <column name="cocktail_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -53,8 +51,7 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-5" author="Danil">
+    <changeSet id="1748504082769-5" author="dvmalkin">
         <createTable tableName="image">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_image"/>
@@ -62,8 +59,7 @@
             <column name="image_path" type="TEXT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-6" author="Danil">
+    <changeSet id="1748504082769-6" author="dvmalkin">
         <createTable tableName="ingredient">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ingredient"/>
@@ -73,8 +69,7 @@
             <column name="image_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-7" author="Danil">
+    <changeSet id="1748504082769-7" author="dvmalkin">
         <createTable tableName="ingredient_and_count">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ingredientandcount"/>
@@ -84,18 +79,17 @@
             <column name="unit_type" type="SMALLINT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-8" author="Danil">
+    <changeSet id="1748504082769-8" author="dvmalkin">
         <createTable tableName="instrument">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_instrument"/>
             </column>
             <column name="name" type="TEXT"/>
             <column name="description" type="TEXT"/>
+            <column name="image_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-9" author="Danil">
+    <changeSet id="1748504082769-9" author="dvmalkin">
         <createTable tableName="step">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_step"/>
@@ -104,8 +98,7 @@
             <column name="description" type="TEXT"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-10" author="Danil">
+    <changeSet id="1748504082769-10" author="dvmalkin">
         <createTable tableName="step_instruments">
             <column name="step_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -115,8 +108,7 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="1748452045381-11" author="Danil">
+    <changeSet id="1748504082769-11" author="dvmalkin">
         <createTable tableName="step_uses_ingredients">
             <column name="step_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -126,121 +118,134 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1748452045381-12" author="Danil">
-        <addUniqueConstraint columnNames="name" constraintName="uc_ingredient_name" tableName="ingredient"/>
-    </changeSet>
-    <changeSet id="1748452045381-13" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="ingredient_and_count"
-                                 constraintName="FK_INGREDIENTANDCOUNT_ON_INGREDIENT" referencedColumnNames="id"
-                                 referencedTableName="ingredient"/>
-    </changeSet>
-    <changeSet id="1748452045381-14" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="ingredient"
-                                 constraintName="FK_INGREDIENT_ON_IMAGE" referencedColumnNames="id"
-                                 referencedTableName="image"/>
-    </changeSet>
-    <changeSet id="1748452045381-15" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_ingredients"
-                                 constraintName="fk_cocing_on_cocktail" referencedColumnNames="id"
-                                 referencedTableName="cocktail"/>
-    </changeSet>
-    <changeSet id="1748452045381-16" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="ingredients_id" baseTableName="cocktail_ingredients"
-                                 constraintName="fk_cocing_on_ingredient_and_count" referencedColumnNames="id"
-                                 referencedTableName="ingredient_and_count"/>
-    </changeSet>
-    <changeSet id="1748452045381-17" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_instruments"
-                                 constraintName="fk_cocins_on_cocktail" referencedColumnNames="id"
-                                 referencedTableName="cocktail"/>
-    </changeSet>
-    <changeSet id="1748452045381-18" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="cocktail_instruments"
-                                 constraintName="fk_cocins_on_instrument" referencedColumnNames="id"
-                                 referencedTableName="instrument"/>
-    </changeSet>
-    <changeSet id="1748452045381-19" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_steps"
-                                 constraintName="fk_cocste_on_cocktail" referencedColumnNames="id"
-                                 referencedTableName="cocktail"/>
-    </changeSet>
-    <changeSet id="1748452045381-20" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="steps_id" baseTableName="cocktail_steps"
-                                 constraintName="fk_cocste_on_step" referencedColumnNames="id"
-                                 referencedTableName="step"/>
-    </changeSet>
-    <changeSet id="1748452045381-21" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="step_instruments"
-                                 constraintName="fk_steins_on_instrument" referencedColumnNames="id"
-                                 referencedTableName="instrument"/>
-    </changeSet>
-    <changeSet id="1748452045381-22" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_instruments"
-                                 constraintName="fk_steins_on_step" referencedColumnNames="id"
-                                 referencedTableName="step"/>
-    </changeSet>
-    <changeSet id="1748452045381-23" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="uses_ingredients_id" baseTableName="step_uses_ingredients"
-                                 constraintName="fk_steuseing_on_ingredient_and_count" referencedColumnNames="id"
-                                 referencedTableName="ingredient_and_count"/>
-    </changeSet>
-    <changeSet id="1748452045381-24" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_uses_ingredients"
-                                 constraintName="fk_steuseing_on_step" referencedColumnNames="id"
-                                 referencedTableName="step"/>
-    </changeSet>
-    <changeSet id="1748452045597-1" author="Danil">
-        <createTable schemaName="keycloak" tableName="user_entity" ifNotExists="true">
-            <column name="id" type="VARCHAR(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_entity"/>
+    <changeSet id="1748504082769-12" author="dvmalkin">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user"/>
             </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="username" type="VARCHAR(255)"/>
+            <column name="image_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1748452045597-2" author="Danil">
-        <createTable schemaName="postgres" tableName="user_entity_favorite_cocktail">
-            <column name="user_id" type="VARCHAR(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_entity_favoritecocktail"/>
+    <changeSet id="1748504082769-13" author="dvmalkin">
+        <createTable tableName="user_favorite_cocktail">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_favoritecocktail"/>
             </column>
             <column name="favorite_cocktail_id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_entity_favoritecocktail"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_favoritecocktail"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1748452045597-3" author="Danil">
-        <createTable schemaName="postgres" tableName="user_entity_ingredient">
-            <column name="user_id" type="VARCHAR(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_entity_ingredient"/>
+    <changeSet id="1748504082769-14" author="dvmalkin">
+        <createTable tableName="user_ingredient">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_ingredient"/>
             </column>
             <column name="ingredient_id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_entity_ingredient"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_ingredient"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1748452045597-4" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="favorite_cocktail_id" baseTableName="user_entity_favorite_cocktail"
-                                 baseTableSchemaName="postgres" constraintName="fk_useentfavcoc_on_cocktail"
-                                 referencedColumnNames="id" referencedTableName="cocktail"/>
+    <changeSet id="1748504082769-15" author="dvmalkin">
+        <addUniqueConstraint columnNames="name" constraintName="uc_ingredient_name" tableName="ingredient"/>
     </changeSet>
-    <changeSet id="1748452045597-5" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_entity_favorite_cocktail"
-                                 baseTableSchemaName="postgres" constraintName="fk_useentfavcoc_on_user"
-                                 referencedColumnNames="id" referencedTableName="user_entity"
-                                 referencedTableSchemaName="keycloak"/>
+    <changeSet id="1748504082769-16" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="cocktail"
+                                 constraintName="FK_COCKTAIL_ON_IMAGE" referencedColumnNames="id"
+                                 referencedTableName="image"/>
     </changeSet>
-    <changeSet id="1748452045597-6" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_entity_ingredient"
-                                 baseTableSchemaName="postgres" constraintName="fk_useenting_on_ingredient"
-                                 referencedColumnNames="id" referencedTableName="ingredient"/>
+    <changeSet id="1748504082769-17" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="ingredient_and_count"
+                                 constraintName="FK_INGREDIENTANDCOUNT_ON_INGREDIENT" referencedColumnNames="id"
+                                 referencedTableName="ingredient"/>
     </changeSet>
-    <changeSet id="1748452045597-7" author="Danil">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_entity_ingredient"
-                                 baseTableSchemaName="postgres" constraintName="fk_useenting_on_user"
-                                 referencedColumnNames="id" referencedTableName="user_entity"
-                                 referencedTableSchemaName="keycloak"/>
+    <changeSet id="1748504082769-18" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="ingredient"
+                                 constraintName="FK_INGREDIENT_ON_IMAGE" referencedColumnNames="id"
+                                 referencedTableName="image"/>
+    </changeSet>
+    <changeSet id="1748504082769-19" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="instrument"
+                                 constraintName="FK_INSTRUMENT_ON_IMAGE" referencedColumnNames="id"
+                                 referencedTableName="image"/>
+    </changeSet>
+    <changeSet id="1748504082769-20" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="user" constraintName="FK_USER_ON_IMAGE"
+                                 referencedColumnNames="id" referencedTableName="image"/>
+    </changeSet>
+    <changeSet id="1748504082769-21" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_ingredients"
+                                 constraintName="fk_cocing_on_cocktail" referencedColumnNames="id"
+                                 referencedTableName="cocktail"/>
+    </changeSet>
+    <changeSet id="1748504082769-22" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="ingredients_id" baseTableName="cocktail_ingredients"
+                                 constraintName="fk_cocing_on_ingredient_and_count" referencedColumnNames="id"
+                                 referencedTableName="ingredient_and_count"/>
+    </changeSet>
+    <changeSet id="1748504082769-23" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_instruments"
+                                 constraintName="fk_cocins_on_cocktail" referencedColumnNames="id"
+                                 referencedTableName="cocktail"/>
+    </changeSet>
+    <changeSet id="1748504082769-24" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="cocktail_instruments"
+                                 constraintName="fk_cocins_on_instrument" referencedColumnNames="id"
+                                 referencedTableName="instrument"/>
+    </changeSet>
+    <changeSet id="1748504082769-25" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="cocktail_id" baseTableName="cocktail_steps"
+                                 constraintName="fk_cocste_on_cocktail" referencedColumnNames="id"
+                                 referencedTableName="cocktail"/>
+    </changeSet>
+    <changeSet id="1748504082769-26" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="steps_id" baseTableName="cocktail_steps"
+                                 constraintName="fk_cocste_on_step" referencedColumnNames="id"
+                                 referencedTableName="step"/>
+    </changeSet>
+    <changeSet id="1748504082769-27" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="instruments_id" baseTableName="step_instruments"
+                                 constraintName="fk_steins_on_instrument" referencedColumnNames="id"
+                                 referencedTableName="instrument"/>
+    </changeSet>
+    <changeSet id="1748504082769-28" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_instruments"
+                                 constraintName="fk_steins_on_step" referencedColumnNames="id"
+                                 referencedTableName="step"/>
+    </changeSet>
+    <changeSet id="1748504082769-29" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="uses_ingredients_id" baseTableName="step_uses_ingredients"
+                                 constraintName="fk_steuseing_on_ingredient_and_count" referencedColumnNames="id"
+                                 referencedTableName="ingredient_and_count"/>
+    </changeSet>
+    <changeSet id="1748504082769-30" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="step_id" baseTableName="step_uses_ingredients"
+                                 constraintName="fk_steuseing_on_step" referencedColumnNames="id"
+                                 referencedTableName="step"/>
+    </changeSet>
+    <changeSet id="1748504082769-31" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="favorite_cocktail_id" baseTableName="user_favorite_cocktail"
+                                 constraintName="fk_usefavcoc_on_cocktail" referencedColumnNames="id"
+                                 referencedTableName="cocktail"/>
+    </changeSet>
+    <changeSet id="1748504082769-32" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_favorite_cocktail"
+                                 constraintName="fk_usefavcoc_on_user" referencedColumnNames="id"
+                                 referencedTableName="user"/>
+    </changeSet>
+    <changeSet id="1748504082769-33" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_ingredient"
+                                 constraintName="fk_useing_on_ingredient" referencedColumnNames="id"
+                                 referencedTableName="ingredient"/>
+    </changeSet>
+    <changeSet id="1748504082769-34" author="dvmalkin">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_ingredient"
+                                 constraintName="fk_useing_on_user" referencedColumnNames="id"
+                                 referencedTableName="user"/>
     </changeSet>
 
 </databaseChangeLog>
