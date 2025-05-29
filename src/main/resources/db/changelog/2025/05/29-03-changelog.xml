@@ -6,12 +6,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
 
-    <!-- Удаление старого триггера и функции -->
-    <changeSet id="drop-old-triggers-functions" author="you">
-        <sql>DROP TRIGGER IF EXISTS update_trigger ON keycloak.user_entity;</sql>
-        <sql>DROP FUNCTION IF EXISTS keycloak.update_user_on_user_entity_change();</sql>
-    </changeSet>
-
     <!-- Функция вставки -->
     <changeSet id="create-insert-function" author="you">
         <sql>
