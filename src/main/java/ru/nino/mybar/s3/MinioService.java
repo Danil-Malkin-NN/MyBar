@@ -11,11 +11,14 @@ import io.minio.errors.InternalException;
 import io.minio.errors.InvalidResponseException;
 import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.nino.mybar.entity.Image;
+import ru.nino.mybar.repository.impl.ImageRepositoryImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,16 +26,16 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Service
+@RequiredArgsConstructor
 public class MinioService {
 
 	private final MinioClient minioClient;
 
+	private final ImageRepositoryImpl imageRepository;
+
 	@Value("${minio.bucket}")
 	private String bucket;
 
-	public MinioService(MinioClient minioClient) {
-		this.minioClient = minioClient;
-	}
 
 	public GetObjectResponse getFile(String key) throws ServerException, InsufficientDataException,
 																	   ErrorResponseException, IOException,
@@ -48,7 +51,7 @@ public class MinioService {
 	}
 
 	@NotNull
-	public String getStringResponseEntity(String category, MultipartFile file) throws BadRequestException {
+	public String uploadImage(String category, MultipartFile file) throws BadRequestException {
 		String filename = file.getOriginalFilename();
 		String key = category + "/" + filename;
 
@@ -59,6 +62,8 @@ public class MinioService {
 																	   .stream(is, file.getSize(), -1)
 																	   .contentType(file.getContentType())
 																	   .build());
+
+			imageRepository.save(new Image(key));
 			return "Файл загружен: " + key;
 
 		} catch (Exception e) {

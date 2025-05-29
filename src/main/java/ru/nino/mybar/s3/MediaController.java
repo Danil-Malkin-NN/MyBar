@@ -28,7 +28,7 @@ public class MediaController {
     public String uploadImage(@RequestParam("category") String category,
                               @RequestParam("file") MultipartFile file) throws BadRequestException {
 
-        return minioService.getStringResponseEntity(category, file);
+		return minioService.uploadImage(category, file);
     }
 
     @GetMapping("/images/{category}/{filename:.+}")
