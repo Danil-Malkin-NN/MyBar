@@ -14,8 +14,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {IngredientAndCountMapperImpl.class,
         InstrumentsMapperImpl.class,
-        StepsMapperImpl.class,
-        IngredientMapperImpl.class
+        StepsMapperImpl.class, IngredientMapperImpl.class, ImageMapperImpl.class
 })
 public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
 

@@ -10,6 +10,10 @@ public interface ImageMapper {
 	@Mapping(target = "imagePath", source = ".")
 	Image getImage(String path);
 
-	@Mapping(target = ".", source = "imagePath")
-	public String getPath(Image image);
+	default String getPath(Image image) {
+		if (image == null) {
+			return null;
+		}
+		return image.getImagePath();
+	}
 }

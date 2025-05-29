@@ -24,4 +24,6 @@ public class CocktailIngredientDto {
 
     @Schema(description = "Список ингредиентов и их количество для коктейля ")
     private List<IngredientAndCountDto> ingredients = new ArrayList<>();
+
+    private String image;
 }
