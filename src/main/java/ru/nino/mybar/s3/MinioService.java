@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nino.mybar.entity.Image;
@@ -36,35 +38,36 @@ public class MinioService {
 	@Value("${minio.bucket}")
 	private String bucket;
 
-
 	public GetObjectResponse getFile(String key) throws ServerException, InsufficientDataException,
-																	   ErrorResponseException, IOException,
-																	   NoSuchAlgorithmException, InvalidKeyException,
-																	   InvalidResponseException, XmlParserException,
-																	   InternalException {
-		GetObjectResponse response = minioClient.getObject(GetObjectArgs.builder()
-																   .bucket(bucket)
-																   .object(key)
-																   .build());
+														ErrorResponseException, IOException, NoSuchAlgorithmException,
+														InvalidKeyException, InvalidResponseException,
+														XmlParserException, InternalException {
+		final GetObjectArgs getRequest = GetObjectArgs.builder()
+				.bucket(bucket)
+				.object(key)
+				.build();
 
-		return response;
+		return minioClient.getObject(getRequest);
+	}
+
+	public Page<Image> getImages(Pageable pageable) {
+		return imageRepository.findAll(pageable);
 	}
 
 	@NotNull
-	public String uploadImage(String category, MultipartFile file) throws BadRequestException {
+	public Image uploadImage(String category, MultipartFile file) throws BadRequestException {
 		String filename = file.getOriginalFilename();
 		String key = category + "/" + filename;
 
 		try (InputStream is = file.getInputStream()) {
-			ObjectWriteResponse images = minioClient.putObject(PutObjectArgs.builder()
-																	   .bucket(bucket)
-																	   .object(key)
-																	   .stream(is, file.getSize(), -1)
-																	   .contentType(file.getContentType())
-																	   .build());
-
-			imageRepository.save(new Image(key));
-			return "Файл загружен: " + key;
+			final PutObjectArgs putObjectArgs = PutObjectArgs.builder()
+					.bucket(bucket)
+					.object(key)
+					.stream(is, file.getSize(), -1)
+					.contentType(file.getContentType())
+					.build();
+			ObjectWriteResponse images = minioClient.putObject(putObjectArgs);
+			return imageRepository.save(new Image(key));
 
 		} catch (Exception e) {
 			throw new BadRequestException(e);
