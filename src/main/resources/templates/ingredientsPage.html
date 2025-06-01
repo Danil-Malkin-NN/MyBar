@@ -36,6 +36,8 @@
                 </a>
             </h3>
 
+            <img alt="Image" th:src="@{/media/images/{filename}(filename=${ingredient.image})}" th:if="${ingredient.image!=null}"/>
+
             <p th:text="${ingredient.description}"></p>
 
             <button th:attr="data-id=${ingredient.id}"

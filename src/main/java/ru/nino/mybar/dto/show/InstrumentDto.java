@@ -25,5 +25,6 @@ public class InstrumentDto extends DTO {
     @Schema(description = "Описание инструмента", example = "Металлическая ёмкость для смешения жидкостей. Шейкер обычно трясут вместе с льдом")
     private String description = "";
 
+    private String image;
 
 }
