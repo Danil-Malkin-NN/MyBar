@@ -119,7 +119,7 @@
         </createTable>
     </changeSet>
     <changeSet id="1748504082769-12" author="dvmalkin">
-        <createTable tableName="user">
+        <createTable tableName="user_data">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user"/>
             </column>
@@ -174,7 +174,7 @@
                                  referencedTableName="image"/>
     </changeSet>
     <changeSet id="1748504082769-20" author="dvmalkin">
-        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="user" constraintName="FK_USER_ON_IMAGE"
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="user_data" constraintName="FK_USER_ON_IMAGE"
                                  referencedColumnNames="id" referencedTableName="image"/>
     </changeSet>
     <changeSet id="1748504082769-21" author="dvmalkin">
@@ -235,7 +235,7 @@
     <changeSet id="1748504082769-32" author="dvmalkin">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_favorite_cocktail"
                                  constraintName="fk_usefavcoc_on_user" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 referencedTableName="user_data"/>
     </changeSet>
     <changeSet id="1748504082769-33" author="dvmalkin">
         <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_ingredient"
@@ -245,7 +245,7 @@
     <changeSet id="1748504082769-34" author="dvmalkin">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_ingredient"
                                  constraintName="fk_useing_on_user" referencedColumnNames="id"
-                                 referencedTableName="user"/>
+                                 referencedTableName="user_data"/>
     </changeSet>
 
 </databaseChangeLog>

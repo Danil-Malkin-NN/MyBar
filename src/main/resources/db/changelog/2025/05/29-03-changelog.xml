@@ -17,7 +17,7 @@
             NOTICE 'email: %, first_name: %, last_name: %, username: %',
                 NEW.email, NEW.first_name, NEW.last_name, NEW.username;
 
-            INSERT INTO postgres."user"
+            INSERT INTO postgres."user_data"
             VALUES (default, NEW.email, NEW.first_name, NEW.last_name, NEW.username, null);
 
             RETURN NEW;
@@ -49,7 +49,7 @@
             NOTICE 'email: %, first_name: %, last_name: %, username: %',
                 NEW.email, NEW.first_name, NEW.last_name, NEW.username;
 
-            UPDATE postgres."user"
+            UPDATE postgres."user_data"
             SET last_name  = NEW.last_name,
                 first_name = NEW.first_name,
                 email      = NEW.email,

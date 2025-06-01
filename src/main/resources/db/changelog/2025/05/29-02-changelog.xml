@@ -7,10 +7,10 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
     <changeSet id="1748505192799-2" author="dvmalkin">
-        <addUniqueConstraint columnNames="email" constraintName="uc_user_email" tableName="user"/>
+        <addUniqueConstraint columnNames="email" constraintName="uc_user_email" tableName="user_data"/>
     </changeSet>
     <changeSet id="1748505192799-1" author="dvmalkin">
-        <addNotNullConstraint columnDataType="VARCHAR(255)" columnName="email" tableName="user" validate="true"/>
+        <addNotNullConstraint columnDataType="VARCHAR(255)" columnName="email" tableName="user_data" validate="true"/>
     </changeSet>
 
 </databaseChangeLog>
