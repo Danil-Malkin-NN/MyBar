@@ -49,10 +49,11 @@ spring:
     password: ${POSTGRES_PASSWORD:postgres}
 
 minio:
-  url: http://localhost:9000
-  access-key: minioadmin
-  secret-key: minioadmin
-  bucket: my-bar
+  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_ROOT_USER}
+  secret-key: ${MINIO_ROOT_PASSWORD}
+  bucket: ${MINIO_BUCKET:my-bar}
+
 
 
 
