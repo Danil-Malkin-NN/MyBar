@@ -10,6 +10,20 @@ spec:
     requests:
       storage: 10Gi
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv
+  namespace: my-bar
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/minio
+  persistentVolumeReclaimPolicy: Retain
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
