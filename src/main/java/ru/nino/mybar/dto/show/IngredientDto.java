@@ -24,4 +24,6 @@ public class IngredientDto extends DTO {
 
     private boolean available = false;
 
+    private String image;
+
 }

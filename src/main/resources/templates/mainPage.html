@@ -34,6 +34,8 @@
     <!-- Сетка карточек -->
     <div class="grid">
         <div th:each="cocktail : ${items}" class="border rounded-lg p-4 shadow-sm mb-4">
+            <img alt="Image" th:if="${cocktail.image!=null}"
+                 th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
 
             <h3>
                 <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"

@@ -3,7 +3,6 @@ package ru.nino.mybar.dto.show;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -40,4 +39,6 @@ public class CocktailDto extends DTO {
 
     @Schema(description = "Список шагов и их количество для коктейля ")
     private List<StepDto> steps = new ArrayList<>();
+
+    private String image;
 }

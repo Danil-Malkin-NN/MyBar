@@ -23,12 +23,7 @@ services:
 #
       KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8081
-#      KC_HOSTNAME_STRICT: false
-#      KC_HOSTNAME_STRICT_HTTPS: false
-#
-#      KC_LOG_LEVEL: info
-#      KC_METRICS_ENABLED: true
-#      KC_HEALTH_ENABLED: true
+
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     command: start-dev --import-realm
@@ -38,3 +33,21 @@ services:
       - postgres_bd
     ports:
       - "8081:8080"
+
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"   # API (S3 совместимый)
+      - "9001:9001"   # Web-интерфейс
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+volumes:
+  minio_data:

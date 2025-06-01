@@ -5,6 +5,6 @@ import ru.nino.mybar.dto.show.InstrumentDto;
 import ru.nino.mybar.entity.Instrument;
 import ru.nino.mybar.mapper.AllMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ImageMapper.class})
 public interface InstrumentsMapperImpl extends AllMapper<InstrumentDto, Instrument> {
 }
