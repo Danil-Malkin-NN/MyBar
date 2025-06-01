@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: mybar
   namespace: my-bar
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "5m"
 spec:
   rules:
     - host: "mybar.dvmalkin.ru"
