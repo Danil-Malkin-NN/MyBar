@@ -35,6 +35,21 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
+
+            - name: MINIO_URL
+              value: http://minio-service:9000
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: user
+
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: password
+
             - name: LOG_LEVEL
               value: DEBUG
 ---
@@ -94,9 +109,12 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: password
+
+
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
+
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
