@@ -18,15 +18,14 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
     Page<Cocktail> findAll(Pageable pageable);
 
     @Query(value = """
-            select cocktail.*
-            from cocktail
-                     left join cocktail_ingredients ci on cocktail.id = ci.cocktail_id
-                     left join ingredient_and_count on ci.ingredients_id = ingredient_and_count.id
-            where ingredient_and_count.ingredient_id in (?1)
-            group by cocktail.id
-            order by count(ingredient_and_count.ingredient_id) desc
-            limit 10;
-            """, nativeQuery = true)
+            SELECT c
+            FROM Cocktail c
+            LEFT JOIN c.ingredients ci
+            LEFT JOIN ci.ingredient ic
+            WHERE ic.id IN :ingreients
+            GROUP BY c.id
+            ORDER BY COUNT(ic.id) DESC
+            """)
     List<Cocktail> findByIngredientsList(List<Integer> ingreients);
 
     @Override
@@ -37,8 +36,8 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
     @Query(value = """
                 with ingredient_id_users as (
                     select ingredient_id as id
-                    from keycloak.user_entity ue
-                            inner join user_entity_ingredient uei on ue.id = uei.user_id 
+                    from user_data ue
+                            inner join user_data_ingredient uei on ue.id = uei.user_id 
                              left join ingredient i on uei.ingredient_id = i.id
                     where ue.email = ?1
                 )
