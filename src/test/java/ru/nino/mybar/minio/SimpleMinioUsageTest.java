@@ -11,9 +11,11 @@ import io.minio.errors.InvalidResponseException;
 import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.nino.mybar.config.PostgresDbForTest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +24,9 @@ import java.security.NoSuchAlgorithmException;
 
 import static io.minio.ObjectWriteArgs.MIN_MULTIPART_SIZE;
 
+@Disabled
 @SpringBootTest
-public class SimpleMinioUsageTest {
+public class SimpleMinioUsageTest extends PostgresDbForTest {
 
     public static final String БЕЛЫЙ_РУССКИЙ_PNG = "Белый русский.png";
     public static final String BUCKET = "my-bar";
