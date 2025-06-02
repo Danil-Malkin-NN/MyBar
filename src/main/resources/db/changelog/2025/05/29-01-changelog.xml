@@ -228,22 +228,22 @@
                                  referencedTableName="step"/>
     </changeSet>
     <changeSet id="1748504082769-31" author="dvmalkin">
-        <addForeignKeyConstraint baseColumnNames="favorite_cocktail_id" baseTableName="user_favorite_cocktail"
+        <addForeignKeyConstraint baseColumnNames="favorite_cocktail_id" baseTableName="user_data_favorite_cocktail"
                                  constraintName="fk_usefavcoc_on_cocktail" referencedColumnNames="id"
                                  referencedTableName="cocktail"/>
     </changeSet>
     <changeSet id="1748504082769-32" author="dvmalkin">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_favorite_cocktail"
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_data_favorite_cocktail"
                                  constraintName="fk_usefavcoc_on_user" referencedColumnNames="id"
                                  referencedTableName="user_data"/>
     </changeSet>
     <changeSet id="1748504082769-33" author="dvmalkin">
-        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_ingredient"
+        <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="user_data_ingredient"
                                  constraintName="fk_useing_on_ingredient" referencedColumnNames="id"
                                  referencedTableName="ingredient"/>
     </changeSet>
     <changeSet id="1748504082769-34" author="dvmalkin">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_ingredient"
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_data_ingredient"
                                  constraintName="fk_useing_on_user" referencedColumnNames="id"
                                  referencedTableName="user_data"/>
     </changeSet>
