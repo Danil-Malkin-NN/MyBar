@@ -131,7 +131,7 @@
         </createTable>
     </changeSet>
     <changeSet id="1748504082769-13" author="dvmalkin">
-        <createTable tableName="user_favorite_cocktail">
+        <createTable tableName="user_data_favorite_cocktail">
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_favoritecocktail"/>
             </column>
@@ -141,7 +141,7 @@
         </createTable>
     </changeSet>
     <changeSet id="1748504082769-14" author="dvmalkin">
-        <createTable tableName="user_ingredient">
+        <createTable tableName="user_data_ingredient">
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_ingredient"/>
             </column>
