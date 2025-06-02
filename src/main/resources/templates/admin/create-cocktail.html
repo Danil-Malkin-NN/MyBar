@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание коктейля</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Создание коктейля</h1>
+    <form th:action="@{/cocktails/create}" method="post">
+
+        <label>Название:</label>
+        <input type="text" name="name" required/><br/>
+
+        <label>Описание:</label>
+        <textarea name="description" required></textarea><br/>
+
+        <label>Объём (мл):</label>
+        <input type="number" name="volume" min="0" required/><br/>
+
+        <label>Крепость (%):</label>
+        <input type="number" name="strength" min="0" max="100" required/><br/>
+
+        <h2>Ингредиенты</h2>
+        <div id="ingredient-section">
+            <div class="ingredient">
+                <select name="ingredients[0].ingredient.id">
+                    <option th:each="ingredient : ${ingredients}"
+                            th:value="${ingredient.id}"
+                            th:text="${ingredient.name}">Ингредиент</option>
+                </select>
+                <input type="number" name="ingredients[0].count" placeholder="Количество" required/>
+                <select name="ingredients[0].unitType">
+                    <option value="GRAM">Граммы</option>
+                    <option value="ML">Миллилитры</option>
+                    <option value="PCS">Штуки</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" onclick="addIngredient()">Добавить ингредиент</button>
+
+        <h2>Инструменты</h2>
+        <div id="instrument-section">
+            <div class="instrument">
+                <select name="instruments[0].id">
+                    <option th:each="instrument : ${instruments}"
+                            th:value="${instrument.id}"
+                            th:text="${instrument.name}">Инструмент</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" onclick="addInstrument()">Добавить инструмент</button>
+
+        <h2>Шаги приготовления</h2>
+        <textarea name="steps[0].goal" placeholder="Цель шага"></textarea><br/>
+        <textarea name="steps[0].description" placeholder="Описание"></textarea><br/>
+
+        <!-- Упрощённо: выбор ингредиентов/инструментов в шаге можно добавить позже -->
+
+        <label>Изображение (URL):</label>
+        <input type="text" name="image"/><br/>
+
+        <button type="submit">Создать коктейль</button>
+    </form>
+
+    <script>
+        let ingredientIndex = 1;
+        let instrumentIndex = 1;
+
+        function addIngredient() {
+            const section = document.getElementById("ingredient-section");
+            const html = `
+                <div class="ingredient">
+                    <select name="ingredients[${ingredientIndex}].ingredient.id">
+                        ${Array.from(document.querySelectorAll('select[name="ingredients[0].ingredient.id"] option')).map(opt =>
+                            `<option value="${opt.value}">${opt.text}</option>`
+                        ).join('')}
+                    </select>
+                    <input type="number" name="ingredients[${ingredientIndex}].count" placeholder="Количество" required/>
+                    <select name="ingredients[${ingredientIndex}].unitType">
+                        <option value="GRAM">Граммы</option>
+                        <option value="ML">Миллилитры</option>
+                        <option value="PCS">Штуки</option>
+                    </select>
+                </div>`;
+            section.insertAdjacentHTML('beforeend', html);
+            ingredientIndex++;
+        }
+
+        function addInstrument() {
+            const section = document.getElementById("instrument-section");
+            const html = `
+                <div class="instrument">
+                    <select name="instruments[${instrumentIndex}].id">
+                        ${Array.from(document.querySelectorAll('select[name="instruments[0].id"] option')).map(opt =>
+                            `<option value="${opt.value}">${opt.text}</option>`
+                        ).join('')}
+                    </select>
+                </div>`;
+            section.insertAdjacentHTML('beforeend', html);
+            instrumentIndex++;
+        }
+    </script>
+</body>
+</html>
