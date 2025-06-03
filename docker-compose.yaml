@@ -47,7 +47,6 @@ services:
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
-    restart: unless-stopped
 
 volumes:
   minio_data:

@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Создание коктейля</h1>
-    <form th:action="@{/cocktails/create}" method="post">
+    <form th:action="@{/admin/cocktails/create}" method="post">
 
         <label>Название:</label>
         <input type="text" name="name" required/><br/>
@@ -29,7 +29,9 @@
                             th:value="${ingredient.id}"
                             th:text="${ingredient.name}">Ингредиент</option>
                 </select>
+
                 <input type="number" name="ingredients[0].count" placeholder="Количество" required/>
+
                 <select name="ingredients[0].unitType">
                     <option value="GRAM">Граммы</option>
                     <option value="ML">Миллилитры</option>
@@ -74,8 +76,9 @@
             const html = `
                 <div class="ingredient">
                     <select name="ingredients[${ingredientIndex}].ingredient.id">
-                        ${Array.from(document.querySelectorAll('select[name="ingredients[0].ingredient.id"] option')).map(opt =>
-                            `<option value="${opt.value}">${opt.text}</option>`
+                        ${Array.from(document.querySelectorAll('select[name="ingredients[0].ingredient.id"] option'))
+                .map(opt =>
+                        `<option value="${opt.value}">${opt.text}</option>`
                         ).join('')}
                     </select>
                     <input type="number" name="ingredients[${ingredientIndex}].count" placeholder="Количество" required/>
