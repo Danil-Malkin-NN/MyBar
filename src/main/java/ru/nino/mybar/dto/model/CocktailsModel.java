@@ -10,4 +10,5 @@ public class CocktailsModel {
     private String strength;
     private String ingredients;
     private boolean favorite;
+    private String image;
 }

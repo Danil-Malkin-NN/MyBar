@@ -5,7 +5,7 @@ import ru.nino.mybar.dto.show.IngredientAndCountDto;
 import ru.nino.mybar.entity.IngredientAndCount;
 import ru.nino.mybar.mapper.AllMapper;
 
-@Mapper(componentModel = "spring", uses = {IngredientMapperImpl.class})
+@Mapper(componentModel = "spring", uses = {IngredientMapperImpl.class, ImageMapper.class})
 public interface IngredientAndCountMapperImpl extends AllMapper<IngredientAndCountDto, IngredientAndCount> {
 
 

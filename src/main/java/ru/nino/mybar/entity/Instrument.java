@@ -4,6 +4,7 @@ package ru.nino.mybar.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
@@ -18,5 +19,6 @@ public class Instrument extends IdEntity {
 	@Schema(description = "Описание инструмента", example = "Инструмент для смешивания коктейлей")
 	private String description = "";
 
-
+	@OneToOne
+	private Image image;
 }

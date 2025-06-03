@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <!-- Функция вставки -->
+    <changeSet id="create-insert-function" author="you">
+        <sql>
+            CREATE
+            OR REPLACE FUNCTION keycloak.insert_user_in_postgres()
+        RETURNS TRIGGER AS $$
+            BEGIN
+            RAISE
+            NOTICE 'email: %, first_name: %, last_name: %, username: %',
+                NEW.email, NEW.first_name, NEW.last_name, NEW.username;
+
+            INSERT INTO postgres."user_data"
+            VALUES (default, NEW.email, NEW.first_name, NEW.last_name, NEW.username, null);
+
+            RETURN NEW;
+            END
+        $$
+            LANGUAGE plpgsql;
+        </sql>
+    </changeSet>
+
+    <!-- Триггер вставки -->
+    <changeSet id="create-insert-trigger" author="you">
+        <sql>
+            CREATE TRIGGER inset_trigger
+                AFTER INSERT
+                ON keycloak.user_entity
+                FOR EACH ROW
+                EXECUTE FUNCTION keycloak.insert_user_in_postgres();
+        </sql>
+    </changeSet>
+
+    <!-- Функция обновления -->
+    <changeSet id="create-update-function" author="you">
+        <sql>
+            CREATE
+            OR REPLACE FUNCTION keycloak.update_user_on_user_entity_change()
+        RETURNS TRIGGER AS $$
+            BEGIN
+            RAISE
+            NOTICE 'email: %, first_name: %, last_name: %, username: %',
+                NEW.email, NEW.first_name, NEW.last_name, NEW.username;
+
+            UPDATE postgres."user_data"
+            SET last_name  = NEW.last_name,
+                first_name = NEW.first_name,
+                email      = NEW.email,
+                username   = NEW.username
+            WHERE username = OLD.username;
+
+            RETURN NEW;
+            END
+        $$
+            LANGUAGE plpgsql;
+        </sql>
+    </changeSet>
+
+    <!-- Триггер обновления -->
+    <changeSet id="create-update-trigger" author="you">
+        <sql>
+            CREATE TRIGGER update_trigger
+                AFTER UPDATE
+                ON keycloak.user_entity
+                FOR EACH ROW
+                EXECUTE FUNCTION keycloak.update_user_on_user_entity_change();
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

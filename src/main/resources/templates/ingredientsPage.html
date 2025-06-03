@@ -46,6 +46,8 @@
                 </a>
             </h3>
 
+            <img alt="Image" th:src="@{/media/images/{filename}(filename=${ingredient.image})}" th:if="${ingredient.image!=null}"/>
+
             <p th:text="${ingredient.description}"></p>
 
             <div class="flex items-center gap-2 mt-2">

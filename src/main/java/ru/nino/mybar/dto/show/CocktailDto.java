@@ -39,4 +39,6 @@ public class CocktailDto extends DTO {
 
     @Schema(description = "Список шагов и их количество для коктейля ")
     private List<StepDto> steps = new ArrayList<>();
+
+    private String image;
 }
