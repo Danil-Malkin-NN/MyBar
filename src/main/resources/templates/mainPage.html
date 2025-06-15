@@ -57,12 +57,14 @@
                 </button>
 
                 <!-- Кнопка EDIT только для админа -->
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
-                       class="custom-button">
-                        EDIT
-                    </a>
-                </div>
+                <iframe sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
+                           class="custom-button">
+                            EDIT
+                        </a>
+                    </div>
+                </iframe
             </div>
         </div>
     </div>
