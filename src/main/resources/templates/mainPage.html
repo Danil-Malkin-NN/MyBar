@@ -1,22 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Моё приложение</title>
-
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Библиотека стилей (например, Tailwind CSS) -->
-
-    <!-- Ваши собственные стили -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
 </head>
 
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
 
 <!-- Топбар -->
 <div th:replace="fragments/topbar.html"></div>
-
 
 <!-- Основной контент -->
 <div class="container">
@@ -50,16 +44,26 @@
                 <strong>Ингредиенты:</strong>
                 <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
             </p>
-            <button th:attr="data-id=${cocktail.id}"
-                    th:if="${cocktail.favorite}"
-                    class="favorite-remove-btn">❤️
-            </button>
 
-            <button th:attr="data-id=${cocktail.id}"
-                    th:if="${!cocktail.favorite}"
-                    class="favorite-add-btn">🤍
-            </button>
+            <div class="flex items-center gap-2 mt-2">
+                <button th:attr="data-id=${cocktail.id}"
+                        th:if="${cocktail.favorite}"
+                        class="favorite-remove-btn">❤️
+                </button>
 
+                <button th:attr="data-id=${cocktail.id}"
+                        th:if="${!cocktail.favorite}"
+                        class="favorite-add-btn">🤍
+                </button>
+
+                <!-- Кнопка EDIT только для админа -->
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
+                       class="custom-button">
+                        EDIT
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -72,9 +76,8 @@
         <a th:href="@{/page(page=${page.number + 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
-
 </div>
 
+<script th:src="@{/js/favorite_cocktail.js}"></script>
 </body>
 </html>
-<script th:src="@{/js/favorite_cocktail.js}"></script>

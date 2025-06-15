@@ -22,6 +22,39 @@
         </a>
       </h3>
       <p th:text="${tool.description}">Описание...</p>
+      </button>
+      <meta charset="UTF-8">
+      <title>Редактировать ингредиент</title>
+      <!-- Подключение Bootstrap -->
+      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+      <style>
+        .custom-button {
+          display: inline-block;
+          padding: 0px 0px; /* Отступы внутри кнопки */
+          border: 2px solid #000; /* Черная обводка */
+          border-radius: 5px; /* Скругленные углы */
+          text-decoration: none; /* Убираем подчеркивание */
+          color: #000; /* Черный цвет текста */
+          background-color: transparent; /* Прозрачный фон */
+          transition: background-color 0.3s, color 0.3s; /* Плавный переход цвета фона и текста */
+        }
+        .custom-button:hover {
+          background-color: #007bff; /* Синий фон при наведении */
+          color: #fff; /* Белый цвет текста при наведении */
+        }
+      </style>
+      </head>
+      <body> 
+      <div>
+        <h3>
+          <button
+                  th:if="${('hasRole(''ROLE_ADMIN'')')}"
+                  class="custom-button">
+
+            <a th:href="@{AdminPanel/instrument/{id}(id=${tool.id})}" th:text="EDIT" class="no-underline text-black hover:text-blue-600"></a>
+          </button>
+        </h3>
+      </div>
     </div>
   </div>
 

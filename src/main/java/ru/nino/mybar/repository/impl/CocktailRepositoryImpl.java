@@ -53,9 +53,7 @@ public interface CocktailRepositoryImpl extends NameFinderRepository<Cocktail> {
                 limit 10;
             """, nativeQuery = true)
     List<Cocktail> getAvailableCocktails(String email);
-
     Page<Cocktail> findByNameContainingIgnoreCase(String name, Pageable pageable);
-
     @Query(value = """
         select c from User u
         left join u.favoriteCocktail c

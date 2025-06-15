@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Моё приложение</title>
-
-    <!-- Библиотека стилей (например, Tailwind CSS) -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-    <!-- Ваши собственные стили -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            padding: 2px 8px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #000;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .custom-button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
 
 <div th:replace="fragments/topbar.html"></div>
-
 
 <div class="container">
     <form method="get" th:action="@{/page/ingredients}" class="mb-6 flex items-center gap-4">
@@ -26,7 +37,6 @@
             Найти
         </button>
     </form>
-
 
     <div class="grid">
         <div th:each="ingredient : ${ingredients}" class="border rounded-lg p-4 shadow-sm mb-4">
@@ -40,15 +50,24 @@
 
             <p th:text="${ingredient.description}"></p>
 
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${ingredient.available}"
-                    class="favorite-remove-btn">❤️</button>
+            <div class="flex items-center gap-2 mt-2">
+                <button th:attr="data-id=${ingredient.id}"
+                        th:if="${ingredient.available}"
+                        class="favorite-remove-btn">❤️</button>
 
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${!ingredient.available}"
-                    class="favorite-add-btn">🤍</button>
+                <button th:attr="data-id=${ingredient.id}"
+                        th:if="${!ingredient.available}"
+                        class="favorite-add-btn">🤍</button>
+
+                <!-- Кнопка EDIT только для админа -->
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/page/AdminPanel/ingredients/{id}(id=${ingredient.id})}"
+                       class="custom-button">
+                        EDIT
+                    </a>
+                </div>
+            </div>
         </div>
-
     </div>
 
     <div class="pagination">
@@ -61,8 +80,10 @@
            th:if="${page.hasNext()}" class="btn">Вперёд</a>
     </div>
 </div>
+
 <script>
     window.appContextPath = /*[[@{/}]]*/ '';
 </script>
 <script th:src="@{/js/favorite_ingredient.js}"></script>
-
+</body>
+</html>

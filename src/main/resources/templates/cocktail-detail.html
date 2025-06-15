@@ -6,12 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
-
 <div th:replace="fragments/topbar.html"></div>
-
-
 <div class="container">
     <img alt="Image" th:if="${cocktail.image!=null}" th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
     <h3>
@@ -26,6 +22,8 @@
 
     <p th:text="${cocktail.description}">Описание...</p>
 
+
+
     <div class="section">
         <h2>Ингредиенты</h2>
         <div class="card-list">
@@ -37,6 +35,9 @@
         </div>
     </div>
 
+
+
+
     <div class="section">
         <h2>Инструменты</h2>
         <div class="card-list">
@@ -47,12 +48,13 @@
         </div>
     </div>
 
+
+
     <div class="section">
         <h2>Шаги приготовления</h2>
         <div th:each="step : ${cocktail.steps}" class="step">
             <h4 th:text="${step.goal}">Название шага</h4>
             <p th:text="${step.description}">Описание шага</p>
-
             <ul>
                 <li th:each="ing : ${step.usesIngredients}"
                     th:text="'Ингредиент: ' + ${ing.ingredient.name} + ' (' + ${ing.count} + ' ' + ${ing.unitType} + ')'">
@@ -63,6 +65,7 @@
         </div>
     </div>
 </div>
+
 
 </body>
 </html>
