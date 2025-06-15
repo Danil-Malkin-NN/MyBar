@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать коктейль</title>
+    <!-- Подключение Bootstrap и Tailwind -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Стили для топ-бара */
+        .topbar {
+            background-color: #343a40;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .topbar a {
+            color: #ffffff;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .topbar a:hover {
+            color: #0730ff;
+        }
+
+        /* Стили для формы */
+        .content {
+            margin-top: 60px; /* Отступ сверху для основного контента */
+            padding: 20px;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .section-title { margin-bottom: 20px; }
+        .btn-primary { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-primary:hover { background-color: #0056b3; }
+        .list-group { list-style: none; padding: 0; }
+        .list-group-item { padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+<!-- Топ-бар -->
+<div class="topbar">
+    <div class="container-fluid d-flex justify-content-start align-items-center">
+        <a th:href="@{/page}">Главная</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a th:href="@{/page/my/bar}">Мой Бар</a>
+    </div>
+</div>
+<div class="content">
+    <h1 class="mb-4">Create Ingredient</h1>
+    <form th:action="@{/page/AdminPanel/ingredients/save}" th:object="${ingredient}" method="post">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name"/>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea th:field="*{description}" class="form-control" id="description"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<!-- Подключение Bootstrap JS и зависимостей -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

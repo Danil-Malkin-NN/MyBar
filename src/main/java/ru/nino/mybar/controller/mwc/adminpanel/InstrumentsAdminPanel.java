@@ -1,4 +1,4 @@
-package ru.nino.mybar.controller.crud.adminpanel;
+package ru.nino.mybar.controller.mwc.adminpanel;
 
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import ru.nino.mybar.repository.impl.InstrumentsRepositoryImpl;
 @Controller
 @RequestMapping("/page/AdminPanel")
 @AllArgsConstructor
-public class AdminPanelTool {
+public class InstrumentsAdminPanel {
 
     @Autowired
     private InstrumentsRepositoryImpl instrumentsRepository;
@@ -28,7 +28,13 @@ public class AdminPanelTool {
        Instrument instrument = instrumentsRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
         model.addAttribute("instrument", instrument);
-        return "edit-instrument";
+        return "admin/edit-instrument";
+    }
+
+    @GetMapping("/create")
+    public String toolCreate(Model model){
+        model.addAttribute("instrument", new Instrument());
+        return "admin/create-instrument";
     }
 
     @PostMapping("/instrument/save")

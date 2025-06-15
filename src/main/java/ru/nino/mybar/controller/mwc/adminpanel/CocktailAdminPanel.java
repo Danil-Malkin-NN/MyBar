@@ -1,4 +1,4 @@
-package ru.nino.mybar.controller.crud.adminpanel;
+package ru.nino.mybar.controller.mwc.adminpanel;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import ru.nino.mybar.entity.Cocktail;
-import ru.nino.mybar.entity.IngredientAndCount;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 import ru.nino.mybar.repository.impl.IngredientAndCountRepositoryImpl;
-import ru.nino.mybar.service.CocktailServiceImpl;
 
 @Controller
 @RequestMapping("/page/AdminPanel")
 @RequiredArgsConstructor
-public class AdminPanelCockteil {
+public class CocktailAdminPanel {
 
     @Autowired
     private final CocktailRepositoryImpl cocktailrepository;
@@ -32,7 +30,7 @@ public class AdminPanelCockteil {
         Cocktail cocktail = cocktailrepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктейль не найден"));
         model.addAttribute("cocktail", cocktail);
-        return "edit-cocktail";
+        return "admin/edit-cocktail";
     }
 
     @PostMapping("/cocktail/save")
@@ -52,7 +50,7 @@ public class AdminPanelCockteil {
         // Сохраняем изменения в базе данных
         cocktailrepository.save(cocktail);
 
-        return "redirect:/page/AdminPanel/cocktail/" + cocktailId;
+        return "redirect:/admin/page/AdminPanel/cocktail/" + cocktailId;
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.nino.mybar.controller.crud.adminpanel;
+package ru.nino.mybar.controller.mwc.adminpanel;
 
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 @Controller
 @RequestMapping("/page/AdminPanel")
 @RequiredArgsConstructor
-public class AdminPanelIngredients {
+public class IngredientsAdminPanel {
 
 @Autowired
 private final IngredientRepositoryImpl ingredientRepository;
@@ -26,12 +26,19 @@ private final IngredientRepositoryImpl ingredientRepository;
         Ingredient ingredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Коктель не найден"));
         model.addAttribute("ingredient", ingredient);
-        return "edit-Ingridients";
+        return "admin/edit-Ingredients";
 
+    }
+
+    @GetMapping("/ingredients/create")
+    public String createIngredient(Model model) {
+        model.addAttribute("ingredient", new Ingredient());
+        return "admin/create-Ingredient";
     }
 
     @PostMapping("/ingredients/save")
     public String saveIngredient(@ModelAttribute Ingredient ingredient) {
+
         ingredientRepository.save(ingredient);
         return "redirect:/page/ingredients";
 
