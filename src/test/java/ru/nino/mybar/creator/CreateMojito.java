@@ -40,11 +40,13 @@ public class CreateMojito {
         Cocktail cocktail = new Cocktail();
         cocktail.setName("Мохито");
         cocktail.setDescription(description);
+        cocktail.setVolume(300);
+        cocktail.setStrength(10);
         cocktail.setIngredients(getMojitoIngredients());
         cocktail.setInstruments(getMojitoInstruments());
         cocktail.setSteps(getMojitoSteps());
 
-
+        cocktailRepository.save(cocktail);
     }
 
     private List<Step> getMojitoSteps() {
@@ -62,7 +64,7 @@ public class CreateMojito {
 
     private List<IngredientAndCount> getMojitoIngredients() {
 
-        Ingredient rom = ingredientRepository.findByName("Белый Ром");
+        Ingredient rom = ingredientRepository.findByName("Белый ром");
         Ingredient sweetWater = ingredientRepository.findByName("Сахарный сироп");
         Ingredient soda = ingredientRepository.findByName("Содовая");
         Ingredient lime = ingredientRepository.findByName("Лайм");
@@ -85,7 +87,7 @@ public class CreateMojito {
 
         Instrument hybol = instrumentsRepository.findByName("Хайбол");
         Instrument madler = instrumentsRepository.findByName("Мадлер");
-        Instrument jiger = instrumentsRepository.findByName("Джигер");
+        Instrument jiger = instrumentsRepository.findByName("Джиггер");
         Instrument spun = instrumentsRepository.findByName("Коктейльная ложка");
         Instrument pipes = instrumentsRepository.findByName("Трубочки");
 
