@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1751189589560-1" author="Danil">
+        <createTable tableName="category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1751189589560-2" author="Danil">
+        <createTable tableName="category_ingredients">
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category_ingredients"/>
+            </column>
+            <column name="ingredients_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category_ingredients"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1751189589560-3" author="Danil">
+        <addUniqueConstraint columnNames="name" constraintName="uc_category_name" tableName="category"/>
+    </changeSet>
+    <changeSet id="1751189589560-4" author="Danil">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="category_ingredients"
+                                 constraintName="fk_cating_on_category" referencedColumnNames="id"
+                                 referencedTableName="category"/>
+    </changeSet>
+    <changeSet id="1751189589560-5" author="Danil">
+        <addForeignKeyConstraint baseColumnNames="ingredients_id" baseTableName="category_ingredients"
+                                 constraintName="fk_cating_on_ingredient" referencedColumnNames="id"
+                                 referencedTableName="ingredient"/>
+    </changeSet>
+
+</databaseChangeLog>

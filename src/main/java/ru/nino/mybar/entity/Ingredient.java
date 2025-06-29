@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,5 +26,8 @@ public class Ingredient extends IdEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Image image;
+
+    @ManyToMany(mappedBy = "ingredients")
+    private Set<Category> category;
 
 }
