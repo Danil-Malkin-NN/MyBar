@@ -1,11 +1,16 @@
 package ru.nino.mybar.creator;
 
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import ru.nino.mybar.entity.*;
+import ru.nino.mybar.entity.Cocktail;
+import ru.nino.mybar.entity.Ingredient;
+import ru.nino.mybar.entity.IngredientAndCount;
+import ru.nino.mybar.entity.Instrument;
+import ru.nino.mybar.entity.Step;
+import ru.nino.mybar.entity.UnitType;
 import ru.nino.mybar.repository.impl.CocktailRepositoryImpl;
 import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 import ru.nino.mybar.repository.impl.InstrumentsRepositoryImpl;
@@ -13,6 +18,7 @@ import ru.nino.mybar.repository.impl.InstrumentsRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @SpringBootTest
 @ActiveProfiles("prod")
 public class CreateBlueLagoon {
@@ -61,7 +67,7 @@ public class CreateBlueLagoon {
         Ingredient vodka = ingredientRepository.findByName("Водка");
         Ingredient blueKur = ingredientRepository.findByName("Ликер Блю Кюрасао");
         Ingredient sprait = ingredientRepository.findByName("Спрайт");
-        Ingredient limen = ingredientRepository.findByName("лимонный сок");
+		Ingredient limen = ingredientRepository.findByName("Лимонный сок");
         Ingredient pineapple = ingredientRepository.findByName("Ананас");
 
         Ingredient crashIce = ingredientRepository.findByName("Дробленый лед");
