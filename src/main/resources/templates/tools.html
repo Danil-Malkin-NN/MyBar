@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Моё приложение</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>Моё приложение</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body data-base-url="" th:attrappend="data-base-url=@{/}">
@@ -13,60 +13,36 @@
 <div th:replace="fragments/topbar.html"></div>
 
 <div class="container">
-  <div class="grid">
-    <div th:each="tool : ${tools}" class="border rounded-lg p-4 shadow-sm mb-4">
-        <img alt="Image" th:if="${tool.image!=null}" th:src="@{/media/images/{filename}(filename=${tool.image})}"/>
-      <h3>
-        <a th:text="${tool.name}"
-           class="text-xl font-semibold text-black">
-        </a>
-      </h3>
-      <p th:text="${tool.description}">Описание...</p>
-      </button>
-      <meta charset="UTF-8">
-      <title>Редактировать ингредиент</title>
-      <!-- Подключение Bootstrap -->
-      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-      <style>
-        .custom-button {
-          display: inline-block;
-          padding: 0px 0px; /* Отступы внутри кнопки */
-          border: 2px solid #000; /* Черная обводка */
-          border-radius: 5px; /* Скругленные углы */
-          text-decoration: none; /* Убираем подчеркивание */
-          color: #000; /* Черный цвет текста */
-          background-color: transparent; /* Прозрачный фон */
-          transition: background-color 0.3s, color 0.3s; /* Плавный переход цвета фона и текста */
-        }
-        .custom-button:hover {
-          background-color: #007bff; /* Синий фон при наведении */
-          color: #fff; /* Белый цвет текста при наведении */
-        }
-      </style>
-      </head>
-      <body> 
-      <div>
-        <h3>
-          <button
-                  th:if="${('hasRole(''ROLE_ADMIN'')')}"
-                  class="custom-button">
+    <div class="grid">
+        <div th:each="tool : ${tools}" class="border rounded-lg p-4 shadow-sm mb-4">
+            <img alt="Image" th:if="${tool.image!=null}" th:src="@{/media/images/{filename}(filename=${tool.image})}"/>
+            <h3>
+                <a th:text="${tool.name}"
+                   class="text-xl font-semibold text-black">
+                </a>
+            </h3>
+            <p th:text="${tool.description}">Описание...</p>
+            <iframe sec:authorize="isAuthenticated()">
+                <div sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/page/AdminPanel/instrument/{id}(id=${tool.id})}"
+                       class="custom-button">
+                        EDIT
+                    </a>
+                </div>
+            </iframe>
 
-            <a th:href="@{AdminPanel/instrument/{id}(id=${tool.id})}" th:text="EDIT" class="no-underline text-black hover:text-blue-600"></a>
-          </button>
-        </h3>
-      </div>
+        </div>
     </div>
-  </div>
 
-  <div class="pagination">
-    <a th:href="@{/page/tools(page=${page.number - 1}, size=${page.size})}"
-       th:if="${page.hasPrevious()}">Назад</a>
+    <div class="pagination">
+        <a th:href="@{/page/tools(page=${page.number - 1}, size=${page.size})}"
+           th:if="${page.hasPrevious()}">Назад</a>
 
-    <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
+        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
 
-    <a th:href="@{/page/tools(page=${page.number + 1}, size=${page.size})}"
-       th:if="${page.hasNext()}">Вперёд</a>
-  </div>
+        <a th:href="@{/page/tools(page=${page.number + 1}, size=${page.size})}"
+           th:if="${page.hasNext()}">Вперёд</a>
+    </div>
 </div>
 
 </body>
