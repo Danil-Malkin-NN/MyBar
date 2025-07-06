@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Моё приложение</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            padding: 2px 8px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #000;
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .custom-button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body data-base-url="" th:attrappend="data-base-url=@{/}">
+
+<div th:replace="fragments/topbar.html"></div>
+
+<div class="container">
+    <form method="get" th:action="@{/page/ingredients}" class="mb-6 flex items-center gap-4">
+        <input type="text" name="ingredientName" placeholder="Поиск по имени"
+               class="px-4 py-2 rounded-2xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               th:value="${param.ingredientName}">
+        <button type="submit"
+                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-2xl shadow-md transition-all duration-200">
+            Найти
+        </button>
+    </form>
+
+    <h2>
+        <a th:text="${category}"
+           class="text-xl font-semibold text-black">
+
+        </a>
+    </h2>
+    <div class="grid">
+        <div th:each="ingredient : ${ingredients}" class="border rounded-lg p-4 shadow-sm mb-4">
+            <h3>
+                <a th:text="${ingredient.name}"
+                   class="text-xl font-semibold text-black">
+                </a>
+            </h3>
+
+            <img alt="Image" th:src="@{/media/images/{filename}(filename=${ingredient.image})}"
+                 th:if="${ingredient.image!=null}"/>
+
+            <p th:text="${ingredient.description}"></p>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
