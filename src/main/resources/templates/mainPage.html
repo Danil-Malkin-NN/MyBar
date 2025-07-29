@@ -27,59 +27,64 @@
 
     <!-- Сетка карточек -->
     <div class="grid">
+
         <div th:each="cocktail : ${items}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <img alt="Image" th:if="${cocktail.image!=null}"
-                 th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
 
-            <h3>
-                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
-                   th:text="${cocktail.name}"
-                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
-                </a>
-            </h3>
+            <div class="card-body">
+                <div class="card-image">
+                    <img th:if="${cocktail.image!=null}"
+                         th:src="@{/media/images/{filename}(filename=${cocktail.image})}" alt="Cocktail Image"/>
+                </div>
 
-            <p th:text="${cocktail.description}">Описание напитка...</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
-            <p class="ingredients">
-                <strong>Ингредиенты:</strong>
-                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
-            </p>
-
-            <div class="flex items-center gap-2 mt-2">
-                <button th:attr="data-id=${cocktail.id}"
-                        th:if="${cocktail.favorite}"
-                        class="favorite-remove-btn">❤️
-                </button>
-
-                <button th:attr="data-id=${cocktail.id}"
-                        th:if="${!cocktail.favorite}"
-                        class="favorite-add-btn">🤍
-                </button>
-
-                <!-- Кнопка EDIT только для админа -->
-                <iframe sec:authorize="isAuthenticated()">
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
-                           class="custom-button">
-                            EDIT
-                        </a>
+                <div class="card-content">
+                    <h2 th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                        th:text="${cocktail.name}"></h2>
+                    <div class="tags">
+                        <span class="tag">Терпкий</span>
+                        <span class="tag">Кислый</span>
                     </div>
-                </iframe>
+                    <div class="rating">
+                        <span class="number">20</span>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button th:attr="data-id=${cocktail.id}"
+                                    th:if="${cocktail.favorite}"
+                                    class="favorite-remove-btn">❤️
+                            </button>
+
+                            <button th:attr="data-id=${cocktail.id}"
+                                    th:if="${!cocktail.favorite}"
+                                    class="favorite-add-btn">🤍
+                            </button>
+
+                            <!-- Кнопка EDIT только для админа -->
+                            <iframe sec:authorize="isAuthenticated()">
+                                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
+                                       class="custom-button">
+                                        EDIT
+                                    </a>
+                                </div>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+        </div>
+
+        <div class="pagination">
+            <a th:href="@{/page(page=${page.number - 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
+               th:if="${page.hasPrevious()}" class="btn">Назад</a>
+
+            <span>Страница <span th:text="${page.number + 1}">1</span> из <span
+                    th:text="${page.totalPages}">1</span></span>
+
+            <a th:href="@{/page(page=${page.number + 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
+               th:if="${page.hasNext()}" class="btn">Вперёд</a>
         </div>
     </div>
 
-    <div class="pagination">
-        <a th:href="@{/page(page=${page.number - 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
-           th:if="${page.hasPrevious()}" class="btn">Назад</a>
-
-        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
-
-        <a th:href="@{/page(page=${page.number + 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
-           th:if="${page.hasNext()}" class="btn">Вперёд</a>
-    </div>
-</div>
-
-<script th:src="@{/js/favorite_cocktail.js}"></script>
+    <script th:src="@{/js/favorite_cocktail.js}"></script>
 </body>
 </html>
