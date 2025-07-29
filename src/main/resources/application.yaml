@@ -33,7 +33,7 @@ spring:
   #          jwk-set-uri: ${KEY_CLOAK_URL:http://localhost:8081/realms/my-bar}/protocol/openid-connect/token
 
   liquibase:
-    enabled: true
+    enabled: false
     change-log: classpath:db/master.xml
 
   servlet:
