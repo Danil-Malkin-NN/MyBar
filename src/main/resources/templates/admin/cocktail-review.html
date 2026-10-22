@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Модерация коктейлей — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container">
+    <p class="eyebrow">Панель администратора</p>
+    <h1>Рецепты на проверке</h1>
+    <div class="empty-message" th:if="${submissions.isEmpty()}">Новых рецептов пока нет.</div>
+    <section class="grid">
+        <article class="card" th:each="cocktail : ${submissions}">
+            <div class="card-content">
+                <h2 class="card-title" th:text="${cocktail.name}">Название</h2>
+                <p class="muted" th:text="${cocktail.description}">Описание</p>
+                <p class="meta" th:text="|Автор: ${cocktail.submittedBy} · ${cocktail.baseAlcohol} · ${cocktail.strength}% · ${cocktail.volume} мл|"></p>
+                <h3>Ингредиенты</h3>
+                <ul>
+                    <li th:each="item : ${cocktail.ingredients}"
+                        th:text="|${item.ingredient.name}: ${item.count} ${item.unitType}|"></li>
+                </ul>
+                <h3>Приготовление</h3>
+                <ol>
+                    <li th:each="step : ${cocktail.steps}" th:text="|${step.goal}: ${step.description}|"></li>
+                </ol>
+                <div class="button-row">
+                    <form method="post" th:action="@{/page/AdminPanel/cocktails/{id}/approve(id=${cocktail.id})}">
+                        <button type="submit">Одобрить</button>
+                    </form>
+                    <form method="post" th:action="@{/page/AdminPanel/cocktails/{id}/reject(id=${cocktail.id})}">
+                        <button type="submit" class="secondary">Отклонить</button>
+                    </form>
+                </div>
+            </div>
+        </article>
+    </section>
+</main>
+</body>
+</html>

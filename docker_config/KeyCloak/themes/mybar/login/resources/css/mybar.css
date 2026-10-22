@@ -1,0 +1,118 @@
+body,
+body#keycloak-bg {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 14% 12%, rgb(71 110 255 / 26%), transparent 42%),
+        radial-gradient(ellipse at 88% 84%, rgb(236 75 190 / 19%), transparent 44%),
+        radial-gradient(ellipse at 50% 105%, rgb(50 219 255 / 12%), transparent 45%),
+        #080914;
+}
+
+#kc-header-wrapper {
+    color: #f3f2ff;
+    font-size: 1.45rem;
+    font-weight: 850;
+    letter-spacing: .18em;
+    text-shadow: 0 0 28px rgb(103 116 255 / 45%);
+}
+
+#kc-content-wrapper,
+#kc-form,
+#kc-form-wrapper,
+.pf-v5-c-login__main-body,
+.pf-v5-c-login__main-footer {
+    background: transparent;
+}
+
+.pf-v5-c-login__main,
+.pf-v5-c-login__main .pf-v5-c-card,
+.pf-v5-c-card,
+.login-pf-page .card-pf,
+.kcFormCardClass {
+    border: 1px solid rgb(128 117 255 / 48%) !important;
+    border-radius: 22px !important;
+    background: linear-gradient(145deg, rgb(24 25 51 / 98%), rgb(14 16 34 / 98%)) !important;
+    box-shadow: 0 24px 80px rgb(0 0 0 / 48%), 0 0 42px rgb(85 123 255 / 19%),
+        inset 0 1px 0 rgb(255 255 255 / 7%) !important;
+}
+
+#kc-page-title,
+.pf-v5-c-login__main .pf-v5-c-title,
+.pf-v5-c-form__label,
+.login-pf-page .card-pf h1,
+.login-pf-page .card-pf label {
+    color: #f0efff !important;
+}
+
+.pf-v5-c-content,
+#kc-registration,
+.login-pf-page .card-pf p {
+    color: #aaa9c8;
+}
+
+.pf-v5-c-form-control,
+.pf-v5-c-form-control input,
+.pf-v5-c-form input,
+.login-pf-page .card-pf input,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    border: 1px solid #41436c !important;
+    border-radius: 11px !important;
+    background-color: #0c1021 !important;
+    color: #f0efff !important;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 20%) !important;
+}
+
+.pf-v5-c-form-control:focus,
+.pf-v5-c-form-control:focus-within,
+.login-pf-page .card-pf input:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #44d9ff !important;
+    box-shadow: 0 0 0 1px #44d9ff, 0 0 18px rgb(68 217 255 / 20%) !important;
+}
+
+.pf-v5-c-button.pf-m-primary,
+.login-pf-page .card-pf .btn-primary,
+button[name="login"],
+button[name="register"],
+input[name="login"] {
+    min-height: 46px;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: linear-gradient(105deg, #44d9ff, #8175ff 58%, #d66bff) !important;
+    color: #090b19 !important;
+    font-weight: 850 !important;
+    box-shadow: 0 8px 24px rgb(107 103 255 / 24%);
+    transition: filter 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+.login-pf-page .card-pf .btn-primary:hover,
+button[name="login"]:hover,
+button[name="register"]:hover,
+input[name="login"]:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 10px 30px rgb(107 103 255 / 36%);
+}
+
+a {
+    color: #83eaff !important;
+}
+
+.pf-v5-c-alert,
+.alert {
+    border-radius: 11px;
+}
+
+@media (max-width: 600px) {
+    .pf-v5-c-login__main,
+    .pf-v5-c-card,
+    .login-pf-page .card-pf,
+    .kcFormCardClass {
+        border-radius: 17px !important;
+    }
+}

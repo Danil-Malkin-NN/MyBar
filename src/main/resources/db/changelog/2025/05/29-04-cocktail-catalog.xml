@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+    <changeSet id="cocktail-catalog-metadata" author="copilot">
+        <addColumn tableName="cocktail">
+            <column name="base_alcohol" type="TEXT" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(16)" defaultValue="APPROVED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="submitted_by" type="TEXT"/>
+        </addColumn>
+        <addColumn tableName="ingredient">
+            <column name="alcoholic" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE cocktail c
+            SET base_alcohol = COALESCE((
+                SELECT i.name
+                FROM cocktail_ingredients ci
+                JOIN ingredient_and_count ic ON ic.id = ci.ingredients_id
+                JOIN ingredient i ON i.id = ic.ingredient_id
+                WHERE ci.cocktail_id = c.id
+                  AND lower(i.name) IN ('vodka', 'gin', 'rum', 'tequila', 'whiskey', 'whisky',
+                                        'bourbon', 'brandy', 'cognac', 'водка', 'джин', 'ром',
+                                        'текила', 'виски', 'коньяк')
+                ORDER BY i.name
+                LIMIT 1
+            ), '')
+            WHERE c.base_alcohol = '';
+
+            UPDATE ingredient
+            SET alcoholic = true
+            WHERE lower(name) IN ('vodka', 'gin', 'rum', 'tequila', 'whiskey', 'whisky',
+                                  'bourbon', 'brandy', 'cognac', 'absinthe', 'triple sec',
+                                  'campari', 'sweet vermouth', 'dry vermouth',
+                                  'водка', 'джин', 'ром', 'текила', 'виски', 'коньяк');
+        </sql>
+    </changeSet>
+
+    <changeSet id="seed-classic-cocktails" author="copilot">
+        <sql>
+            INSERT INTO ingredient (name, description, alcoholic) VALUES
+                ('White rum', 'Светлый ром', true),
+                ('Lime juice', 'Сок лайма', false),
+                ('Simple syrup', 'Сахарный сироп', false),
+                ('Tequila blanco', 'Текила blanco', true),
+                ('Triple sec', 'Апельсиновый ликёр', true),
+                ('Mint leaves', 'Листья мяты', false),
+                ('Soda water', 'Содовая вода', false),
+                ('Ice', 'Лёд', false),
+                ('Gin', 'Джин', true),
+                ('Campari', 'Горький аперитив', true),
+                ('Sweet vermouth', 'Красный сладкий вермут', true),
+                ('Bourbon', 'Бурбон', true),
+                ('Sugar cube', 'Кусковой сахар', false),
+                ('Angostura bitters', 'Ароматический биттер', true)
+            ON CONFLICT (name) DO NOTHING;
+
+            INSERT INTO cocktail (name, description, volume, strength, base_alcohol, status)
+            SELECT seed.name, seed.description, seed.volume, seed.strength, seed.base_alcohol, 'APPROVED'
+            FROM (VALUES
+                ('Daiquiri', 'Классический кислый коктейль из рома, лайма и сахарного сиропа.', 100, 22, 'White rum'),
+                ('Margarita', 'Текила, апельсиновый ликёр и лайм; подавайте охлаждённой.', 110, 25, 'Tequila blanco'),
+                ('Mojito', 'Освежающий коктейль с ромом, мятой, лаймом и содовой.', 200, 10, 'White rum'),
+                ('Negroni', 'Равные части джина, Campari и сладкого вермута.', 90, 24, 'Gin'),
+                ('Old Fashioned', 'Бурбон с сахаром и биттером, перемешанный со льдом.', 90, 32, 'Bourbon')
+            ) AS seed(name, description, volume, strength, base_alcohol)
+            WHERE NOT EXISTS (SELECT 1 FROM cocktail c WHERE c.name = seed.name);
+        </sql>
+        <sql>
+            INSERT INTO ingredient_and_count (ingredient_id, count, unit_type)
+            SELECT i.id, v.amount, v.unit_type
+            FROM (VALUES
+                ('Daiquiri', 'White rum', 60, 1), ('Daiquiri', 'Lime juice', 25, 1), ('Daiquiri', 'Simple syrup', 15, 1),
+                ('Margarita', 'Tequila blanco', 50, 1), ('Margarita', 'Triple sec', 20, 1), ('Margarita', 'Lime juice', 25, 1), ('Margarita', 'Simple syrup', 5, 1),
+                ('Mojito', 'White rum', 50, 1), ('Mojito', 'Lime juice', 20, 1), ('Mojito', 'Simple syrup', 15, 1), ('Mojito', 'Mint leaves', 6, 2), ('Mojito', 'Soda water', 100, 1), ('Mojito', 'Ice', 50, 0),
+                ('Negroni', 'Gin', 30, 1), ('Negroni', 'Campari', 30, 1), ('Negroni', 'Sweet vermouth', 30, 1),
+                ('Old Fashioned', 'Bourbon', 60, 1), ('Old Fashioned', 'Sugar cube', 1, 2), ('Old Fashioned', 'Angostura bitters', 2, 1), ('Old Fashioned', 'Ice', 50, 0)
+            ) AS v(cocktail_name, ingredient_name, amount, unit_type)
+            JOIN cocktail c ON c.name = v.cocktail_name
+            JOIN ingredient i ON i.name = v.ingredient_name
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM cocktail_ingredients ci
+                JOIN ingredient_and_count old_ic ON old_ic.id = ci.ingredients_id
+                WHERE ci.cocktail_id = c.id
+                  AND old_ic.ingredient_id = i.id
+                  AND old_ic.count = v.amount
+            );
+
+            INSERT INTO cocktail_ingredients (cocktail_id, ingredients_id)
+            SELECT c.id, ic.id
+            FROM (VALUES
+                ('Daiquiri', 'White rum', 60), ('Daiquiri', 'Lime juice', 25), ('Daiquiri', 'Simple syrup', 15),
+                ('Margarita', 'Tequila blanco', 50), ('Margarita', 'Triple sec', 20), ('Margarita', 'Lime juice', 25), ('Margarita', 'Simple syrup', 5),
+                ('Mojito', 'White rum', 50), ('Mojito', 'Lime juice', 20), ('Mojito', 'Simple syrup', 15), ('Mojito', 'Mint leaves', 6), ('Mojito', 'Soda water', 100), ('Mojito', 'Ice', 50),
+                ('Negroni', 'Gin', 30), ('Negroni', 'Campari', 30), ('Negroni', 'Sweet vermouth', 30),
+                ('Old Fashioned', 'Bourbon', 60), ('Old Fashioned', 'Sugar cube', 1), ('Old Fashioned', 'Angostura bitters', 2), ('Old Fashioned', 'Ice', 50)
+            ) AS v(cocktail_name, ingredient_name, amount)
+            JOIN cocktail c ON c.name = v.cocktail_name
+            JOIN ingredient i ON i.name = v.ingredient_name
+            JOIN ingredient_and_count ic ON ic.ingredient_id = i.id AND ic.count = v.amount
+            WHERE NOT EXISTS (
+                SELECT 1 FROM cocktail_ingredients ci
+                WHERE ci.cocktail_id = c.id AND ci.ingredients_id = ic.id
+            );
+        </sql>
+        <sql>
+            INSERT INTO step (goal, description) VALUES
+                ('Охладить бокал', 'Наполнить бокал льдом на время приготовления.'),
+                ('Смешать ингредиенты', 'Встряхнуть ингредиенты со льдом и процедить в бокал.'),
+                ('Подать', 'Добавить подходящий гарнир и сразу подать.');
+            INSERT INTO cocktail_steps (cocktail_id, steps_id)
+            SELECT c.id, s.id
+            FROM cocktail c
+            CROSS JOIN step s
+            WHERE c.name IN ('Daiquiri', 'Margarita', 'Mojito', 'Negroni', 'Old Fashioned')
+              AND s.goal IN ('Охладить бокал', 'Смешать ингредиенты', 'Подать')
+              AND NOT EXISTS (
+                  SELECT 1 FROM cocktail_steps cs
+                  WHERE cs.cocktail_id = c.id AND cs.steps_id = s.id
+              );
+        </sql>
+    </changeSet>
+    <changeSet id="classic-cocktail-specific-steps" author="copilot">
+        <sql>
+            DELETE FROM cocktail_steps cs
+            USING cocktail c, step s
+            WHERE cs.cocktail_id = c.id
+              AND cs.steps_id = s.id
+              AND c.name IN ('Daiquiri', 'Margarita', 'Mojito', 'Negroni', 'Old Fashioned')
+              AND s.goal IN ('Охладить бокал', 'Смешать ингредиенты', 'Подать');
+
+            INSERT INTO step (goal, description) VALUES
+                ('Влить ром, лайм и сироп', 'Добавить ингредиенты в шейкер со льдом.'),
+                ('Встряхнуть', 'Энергично встряхивать до охлаждения и перелить в охлаждённый бокал.'),
+                ('Украсить лаймом', 'Добавить тонкий кружок лайма и подать.'),
+                ('Подготовить бокал', 'Смочить край лаймом и покрыть его солью.'),
+                ('Встряхнуть с текилой', 'Добавить текилу, апельсиновый ликёр, лайм и лёд в шейкер.'),
+                ('Процедить в бокал', 'Встряхнуть до охлаждения и процедить в подготовленный бокал.'),
+                ('Размять мяту', 'Мягко прижать мяту с лаймом и сиропом, не измельчая листья.'),
+                ('Добавить ром и лёд', 'Влить ром, заполнить бокал льдом и аккуратно перемешать.'),
+                ('Долить содовую', 'Добавить содовую, перемешать и украсить веточкой мяты.'),
+                ('Соединить ингредиенты', 'Налить джин, Campari и сладкий вермут в стакан со льдом.'),
+                ('Перемешать со льдом', 'Перемешать барной ложкой до охлаждения напитка.'),
+                ('Украсить апельсином', 'Процедить на свежий лёд и добавить апельсиновую цедру.'),
+                ('Растворить сахар', 'Размять сахарный кубик с биттером и несколькими каплями воды.'),
+                ('Добавить бурбон', 'Влить бурбон и положить крупный кубик льда.'),
+                ('Перемешать и подать', 'Перемешать до охлаждения, украсить цедрой и подать.');
+
+            INSERT INTO cocktail_steps (cocktail_id, steps_id)
+            SELECT c.id, s.id
+            FROM (VALUES
+                ('Daiquiri', 'Влить ром, лайм и сироп'),
+                ('Daiquiri', 'Встряхнуть'),
+                ('Daiquiri', 'Украсить лаймом'),
+                ('Margarita', 'Подготовить бокал'),
+                ('Margarita', 'Встряхнуть с текилой'),
+                ('Margarita', 'Процедить в бокал'),
+                ('Mojito', 'Размять мяту'),
+                ('Mojito', 'Добавить ром и лёд'),
+                ('Mojito', 'Долить содовую'),
+                ('Negroni', 'Соединить ингредиенты'),
+                ('Negroni', 'Перемешать со льдом'),
+                ('Negroni', 'Украсить апельсином'),
+                ('Old Fashioned', 'Растворить сахар'),
+                ('Old Fashioned', 'Добавить бурбон'),
+                ('Old Fashioned', 'Перемешать и подать')
+            ) AS recipe_steps(cocktail_name, step_goal)
+            JOIN cocktail c ON c.name = recipe_steps.cocktail_name
+            JOIN step s ON s.goal = recipe_steps.step_goal
+            WHERE NOT EXISTS (
+                SELECT 1 FROM cocktail_steps cs
+                WHERE cs.cocktail_id = c.id AND cs.steps_id = s.id
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

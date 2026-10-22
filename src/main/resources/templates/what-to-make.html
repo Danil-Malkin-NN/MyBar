@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Что приготовить — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container what-to-make-page"
+      th:attr="data-ingredient-search=@{/page/what-to-make/ingredients},data-recommendations=@{/page/what-to-make/recommendations},data-image-base=@{/media/images/}">
+    <header class="page-heading">
+        <div>
+            <p class="eyebrow">Ваши запасы</p>
+            <h1>Что приготовить?</h1>
+            <p class="lede">Отметьте, что есть дома: сначала покажем коктейли, которые уже можно смешать, затем — рецепты с тем, чего не хватает.</p>
+        </div>
+    </header>
+
+    <section class="panel make-stock-panel">
+        <div>
+            <p class="eyebrow">01 / Бар</p>
+            <h2>Что у вас есть?</h2>
+        </div>
+        <div class="suggestion-field make-stock-search">
+            <label for="make-ingredient-search">Алкоголь и ингредиенты</label>
+            <input id="make-ingredient-search" type="search" autocomplete="off"
+                   placeholder="Начните вводить название, например: водка">
+            <div id="make-ingredient-suggestions" class="suggestions" role="listbox"></div>
+        </div>
+        <div id="make-stock-items" class="make-stock-items" aria-live="polite"></div>
+    </section>
+
+    <section class="section make-results-section">
+        <header class="section-heading">
+            <div>
+                <p class="eyebrow">02 / Идеи</p>
+                <h2>Подходящие коктейли</h2>
+            </div>
+            <p id="make-results-count" class="muted">Добавьте ингредиенты, чтобы увидеть варианты.</p>
+        </header>
+        <div id="ready-cocktails" class="grid cocktail-grid make-cocktail-grid"></div>
+        <div id="missing-cocktails-section" class="make-missing-section" hidden>
+            <header class="section-heading">
+                <div>
+                    <p class="eyebrow">Можно приготовить, докупив</p>
+                    <h2>Почти готово</h2>
+                </div>
+            </header>
+            <div id="missing-cocktails" class="grid cocktail-grid make-cocktail-grid"></div>
+        </div>
+    </section>
+</main>
+<script th:src="@{/js/what-to-make.js}" defer></script>
+</body>
+</html>

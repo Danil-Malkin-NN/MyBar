@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои рецепты — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container">
+    <header class="page-heading">
+        <div class="collection-heading-copy">
+            <p class="eyebrow">Ваш вклад в барную карту</p>
+            <h1>Мои рецепты</h1>
+            <p class="lede" th:if="${message != null}" th:text="${message}"></p>
+        </div>
+        <div class="collection-heading-art submit-heading-art" aria-hidden="true">
+            <img th:src="@{/images/ingredient-syrup.svg}" alt="">
+            <img th:src="@{/images/ingredient-citrus.svg}" alt="">
+        </div>
+        <a class="button" th:href="@{/page/my/cocktails/new}">Добавить рецепт</a>
+    </header>
+    <div class="empty-message" th:if="${submissions.isEmpty()}">Вы ещё не отправляли рецепты.</div>
+    <section class="grid">
+        <article class="card submission-card" th:each="cocktail : ${submissions}">
+            <div class="submission-visual" aria-hidden="true">
+                <img th:src="@{/images/ingredient-syrup.svg}" alt="">
+            </div>
+            <div class="card-content">
+                <span class="status" th:text="${cocktail.status}">PENDING</span>
+                <h2 class="card-title" th:text="${cocktail.name}">Название</h2>
+                <p class="muted" th:text="${cocktail.description}">Описание</p>
+                <a th:if="${cocktail.status.name() == 'APPROVED'}"
+                   th:href="@{/page/cocktails/{id}(id=${cocktail.id})}">Открыть рецепт →</a>
+                <p class="muted" th:if="${cocktail.status.name() == 'PENDING'}">Ожидает проверки администратора.</p>
+                <p class="muted" th:if="${cocktail.status.name() == 'REJECTED'}">Рецепт не прошёл модерацию.</p>
+            </div>
+        </article>
+    </section>
+</main>
+</body>
+</html>

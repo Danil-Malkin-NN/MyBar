@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Список покупок — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container shopping-page">
+    <header class="page-heading">
+        <div>
+            <p class="eyebrow">Твой список</p>
+            <h1>Что докупить</h1>
+            <p class="lede">Список сохранён в этом браузере и доступен из меню профиля.</p>
+        </div>
+        <a class="button secondary" th:href="@{/page/party}">Вернуться к тусовке</a>
+    </header>
+    <section id="saved-shopping-list" class="saved-shopping-list" aria-live="polite"></section>
+    <button type="button" id="clear-shopping-list" class="secondary">Очистить список</button>
+</main>
+<script th:src="@{/js/shopping-list.js}" defer></script>
+</body>
+</html>

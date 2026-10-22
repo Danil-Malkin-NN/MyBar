@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+    <changeSet id="imported-cocktail-alcohol-ingredients" author="copilot">
+        <sql>
+            UPDATE ingredient
+            SET alcoholic = true
+            WHERE (
+                lower(name) ~ '(^|[[:space:]])(vodka|gin|rum|tequila|whiskey|whisky|bourbon|brandy|cognac|absinthe|vermouth|liqueur|campari|aperol|amaro|sake|cachaca|sambuca|grappa|calvados|mezcal|pisco|port|sherry|bitters|angostura|водка|джин|ром|ромов|текила|виски|бурбон|бренди|коньяк|абсент|вермут|ликер|ликёр|кампари|апероль|амаро|саке|кашаса|самбука|граппа|кальвадос|мескаль|писко|портвейн|херес|биттер|ангостура|трипл сек|triple sec|cointreau|куантро)([[:space:]]|$)'
+                OR lower(name) IN ('домашний ромовый микс', 'трипл сек', 'triple sec')
+            )
+              AND lower(name) NOT LIKE 'сироп%';
+        </sql>
+    </changeSet>
+
+    <changeSet id="imported-cocktail-base-alcohol" author="copilot">
+        <sql>
+            UPDATE cocktail c
+            SET base_alcohol = COALESCE((
+                SELECT i.name
+                FROM cocktail_ingredients ci
+                JOIN ingredient_and_count ic ON ic.id = ci.ingredients_id
+                JOIN ingredient i ON i.id = ic.ingredient_id
+                WHERE ci.cocktail_id = c.id
+                  AND lower(i.name) ~ '(^|[[:space:]])(vodka|gin|rum|tequila|whiskey|whisky|bourbon|brandy|cognac|absinthe|cachaca|mezcal|pisco|sake|водка|джин|ром|текила|виски|бурбон|бренди|коньяк|абсент|кашаса|мескаль|писко|саке)([[:space:]]|$)'
+                ORDER BY CASE
+                    WHEN lower(i.name) ~ '(vodka|водк)' THEN 1
+                    WHEN lower(i.name) ~ '(gin|джин)' THEN 2
+                    WHEN lower(i.name) ~ '(rum|ром)' THEN 3
+                    WHEN lower(i.name) ~ '(tequila|текил)' THEN 4
+                    WHEN lower(i.name) ~ '(whiskey|whisky|виски)' THEN 5
+                    WHEN lower(i.name) ~ '(brandy|cognac|бренди|коньяк)' THEN 6
+                    ELSE 7
+                END, i.name
+                LIMIT 1
+            ), '')
+            WHERE c.base_alcohol = '';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

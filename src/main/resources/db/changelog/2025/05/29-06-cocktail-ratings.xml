@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+    <changeSet id="cocktail-user-ratings" author="copilot">
+        <createTable tableName="cocktail_rating">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cocktail_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_cocktail_rating_cocktail"
+                             referencedTableName="cocktail"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="user_identifier" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="score" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="cocktail_rating"
+                             columnNames="cocktail_id,user_identifier"
+                             constraintName="uk_cocktail_rating_user"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Авторский коктейль — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container">
+    <header class="page-heading">
+        <div class="collection-heading-copy">
+            <p class="eyebrow">Сообщество</p>
+            <h1>Предложить авторский коктейль</h1>
+            <p class="lede">Сначала рецепт проверит администратор. До одобрения он виден только вам и модераторам.</p>
+        </div>
+        <div class="collection-heading-art submit-heading-art" aria-hidden="true">
+            <img th:src="@{/images/ingredient-fruit.svg}" alt="">
+            <img th:src="@{/images/tool-spoon.svg}" alt="">
+        </div>
+    </header>
+    <form method="post" th:action="@{/page/my/cocktails}" th:object="${submission}" class="panel">
+        <div class="form-grid">
+            <div class="field">
+                <label for="name">Название</label>
+                <input id="name" th:field="*{name}" required>
+            </div>
+            <div class="field">
+                <label for="baseAlcohol">Основной алкоголь</label>
+                <input id="baseAlcohol" th:field="*{baseAlcohol}" required>
+            </div>
+            <div class="field">
+                <label for="strength">Крепость, %</label>
+                <input id="strength" type="number" min="0" max="100" th:field="*{strength}" required>
+            </div>
+            <div class="field">
+                <label for="volume">Объём, мл</label>
+                <input id="volume" type="number" min="1" max="2000" th:field="*{volume}" required>
+            </div>
+            <div class="field field-wide">
+                <label for="description">Краткое описание</label>
+                <textarea id="description" th:field="*{description}" required></textarea>
+            </div>
+            <div class="field field-wide">
+                <label for="ingredients">Ингредиенты (по одному на строку)</label>
+                <textarea id="ingredients" th:field="*{ingredients}" required
+                          placeholder="Джин | 50 | мл&#10;Лимонный сок | 20 | мл&#10;Сахарный сироп | 15 | мл"></textarea>
+                <small class="muted">Формат: название | целое количество | мл/г/шт.</small>
+            </div>
+            <div class="field field-wide">
+                <label for="steps">Шаги приготовления (по одному на строку)</label>
+                <textarea id="steps" th:field="*{steps}" required></textarea>
+            </div>
+        </div>
+        <p class="ingredient-unavailable" th:if="${submissionError != null}" role="alert"
+           th:text="${submissionError}"></p>
+        <p class="ingredient-unavailable" th:if="${#fields.hasErrors('*')}" role="alert">
+            Проверьте обязательные поля, крепость и объём.
+        </p>
+        <div class="filter-actions">
+            <button type="submit">Отправить на проверку</button>
+            <a class="button secondary" th:href="@{/page/my/cocktails}">Мои рецепты</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

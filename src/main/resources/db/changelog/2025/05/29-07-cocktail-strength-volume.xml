@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+    <changeSet id="backfill-cocktail-strength-and-volume" author="copilot">
+        <sql>
+            WITH recipe_totals AS (
+                SELECT ci.cocktail_id,
+                       SUM(ic.count) FILTER (
+                           WHERE ic.unit_type = 1
+                             AND lower(i.name) NOT LIKE '%ice%'
+                             AND lower(i.name) NOT LIKE '%лед%'
+                       ) AS liquid_volume,
+                       SUM(ic.count * CASE
+                           WHEN lower(i.name) LIKE '%aperol%' OR lower(i.name) LIKE '%апероль%' THEN 11
+                           WHEN lower(i.name) LIKE '%vermouth%' OR lower(i.name) LIKE '%вермут%'
+                                OR lower(i.name) LIKE '%sherry%' OR lower(i.name) LIKE '%херес%'
+                                OR lower(i.name) LIKE '%port%' OR lower(i.name) LIKE '%портвейн%' THEN 17
+                           WHEN lower(i.name) LIKE '%liqueur%' OR lower(i.name) LIKE '%ликер%'
+                                OR lower(i.name) LIKE '%ликёр%' OR lower(i.name) LIKE '%курасао%'
+                                OR lower(i.name) LIKE '%амаретто%' OR lower(i.name) LIKE '%фалернум%'
+                                OR lower(i.name) LIKE '%драм%' THEN 25
+                           WHEN lower(i.name) LIKE '%campari%' OR lower(i.name) LIKE '%кампари%'
+                                OR lower(i.name) LIKE '%красный биттер%' THEN 25
+                           WHEN lower(i.name) LIKE '%sake%' OR lower(i.name) LIKE '%саке%' THEN 15
+                           WHEN lower(i.name) LIKE '%wine%' OR lower(i.name) LIKE '%вино%'
+                                OR lower(i.name) LIKE '%шампан%' OR lower(i.name) LIKE '%игрист%' THEN 12
+                           WHEN lower(i.name) LIKE '%биттер%' OR lower(i.name) LIKE '%bitter%' THEN 40
+                           WHEN lower(i.name) LIKE '%сверхкрепкий%' OR lower(i.name) LIKE '%overproof%' THEN 75
+                           WHEN lower(i.name) LIKE '%водк%' OR lower(i.name) LIKE '%vodka%'
+                                OR lower(i.name) LIKE '%джин%' OR lower(i.name) LIKE '%gin%'
+                                OR lower(i.name) LIKE '%ром%' OR lower(i.name) LIKE '%rum%'
+                                OR lower(i.name) LIKE '%текил%' OR lower(i.name) LIKE '%tequila%'
+                                OR lower(i.name) LIKE '%виски%' OR lower(i.name) LIKE '%whisk%'
+                                OR lower(i.name) LIKE '%бурбон%' OR lower(i.name) LIKE '%bourbon%'
+                                OR lower(i.name) LIKE '%бренди%' OR lower(i.name) LIKE '%brandy%'
+                                OR lower(i.name) LIKE '%коньяк%' OR lower(i.name) LIKE '%cognac%'
+                                OR lower(i.name) LIKE '%абсент%' OR lower(i.name) LIKE '%absinthe%'
+                                OR lower(i.name) LIKE '%кальвадос%' OR lower(i.name) LIKE '%calvados%'
+                                OR lower(i.name) LIKE '%мескаль%' OR lower(i.name) LIKE '%mezcal%'
+                                OR lower(i.name) LIKE '%кашас%' OR lower(i.name) LIKE '%cachaca%'
+                                OR lower(i.name) LIKE '%граппа%' OR lower(i.name) LIKE '%grappa%'
+                                OR lower(i.name) LIKE '%писко%' OR lower(i.name) LIKE '%pisco%' THEN 40
+                           ELSE 25
+                       END) FILTER (
+                           WHERE i.alcoholic AND ic.unit_type = 1
+                       ) AS alcohol_volume_percent
+                FROM cocktail_ingredients ci
+                JOIN ingredient_and_count ic ON ic.id = ci.ingredients_id
+                JOIN ingredient i ON i.id = ic.ingredient_id
+                GROUP BY ci.cocktail_id
+            )
+            UPDATE cocktail c
+            SET volume = CASE
+                    WHEN c.volume &lt;= 0 AND totals.liquid_volume > 0 THEN totals.liquid_volume
+                    ELSE c.volume
+                END,
+                strength = CASE
+                    WHEN c.strength &lt;= 0
+                         AND totals.liquid_volume > 0
+                         AND totals.alcohol_volume_percent > 0
+                    THEN LEAST(100, GREATEST(1,
+                        ROUND(totals.alcohol_volume_percent / totals.liquid_volume)::INTEGER))
+                    ELSE c.strength
+                END
+            FROM recipe_totals totals
+            WHERE totals.cocktail_id = c.id
+              AND ((c.volume &lt;= 0 AND totals.liquid_volume > 0)
+                   OR (c.strength &lt;= 0 AND totals.liquid_volume > 0
+                       AND totals.alcohol_volume_percent > 0));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

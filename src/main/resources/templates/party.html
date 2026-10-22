@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>План тусовки — My Bar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/topbar.html"></div>
+<main class="container party-page">
+    <header class="page-heading">
+        <div>
+            <p class="eyebrow">Сценарий вечеринки</p>
+            <h1>Соберите свой бар</h1>
+            <p class="lede">Добавьте гостей, отметьте алкоголь и соберите каждому своё меню.</p>
+        </div>
+        <div class="collection-heading-art party-heading-art" aria-hidden="true">
+            <img th:src="@{/images/tool-shaker.svg}" alt="">
+            <img th:src="@{/images/ingredient-citrus.svg}" alt="">
+        </div>
+    </header>
+
+    <form id="party-form" method="post" th:action="@{/page/party}" class="party-layout"
+          th:attr="data-cocktail-list=@{/page/party/cocktails},data-image-base=@{/media/images/},data-ingredient-search=@{/page/party/search/ingredients},data-recommendations=@{/page/party/recommendations},data-shopping-list=@{/page/shopping-list}">
+        <section class="panel party-setup">
+            <div class="party-section-heading">
+                <div>
+                    <p class="eyebrow">01 / Компания</p>
+                    <h2>Сколько будет гостей?</h2>
+                </div>
+                <output id="guest-count-label" for="guest-count-slider" class="guest-count"
+                        th:text="${guests}">6</output>
+            </div>
+            <label class="sr-only" for="guest-count-slider">Количество гостей</label>
+            <input id="guest-count-slider" class="neon-slider" name="guests" type="range"
+                   min="1" max="20" step="1" th:value="${guests}">
+            <div class="slider-ends"><span>1 человек</span><span>20 человек</span></div>
+
+            <input type="hidden" id="party-mode" name="mode" value="guests">
+            <section class="alcohol-availability" aria-labelledby="alcohol-availability-title">
+                <div>
+                    <p class="eyebrow">02 / Запасы</p>
+                    <h2 id="alcohol-availability-title">Алкоголь уже есть?</h2>
+                </div>
+                <div class="availability-choice">
+                    <label><input type="radio" name="alcoholStatus" value="yes"><span>Да, выберу что есть</span></label>
+                    <label><input type="radio" name="alcoholStatus" value="no" checked><span>Нет, пока нет</span></label>
+                </div>
+            </section>
+            <section id="inventory-panel" class="panel inventory-panel" hidden>
+                <div>
+                    <p class="eyebrow">Ваш бар</p>
+                    <h2>Что есть под рукой?</h2>
+                    <p class="muted">Добавьте продукты — подскажем коктейли из них.</p>
+                </div>
+                <div class="suggestion-field">
+                    <label for="ingredient-search">Ингредиенты из каталога</label>
+                    <input id="ingredient-search" type="search" autocomplete="off"
+                           placeholder="Найдите алкоголь или миксер">
+                    <div id="ingredient-suggestions" class="suggestions" role="listbox"></div>
+                </div>
+                <div id="inventory-items" class="inventory-list"></div>
+                <div id="pantry-recommendations" class="pantry-recommendations" aria-live="polite">
+                    <p class="suggestion-message">Добавьте ингредиенты, чтобы получить идеи.</p>
+                </div>
+            </section>
+            <div class="guest-workspace">
+                <div id="guest-cards" class="guest-list" aria-live="polite"></div>
+                <section id="cocktail-picker" class="cocktail-picker" hidden>
+                    <button id="close-cocktail-picker" class="picker-close" type="button" aria-label="Закрыть выбор">×</button>
+                    <p class="eyebrow">Выбор напитков</p>
+                    <h3>Добавить коктейль</h3>
+                    <p class="muted">Выберите коктейль или перетащите его на другого гостя, чтобы добавить и ему.</p>
+                    <label class="sr-only" for="party-cocktail-search">Поиск коктейлей по названию</label>
+                    <input id="party-cocktail-search" type="search" autocomplete="off"
+                           placeholder="Поиск по названию">
+                    <label class="sr-only" for="party-base-alcohol-filter">Основной алкоголь</label>
+                    <select id="party-base-alcohol-filter" class="cocktail-base-filter">
+                        <option value="">Весь основной алкоголь</option>
+                    </select>
+                    <div id="party-cocktail-gallery" class="cocktail-gallery" role="list"
+                         aria-label="Доступные коктейли"></div>
+                    <p id="active-guest-label" class="active-guest-label"></p>
+                </section>
+            </div>
+        </section>
+
+        <div class="party-submit">
+                <button type="submit" class="party-submit-button">Рассчитать покупки <span aria-hidden="true">↗</span></button>
+                <p>Один выбранный коктейль — одна порция для этого гостя.</p>
+        </div>
+    </form>
+
+    <div class="empty-message party-error" th:if="${error != null}" role="alert" th:text="${error}"></div>
+
+    <section class="section party-results" th:if="${ingredients != null}">
+        <div class="party-section-heading">
+            <div>
+                <p class="eyebrow">03 / Закупка</p>
+                <h2>Всё для вашей компании</h2>
+                <p class="muted" th:text="|${guests} гостей · ${selectedCount} порций|">Расчёт</p>
+            </div>
+        </div>
+        <div class="shopping-list" id="party-shopping-list">
+            <article class="shopping-item" th:each="item : ${ingredients}" th:attr="data-unit=${item.unitLabel}">
+                <div>
+                    <h3 th:text="${item.name}">Ингредиент</h3>
+                    <p class="muted" th:text="|Нужно ${item.required} ${item.unitLabel} · есть ${item.available} ${item.unitLabel}|"></p>
+                </div>
+                <strong th:if="${item.missing.signum() > 0}" th:text="|+ ${item.missing} ${item.unitLabel}|"></strong>
+                <span class="ingredient-available" th:unless="${item.missing.signum() > 0}">Запас есть</span>
+            </article>
+        </div>
+        <button class="button shopping-save-button" type="button" id="save-shopping-list">Добавить недостающее в список покупок</button>
+    </section>
+</main>
+<script th:inline="javascript">
+    const initialGuests = /*[[${guestForms}]]*/ [];
+    const initialInventory = /*[[${inventoryForms}]]*/ [];
+</script>
+<script th:src="@{/js/entity-icons.js}" defer></script>
+<script th:src="@{/js/party-planner.js}" defer></script>
+</body>
+</html>
