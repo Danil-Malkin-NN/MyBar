@@ -11,6 +11,7 @@ import ru.nino.mybar.repository.impl.IngredientRepositoryImpl;
 import ru.nino.mybar.repository.impl.UserRepositoryImpl;
 
 import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -18,11 +19,13 @@ import java.util.stream.Collectors;
 public class IngredientServiceImpl extends NameFindService<IngredientDto, Ingredient> {
 
     private final UserBarService userBarService;
+    private final IngredientRepositoryImpl ingredientRepository;
 
     public IngredientServiceImpl(IngredientRepositoryImpl repository, IngredientMapperImpl mapper,
                                  UserRepositoryImpl userRepository, UserBarService userBarService) {
         super(repository, mapper);
         this.userBarService = userBarService;
+        this.ingredientRepository = repository;
     }
 
     public Page<IngredientDto> getPageWithUserInfo(Pageable pageable, String email){
@@ -40,6 +43,13 @@ public class IngredientServiceImpl extends NameFindService<IngredientDto, Ingred
         });
 
         return page;
+    }
+
+    public List<Ingredient> searchIngredients(String name) {
+        if (name == null || name.isBlank()) {
+            return List.of();
+        }
+        return ingredientRepository.findTop10ByNameContainingIgnoreCaseOrderByNameAsc(name.trim());
     }
 
     @Override

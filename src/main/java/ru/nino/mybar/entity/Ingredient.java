@@ -21,6 +21,8 @@ public class Ingredient extends IdEntity {
     @Schema(description = "Описание ингредиента", example = "водка")
     private String description;
 
+    private boolean alcoholic;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Image image;
 

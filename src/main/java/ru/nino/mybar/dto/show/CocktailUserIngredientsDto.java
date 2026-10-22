@@ -22,6 +22,7 @@ public class CocktailUserIngredientsDto {
 
     @Schema(description = "Крепкость напитка в градусах", example = "13")
     private int strength = 0;
+    private boolean containsAlcohol;
 
     @Schema(description = "Список ингредиентов и их количество для коктейля ")
     private List<IngredientAvailableDto> ingredients = new ArrayList<>();

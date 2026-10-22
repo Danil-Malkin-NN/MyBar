@@ -17,6 +17,7 @@ spring:
         registration:
           keycloak:
             client-id: my-bar-app
+            client-authentication-method: none
             scope: openid
             authorization-grant-type: authorization_code
             redirect-uri: "http://localhost:8080/api/login/oauth2/code/keycloak"
@@ -42,7 +43,7 @@ spring:
       max-request-size: 10MB
   docker:
     compose:
-      enabled: true
+      enabled: ${DOCKER_COMPOSE_ENABLED:false}
       file: docker-compose.yaml
 
   jpa:

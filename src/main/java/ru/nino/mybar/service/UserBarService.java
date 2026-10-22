@@ -38,9 +38,24 @@ public class UserBarService {
 
     private final IngredientRepositoryImpl ingredientRepository;
 
+    @Transactional
+    public User getOrCreateUser(String email, String username, String firstName, String lastName) {
+        String userKey = email == null || email.isBlank() ? username : email;
+        if (userKey == null || userKey.isBlank()) {
+            throw new IllegalArgumentException("У пользователя Keycloak отсутствует email и имя пользователя.");
+        }
+        return userRepository.findByEmail(userKey).orElseGet(() -> {
+            User user = new User();
+            user.setEmail(userKey);
+            user.setUsername(username == null || username.isBlank() ? userKey : username);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            return userRepository.save(user);
+        });
+    }
+
     public List<IngredientDto> findAllUserIngredients(String userName) {
-        User userInfo = userRepository.findByEmail(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
+        User userInfo = getOrCreateUser(userName, userName, null, null);
 
         Set<Ingredient> ingredient = userInfo.getIngredient();
         return ingredient.stream()
@@ -51,6 +66,7 @@ public class UserBarService {
 
     public List<CocktailUserIngredientsDto> getAvailableCocktails(String email) {
 
+        getOrCreateUser(email, email, null, null);
         List<Cocktail> cocktails = cocktailRepository.getAvailableCocktails(email);
 
         var userIngredients = userRepository.findByEmail(email)
@@ -74,8 +90,7 @@ public class UserBarService {
     }
 
     public List<IngredientDto> addIngredient(String email, Long ingredientsId) {
-        User userInfo = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+        User userInfo = getOrCreateUser(email, email, null, null);
 
         Ingredient ingredient = ingredientRepository.findById(ingredientsId)
                 .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));
@@ -91,8 +106,7 @@ public class UserBarService {
     }
 
     public List<IngredientDto> deleteIngredientsFromMyBar(String userName, Long ingredientsId) {
-        User userInfo = userRepository.findByEmail(userName)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + userName + " не найдена"));
+        User userInfo = getOrCreateUser(userName, userName, null, null);
 
         Set<Ingredient> userIngredients = userInfo.getIngredient();
 
@@ -110,8 +124,7 @@ public class UserBarService {
 
     @Transactional
     public List<CocktailsModel> addCocktail(String email, Long cocktailId) {
-        User userInfo = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+        User userInfo = getOrCreateUser(email, email, null, null);
 
         cocktailRepository.findById(cocktailId)
                 .ifPresent(cocktail -> {
@@ -126,8 +139,7 @@ public class UserBarService {
 
     @Transactional
     public void deleteFavoritCoctails(String email, Long cocktailsId) {
-        User userInfo = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Информация о пользователе: " + email + " не найдена"));
+        User userInfo = getOrCreateUser(email, email, null, null);
 
         userInfo.getFavoriteCocktail()
                 .removeIf(ingredient -> ingredient.getId()

@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.nino.mybar.entity.Image;
 
-@Mapper(componentModel = "Spring")
+@Mapper(componentModel = "spring")
 public interface ImageMapper {
 
 	@Mapping(target = "imagePath", source = ".")

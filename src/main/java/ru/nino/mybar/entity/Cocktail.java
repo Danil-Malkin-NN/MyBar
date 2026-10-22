@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
@@ -34,6 +36,13 @@ public class Cocktail extends IdEntity {
     private int volume = 0;
 
     private int strength = 0;
+
+    private String baseAlcohol = "";
+
+    @Enumerated(EnumType.STRING)
+    private CocktailStatus status = CocktailStatus.APPROVED;
+
+    private String submittedBy;
 
     @Fetch(FetchMode.JOIN)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

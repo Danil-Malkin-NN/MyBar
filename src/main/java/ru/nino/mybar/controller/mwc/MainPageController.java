@@ -2,7 +2,9 @@ package ru.nino.mybar.controller.mwc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -24,21 +26,47 @@ public class MainPageController {
     private final CocktailServiceImpl service;
 
     @GetMapping()
-    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model,
+    public String mainPage(@PageableDefault(size = 100) Pageable pageable, Model model,
                            @RequestParam(required = false, defaultValue = "") String cocktailName,
+                           @RequestParam(defaultValue = "evening") String mood,
                            Principal principal) {
-        Page<CocktailsModel> page;
-
-        if(principal != null) {
-            String email = UserUtils.getEmail((OAuth2AuthenticationToken) principal);
-            page = service.getPageWithNameFilterModel(cocktailName, pageable, email);
-        } else {
-            page = service.getPageWithNameFilterModel(cocktailName, pageable);
-        }
+        int size = Math.min(Math.max(pageable.getPageSize(), 1), 100);
+        String selectedMood = switch (mood) {
+            case "morning", "evening", "night" -> mood;
+            default -> "evening";
+        };
+        Integer minStrength = switch (selectedMood) {
+            case "evening" -> 11;
+            case "night" -> 25;
+            default -> null;
+        };
+        Integer maxStrength = switch (selectedMood) {
+            case "morning" -> 10;
+            case "evening" -> 24;
+            default -> null;
+        };
+        Sort moodSort = selectedMood.equals("night")
+                ? Sort.by(Sort.Direction.DESC, "strength").and(Sort.by("name"))
+                : Sort.by(Sort.Direction.ASC, "strength").and(Sort.by("name"));
+        Pageable limitedPageable = PageRequest.of(pageable.getPageNumber(), size,
+                pageable.getSort().isSorted() ? pageable.getSort() : moodSort);
+        String email = principal instanceof OAuth2AuthenticationToken token
+                ? UserUtils.getEmail(token)
+                : null;
+        Page<CocktailsModel> page = service.searchApprovedCatalog(cocktailName, "", minStrength,
+                maxStrength, null, null, limitedPageable, email);
 
         model.addAttribute("page", page);
         model.addAttribute("items", page.getContent());
-        model.addAttribute("pageNow", pageable.getPageNumber());
+        model.addAttribute("pageNow", limitedPageable.getPageNumber());
+        model.addAttribute("cocktailName", cocktailName);
+        model.addAttribute("mood", selectedMood);
+        model.addAttribute("moodLabel", switch (selectedMood) {
+            case "morning" -> "Утро · лёгкие";
+            case "night" -> "Ночь · крепкие";
+            default -> "Вечер · средние";
+        });
+        model.addAttribute("topAuthorCocktails", service.getTopRatedAuthorCocktails());
 
         return "mainPage";
 

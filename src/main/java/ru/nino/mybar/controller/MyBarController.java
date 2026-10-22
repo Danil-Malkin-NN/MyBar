@@ -27,14 +27,15 @@ public class MyBarController {
 
     @GetMapping("ingredients")
     public List<IngredientDto> getMyIngredients(Principal user) {
-        String name = user.getName();
+        String name = UserUtils.getEmail((OAuth2AuthenticationToken) user);
         return userBarService.findAllUserIngredients(name);
     }
 
 
     @GetMapping("available/cocktails")
     public List<CocktailUserIngredientsDto> getAvailableCocktails(Principal user) {
-        return userBarService.getAvailableCocktails(user.getName());
+        String name = UserUtils.getEmail((OAuth2AuthenticationToken) user);
+        return userBarService.getAvailableCocktails(name);
     }
 
     @PostMapping("ingredients/add/{ingredientsId}")

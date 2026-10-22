@@ -2,70 +2,112 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Моё приложение</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|${cocktail.name} — My Bar|">Рецепт — My Bar</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body data-base-url="" th:attrappend="data-base-url=@{/}">
+<body>
 <div th:replace="fragments/topbar.html"></div>
-<div class="container">
-    <img alt="Image" th:if="${cocktail.image!=null}" th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
-    <h3>
-        <a th:text="${cocktail.name}"
-           class="text-xl font-semibold text-black">
-        </a>
-    </h3>
-    <div class="meta">
-        <span th:text="'Крепость: ' + ${cocktail.strength} + '%'">Крепость</span> |
-        <span th:text="'Объём: ' + ${cocktail.volume} + ' мл'">Объём</span>
-    </div>
+<main class="container">
+    <a th:href="@{/page}">← К каталогу</a>
+    <header class="page-heading detail-heading" th:attr="data-cocktail=${cocktail.id},data-cocktail-name=${cocktail.name}">
+        <div>
+            <p class="eyebrow">Барная карта My Bar</p>
+            <h1 th:text="${cocktail.name}">Название</h1>
+            <p class="lede" th:text="${cocktail.description}">Описание</p>
+            <div class="meta">
+                <span class="tag" th:if="${cocktail.strength > 0}" th:text="|${cocktail.strength}% крепости|">Крепость</span>
+                <span class="tag" th:if="${cocktail.strength == 0 and cocktail.containsAlcohol}">Крепость не указана</span>
+                <span class="tag" th:if="${cocktail.strength == 0 and !cocktail.containsAlcohol}">Без алкоголя</span>
+                <span class="tag" th:if="${cocktail.volume > 0}" th:text="|${cocktail.volume} мл|">Объём</span>
+                <span class="tag" th:if="${cocktail.volume <= 0}">Объём не указан</span>
+                <span class="tag" th:if="${cocktail.baseAlcohol != null}" th:text="${cocktail.baseAlcohol}">Алкоголь</span>
+            </div>
+        </div>
+        <img class="card-image detail-image" alt="" th:if="${cocktail.image != null}"
+             th:src="@{/media/images/{filename}(filename=${cocktail.image})}">
+        <div class="cocktail-image-placeholder detail-image" th:unless="${cocktail.image != null}"
+             aria-hidden="true"><span>🍸</span></div>
+    </header>
 
-    <p th:text="${cocktail.description}">Описание...</p>
+    <section class="section author-rating" th:if="${authorCocktail}">
+        <div>
+            <p class="eyebrow">Рецепт сообщества</p>
+            <h2 th:text="${rating.count > 0 ? #numbers.formatDecimal(rating.average, 1, 1) + ' / 5' : 'Оцените рецепт'}">Оцените рецепт</h2>
+            <p class="muted" th:text="|${rating.count} оценок|">0 оценок</p>
+        </div>
+        <form th:if="${canRate}" method="post" th:action="@{/page/cocktails/{id}/rating(id=${cocktail.id})}" class="rating-form">
+            <label for="cocktail-rating">Ваша оценка</label>
+            <select id="cocktail-rating" name="score">
+                <option th:each="score : ${#numbers.sequence(5, 1, -1)}" th:value="${score}"
+                        th:selected="${rating.currentScore == score}" th:text="|${score} из 5|">5 из 5</option>
+            </select>
+            <button type="submit">Сохранить оценку</button>
+        </form>
+        <p class="muted" th:unless="${canRate}">Войдите, чтобы оценить авторский коктейль.</p>
+    </section>
 
-
-
-    <div class="section">
+    <section class="section detail-section">
+        <p class="eyebrow">Рецептура</p>
         <h2>Ингредиенты</h2>
-        <div class="card-list">
-            <div class="card" th:each="ing : ${cocktail.ingredients}">
-                <h3 th:text="${ing.ingredient.name}">Название</h3>
-                <p th:text="'Количество: ' + ${ing.count} + ' ' + ${ing.unitType}">Количество</p>
-                <small th:text="${ing.ingredient.description}">Описание</small>
-            </div>
+        <div class="detail-list">
+            <article class="detail-row" th:each="ing : ${cocktail.ingredients}">
+                <button type="button" class="detail-row-toggle ingredient-toggle" aria-expanded="false">
+                    <span class="entity-icon" data-icon-kind="ingredient"
+                          th:attr="data-icon-name=${ing.ingredient.name}" aria-hidden="true">✳</span>
+                    <span class="detail-row-name" th:text="${ing.ingredient.name}">Название</span>
+                    <span class="detail-row-amount" th:text="|${ing.count} ${ing.unitType}|">Количество</span>
+                    <span class="expand-indicator" aria-hidden="true">+</span>
+                </button>
+                <p class="detail-row-description muted" hidden th:text="${ing.ingredient.description}">Описание</p>
+            </article>
         </div>
-    </div>
+    </section>
 
-
-
-
-    <div class="section">
+    <section class="section detail-section" th:if="${!cocktail.instruments.isEmpty()}">
+        <p class="eyebrow">Оснащение</p>
         <h2>Инструменты</h2>
-        <div class="card-list">
-            <div class="card" th:each="tool : ${cocktail.instruments}">
-                <h3 th:text="${tool.name}">Инструмент</h3>
-                <p th:text="${tool.description}">Описание</p>
+        <div class="detail-list tool-list">
+            <article class="detail-row tool-row" th:each="tool : ${cocktail.instruments}">
+                <span class="entity-icon" data-icon-kind="tool" th:attr="data-icon-name=${tool.name}"
+                      aria-hidden="true">⌁</span>
+                <span class="detail-row-name" th:text="${tool.name}">Инструмент</span>
+                <span class="detail-row-description tool-description muted" th:if="${tool.description != null and !tool.description.isBlank()}"
+                      th:text="${tool.description}">Описание</span>
+            </article>
+        </div>
+    </section>
+
+    <section class="section" th:if="${!cocktail.steps.isEmpty()}">
+        <p class="eyebrow">Приготовление</p>
+        <h2>Шаг за шагом</h2>
+        <article class="recipe-step" th:each="step, loop : ${cocktail.steps}">
+            <div class="step-visual" aria-hidden="true" data-motion="build">
+                <span class="scene-glow"></span>
+                <span class="scene-vessel"></span>
+                <span class="scene-liquid"></span>
+                <span class="scene-tool"></span>
+                <span class="scene-stream"></span>
+                <span class="scene-ice scene-ice-one"></span>
+                <span class="scene-ice scene-ice-two"></span>
+                <span class="scene-garnish"></span>
+                <span class="scene-bubble scene-bubble-one"></span>
+                <span class="scene-bubble scene-bubble-two"></span>
             </div>
-        </div>
-    </div>
-
-
-
-    <div class="section">
-        <h2>Шаги приготовления</h2>
-        <div th:each="step : ${cocktail.steps}" class="step">
-            <h4 th:text="${step.goal}">Название шага</h4>
-            <p th:text="${step.description}">Описание шага</p>
-            <ul>
-                <li th:each="ing : ${step.usesIngredients}"
-                    th:text="'Ингредиент: ' + ${ing.ingredient.name} + ' (' + ${ing.count} + ' ' + ${ing.unitType} + ')'">
-                    Ингредиент
-                </li>
-                <li th:each="tool : ${step.instruments}" th:text="'Инструмент: ' + ${tool.name}">Инструмент</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
+            <div>
+                <p class="eyebrow" th:text="|Шаг ${loop.count}|">Шаг</p>
+                <h3 th:text="${step.goal}">Действие</h3>
+                <p class="muted" th:text="${step.description}">Описание шага</p>
+                <ul>
+                    <li th:each="ing : ${step.usesIngredients}"
+                        th:text="|${ing.ingredient.name} · ${ing.count} ${ing.unitType}|"></li>
+                    <li th:each="tool : ${step.instruments}" th:text="${tool.name}"></li>
+                </ul>
+            </div>
+        </article>
+    </section>
+</main>
+<script th:src="@{/js/cocktail-animation.js}" defer></script>
+<script th:src="@{/js/entity-icons.js}" defer></script>
 </body>
 </html>

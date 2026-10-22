@@ -2,82 +2,161 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Моё приложение</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Коктейли — My Bar</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
-<body data-base-url="" th:attrappend="data-base-url=@{/}">
-
-<!-- Топбар -->
+<body data-base-url="" th:attr="data-base-url=@{/}">
 <div th:replace="fragments/topbar.html"></div>
-
-<!-- Основной контент -->
-<div class="container">
-
-    <form method="get" th:action="@{/page}" class="mb-6 flex items-center gap-4">
-        <input type="text" name="cocktailName" placeholder="Поиск по имени"
-               class="px-4 py-2 rounded-2xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-               th:value="${param.cocktailName}">
-        <button type="submit"
-                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-2xl shadow-md transition-all duration-200">
-            Найти
-        </button>
-    </form>
-
-    <!-- Сетка карточек -->
-    <div class="grid">
-        <div th:each="cocktail : ${items}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <img alt="Image" th:if="${cocktail.image!=null}"
-                 th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
-
-            <h3>
-                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
-                   th:text="${cocktail.name}"
-                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
-                </a>
-            </h3>
-
-            <p th:text="${cocktail.description}">Описание напитка...</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">15%</span></p>
-            <p class="ingredients">
-                <strong>Ингредиенты:</strong>
-                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
-            </p>
-
-            <div class="flex items-center gap-2 mt-2">
-                <button th:attr="data-id=${cocktail.id}"
-                        th:if="${cocktail.favorite}"
-                        class="favorite-remove-btn">❤️
-                </button>
-
-                <button th:attr="data-id=${cocktail.id}"
-                        th:if="${!cocktail.favorite}"
-                        class="favorite-add-btn">🤍
-                </button>
-
-                <!-- Кнопка EDIT только для админа -->
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a th:href="@{/page/AdminPanel/cocktaill/{id}(id=${cocktail.id})}"
-                       class="custom-button">
-                        EDIT
-                    </a>
-                </div>
+<main class="container">
+    <section class="home-hero">
+        <div class="home-hero-copy">
+            <p class="eyebrow">Твоя барная вселенная</p>
+            <h1>Вечер начинается<br>с правильного <span>микса.</span></h1>
+            <p class="home-intro">My Bar — личная карта бара в твоём кармане: находи новые коктейли, изучай рецепты и собирай компанию на вечер.</p>
+            <div class="hero-actions">
+                <a class="button hero-primary" href="#cocktail-catalog">Открыть каталог <span aria-hidden="true">↓</span></a>
+                <a class="hero-secondary" th:href="@{/page/party}">Собрать компанию <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="hero-signals" aria-label="Возможности My Bar">
+                <span><i aria-hidden="true"></i> Рецепты для любого настроения</span>
+                <span><i aria-hidden="true"></i> Твой бар — твои правила</span>
             </div>
         </div>
+        <div class="home-hero-art">
+            <img th:src="@{/images/bar-hero.svg}" alt="Неоновая иллюстрация бокала коктейля">
+            <span class="hero-orbit hero-orbit-one" aria-hidden="true"></span>
+            <span class="hero-orbit hero-orbit-two" aria-hidden="true"></span>
+            <div class="hero-art-label">
+                <span>01</span>
+                <label for="mood-select">Ритм вечера</label>
+                <form method="get" th:action="@{/page}" class="mood-picker">
+                    <input type="hidden" name="cocktailName" th:value="${cocktailName}">
+                    <select id="mood-select" name="mood" aria-label="Настроение и время суток">
+                        <option value="morning" th:selected="${mood == 'morning'}">Утро · лёгкие</option>
+                        <option value="evening" th:selected="${mood == 'evening'}">Вечер · средние</option>
+                        <option value="night" th:selected="${mood == 'night'}">Ночь · крепкие</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-intro-strip" aria-label="О My Bar">
+        <div>
+            <span class="intro-index">01</span>
+            <h2>Исследуй</h2>
+            <p>Сотни рецептов из каталога — от проверенной классики до необычных сочетаний.</p>
+        </div>
+        <div>
+            <span class="intro-index">02</span>
+            <h2>Смешивай</h2>
+            <p>Открывай состав и шаги приготовления, выбирай нужные инструменты.</p>
+        </div>
+        <div>
+            <span class="intro-index">03</span>
+            <h2>Разделяй момент</h2>
+            <p>Спланируй вечер, подбери напитки гостям и рассчитай продукты.</p>
+        </div>
+    </section>
+
+    <section class="section author-top-section" th:if="${!topAuthorCocktails.isEmpty()}">
+        <div class="page-heading catalog-heading">
+            <div>
+                <p class="eyebrow">Выбор сообщества</p>
+                <h2>Авторские коктейли с высоким рейтингом</h2>
+            </div>
+            <a class="catalog-side-link" th:href="@{/page/my/cocktails/new}">Добавить свой рецепт <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="grid cocktail-grid author-top-grid">
+            <article th:each="cocktail : ${topAuthorCocktails}" class="card cocktail-card author-top-card">
+                <a class="cocktail-card-image-link" th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:aria-label="|Открыть рецепт ${cocktail.name}|">
+                    <img class="card-image cocktail-image" alt="" th:if="${cocktail.image != null}"
+                         th:src="@{/media/images/{filename}(filename=${cocktail.image})}">
+                    <div class="cocktail-image-placeholder" th:unless="${cocktail.image != null}"
+                         aria-hidden="true"><span>✦</span></div>
+                </a>
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}" th:text="${cocktail.name}">Авторский коктейль</a>
+                    </h3>
+                    <div class="meta">
+                        <span class="tag" th:text="|★ ${#numbers.formatDecimal(cocktail.ratingAverage, 1, 1)} · ${cocktail.ratingCount} оценок|">Рейтинг</span>
+                        <span class="tag" th:if="${cocktail.strength != '0'}" th:text="|${cocktail.strength}%|">Крепость</span>
+                        <span class="tag" th:if="${cocktail.strength == '0' and cocktail.containsAlcohol}">Крепость не указана</span>
+                        <span class="tag" th:if="${cocktail.strength == '0' and !cocktail.containsAlcohol}">Без алкоголя</span>
+                        <span class="tag" th:if="${cocktail.volume > 0}" th:text="|${cocktail.volume} мл|">Объём</span>
+                        <span class="tag" th:if="${cocktail.volume <= 0}">Объём не указан</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <header class="page-heading catalog-heading" id="cocktail-catalog">
+        <div>
+            <p class="eyebrow" th:text="${moodLabel}">Вечер · средние</p>
+            <h2>Коктейльная карта</h2>
+        </div>
+        <a class="catalog-side-link" th:href="@{/page/ingredients}">Посмотреть ингредиенты <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <form method="get" th:action="@{/page}" class="catalog-toolbar">
+        <input type="hidden" name="mood" th:value="${mood}">
+        <label class="search-field" for="cocktailName">
+            <span aria-hidden="true">⌕</span>
+            <input id="cocktailName" type="search" name="cocktailName" placeholder="Поиск по названию коктейля"
+                   th:value="${cocktailName}">
+        </label>
+    </form>
+
+    <div th:if="${items.isEmpty()}" class="empty-message">
+        По этим параметрам коктейли не найдены. Измените фильтры или сбросьте поиск.
     </div>
+    <section class="grid cocktail-grid" aria-label="Каталог коктейлей">
+        <article th:each="cocktail : ${items}" class="card cocktail-card">
+            <a class="cocktail-card-image-link" th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+               th:aria-label="|Открыть рецепт ${cocktail.name}|">
+                <img class="card-image cocktail-image" alt="" th:if="${cocktail.image != null}"
+                     th:src="@{/media/images/{filename}(filename=${cocktail.image})}">
+                <div class="cocktail-image-placeholder" th:unless="${cocktail.image != null}"
+                     aria-hidden="true"><span>🍸</span></div>
+            </a>
+            <div class="card-content">
+                <h2 class="card-title">
+                    <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}" th:text="${cocktail.name}">Коктейль</a>
+                </h2>
+                <div class="meta">
+                    <span class="tag" th:if="${cocktail.strength != '0'}" th:text="|${cocktail.strength}%|">Крепость</span>
+                    <span class="tag" th:if="${cocktail.strength == '0' and cocktail.containsAlcohol}">Крепость не указана</span>
+                    <span class="tag" th:if="${cocktail.strength == '0' and !cocktail.containsAlcohol}">Без алкоголя</span>
+                    <span class="tag" th:if="${cocktail.volume > 0}" th:text="|${cocktail.volume} мл|">Объём</span>
+                    <span class="tag" th:if="${cocktail.volume <= 0}">Объём не указан</span>
+                    <span class="tag" th:if="${cocktail.baseAlcohol != null and !cocktail.baseAlcohol.isBlank()}"
+                          th:text="${cocktail.baseAlcohol}">Алкоголь</span>
+                </div>
+                <div class="card-actions">
+                    <div sec:authorize="isAuthenticated()">
+                        <button th:attr="data-id=${cocktail.id}" th:if="${cocktail.favorite}"
+                                class="favorite-remove-btn" aria-label="Убрать из избранного">♥</button>
+                        <button th:attr="data-id=${cocktail.id}" th:unless="${cocktail.favorite}"
+                                class="favorite-add-btn" aria-label="Добавить в избранное">♡</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
 
-    <div class="pagination">
-        <a th:href="@{/page(page=${page.number - 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
-           th:if="${page.hasPrevious()}" class="btn">Назад</a>
-
-        <span>Страница <span th:text="${page.number + 1}">1</span> из <span th:text="${page.totalPages}">1</span></span>
-
-        <a th:href="@{/page(page=${page.number + 1}, size=${page.size}, cocktailName=${param.cocktailName})}"
-           th:if="${page.hasNext()}" class="btn">Вперёд</a>
-    </div>
-</div>
-
+    <nav class="pagination" aria-label="Страницы каталога">
+        <a th:if="${page.hasPrevious()}"
+           th:href="@{/page(page=${page.number - 1},size=${page.size},cocktailName=${cocktailName},mood=${mood})}">← Раньше</a>
+        <span th:text="|Страница ${page.number + 1} из ${page.totalPages == 0 ? 1 : page.totalPages}|"></span>
+        <a th:if="${page.hasNext()}"
+           th:href="@{/page(page=${page.number + 1},size=${page.size},cocktailName=${cocktailName},mood=${mood})}">Дальше →</a>
+    </nav>
+</main>
 <script th:src="@{/js/favorite_cocktail.js}"></script>
+<script th:src="@{/js/mood-picker.js}" defer></script>
 </body>
 </html>

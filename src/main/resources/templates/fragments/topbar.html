@@ -1,6 +1,25 @@
-<div class="topbar">
-    <a th:href="@{/page}">Главная</a>
-    <a th:href="@{/page/ingredients}">Ингредиенты</a>
-    <a th:href="@{/page/tools}">Инструменты</a>
-    <a th:href="@{/page/my/bar}">Мой Бар</a>
+<div class="topbar" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <a class="brand" th:href="@{/page}" aria-label="My Bar — на главную"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">MY BAR</span></a>
+    <nav class="nav-links" aria-label="Основная навигация">
+        <a th:href="@{/page}">Коктейли</a>
+        <a class="nav-party" th:href="@{/page/party}"><span aria-hidden="true">✳</span> Тусовка</a>
+        <a th:href="@{/page/what-to-make}">Что приготовить</a>
+        <a th:href="@{/page/ingredients}">Ингредиенты</a>
+        <a th:href="@{/page/tools}">Инструменты</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/page/my/bar}">Мой бар</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/page/shopping-list}">Покупки</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/page/my/cocktails/new}">Добавить рецепт</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/page/my/cocktails}">Мои рецепты</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/page/AdminPanel/cocktails/review}">Модерация</a>
+    </nav>
+    <div class="nav-actions">
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Переключить тему"
+                title="Переключить тему">◐</button>
+        <a class="login-button" sec:authorize="isAnonymous()" th:href="@{/oauth2/authorization/keycloak}">Войти</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Выйти</button>
+        </form>
+    </div>
+    <script th:src="@{/js/theme.js}" defer></script>
 </div>

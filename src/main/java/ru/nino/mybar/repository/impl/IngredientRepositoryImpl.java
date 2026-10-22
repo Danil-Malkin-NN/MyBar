@@ -14,6 +14,8 @@ public interface IngredientRepositoryImpl extends NameFinderRepository<Ingredien
 
     List<Ingredient> findTop5ByNameLikeIgnoreCase(String name);
 
+    List<Ingredient> findTop10ByNameContainingIgnoreCaseOrderByNameAsc(String name);
+
     @Override
     Ingredient findByName(String s);
 

@@ -31,6 +31,9 @@ public class CocktailDto extends DTO {
     @Schema(description = "Крепкость напитка в градусах", example = "13")
     private int strength = 0;
 
+    private String baseAlcohol = "";
+    private boolean containsAlcohol;
+
     @Schema(description = "Список ингредиентов и их количество для коктейля ")
     private List<IngredientAndCountDto> ingredients = new ArrayList<>();
 

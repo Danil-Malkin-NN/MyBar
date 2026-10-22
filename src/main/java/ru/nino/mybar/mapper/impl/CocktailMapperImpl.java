@@ -1,6 +1,7 @@
 package ru.nino.mybar.mapper.impl;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.nino.mybar.dto.model.CocktailsModel;
 import ru.nino.mybar.dto.show.CocktailDto;
 import ru.nino.mybar.dto.show.CocktailIngredientDto;
@@ -14,12 +15,18 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {IngredientAndCountMapperImpl.class,
         InstrumentsMapperImpl.class,
-        StepsMapperImpl.class, IngredientMapperImpl.class, ImageMapperImpl.class
+        StepsMapperImpl.class, IngredientMapperImpl.class, ImageMapper.class
 })
 public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
 
+    @Override
+    @Mapping(target = "containsAlcohol", expression = "java(hasAlcohol(cocktail))")
+    CocktailDto toDto(Cocktail cocktail);
+
+    @Mapping(target = "containsAlcohol", expression = "java(hasAlcohol(cocktail))")
     CocktailIngredientDto toIngredientDto(Cocktail cocktail);
 
+    @Mapping(target = "containsAlcohol", expression = "java(hasAlcohol(cocktails))")
     CocktailsModel toModel(Cocktail cocktails);
 
     List<CocktailsModel> toModelList(List<Cocktail> cocktails);
@@ -33,5 +40,11 @@ public interface CocktailMapperImpl extends AllMapper<CocktailDto, Cocktail> {
         return String.join(", ", list);
     }
 
+    default boolean hasAlcohol(Cocktail cocktail) {
+        return cocktail.getIngredients() != null && cocktail.getIngredients().stream()
+                .anyMatch(item -> item.getIngredient() != null && item.getIngredient().isAlcoholic());
+    }
+
+    @Mapping(target = "containsAlcohol", expression = "java(hasAlcohol(cocktail))")
     CocktailUserIngredientsDto toUserIngredients(Cocktail cocktail);
 }

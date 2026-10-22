@@ -1,94 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Мой бар</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!--    Порядок стилей важен-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мой бар — My Bar</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body data-base-url="" th:attrappend="data-base-url=@{/}">
-
+<body data-base-url="" th:attr="data-base-url=@{/}">
 <div th:replace="fragments/topbar.html"></div>
+<main class="container">
+    <header class="page-heading">
+        <div class="collection-heading-copy">
+            <p class="eyebrow">Ваши запасы и подборки</p>
+            <h1>Мой бар</h1>
+            <p class="lede">Ингредиенты, подходящие коктейли и сохранённые рецепты в одном месте.</p>
+        </div>
+        <div class="collection-heading-art mybar-heading-art" aria-hidden="true">
+            <img th:src="@{/images/ingredient-bottle.svg}" alt="">
+            <img th:src="@{/images/tool-jigger.svg}" alt="">
+            <img th:src="@{/images/ingredient-ice.svg}" alt="">
+        </div>
+    </header>
 
-<div class="container">
-    <!-- Блок "Мои коктейли" -->
-    <h2 class="text-xl font-semibold text-black">Мои коктейли</h2>
-    <div th:if="${cocktails != null and !cocktails.isEmpty()}" class="grid">
-        <div th:each="cocktail : ${cocktails}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <img alt="Image" th:if="${cocktail.image!=null}"
-                 th:src="@{/media/images/{filename}(filename=${cocktail.image})}"/>
-
-            <h3>
-                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
-                   th:text="${cocktail.name}"
-                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
+    <section class="section">
+        <h2>Коктейли из того, что уже есть</h2>
+        <p class="muted" th:if="${cocktails == null or cocktails.isEmpty()}">
+            Добавьте ингредиенты в бар — здесь появятся подходящие рецепты.
+        </p>
+        <div class="grid">
+            <article th:each="cocktail : ${cocktails}" class="card cocktail-card">
+                <a class="cocktail-card-image-link" th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:aria-label="|Открыть рецепт ${cocktail.name}|">
+                    <img class="card-image" alt="" th:if="${cocktail.image != null}"
+                         th:src="@{/media/images/{filename}(filename=${cocktail.image})}">
+                    <div class="cocktail-image-placeholder" th:unless="${cocktail.image != null}"
+                         aria-hidden="true"><span>🍸</span></div>
                 </a>
-            </h3>
-            <p th:text="${cocktail.description}">Описание</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
-            <ul>
-                <li th:each="ing : ${cocktail.ingredients}"
-                    th:text="${ing.name}"
-                    th:classappend="${ing.available} ? 'ingredient-available' : 'ingredient-unavailable'">
-                </li>
-            </ul>
-            </a>
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}" th:text="${cocktail.name}">Коктейль</a>
+                    </h3>
+                    <p class="card-description" th:text="${cocktail.description}"></p>
+                    <div class="meta">
+                        <span class="tag" th:if="${cocktail.strength > 0}" th:text="|${cocktail.strength}%|"></span>
+                        <span class="tag" th:if="${cocktail.strength == 0 and cocktail.containsAlcohol}">Крепость не указана</span>
+                        <span class="tag" th:if="${cocktail.strength == 0 and !cocktail.containsAlcohol}">Без алкоголя</span>
+                        <span class="tag" th:if="${cocktail.volume > 0}" th:text="|${cocktail.volume} мл|"></span>
+                        <span class="tag" th:if="${cocktail.volume <= 0}">Объём не указан</span>
+                    </div>
+                    <ul>
+                        <li th:each="ingredient : ${cocktail.ingredients}" th:text="${ingredient.name}"
+                            th:classappend="${ingredient.available} ? 'ingredient-available' : 'ingredient-unavailable'"></li>
+                    </ul>
+                </div>
+            </article>
         </div>
-    </div>
-    <div th:if="${cocktails == null or cocktails.isEmpty()}" class="empty-message">
-        У вас пока нет коктейлей. Добавьте доступные вам ингредиенты, а мы покажем доступные коктейли!
-    </div>
+    </section>
 
-    <!-- Блок "Мои ингредиенты" -->
-    <h2 class="text-xl font-semibold text-black">Мои ингредиенты</h2>
-    <div th:if="${ingredients != null and !ingredients.isEmpty()}" class="grid">
-        <div th:each="ingredient : ${ingredients}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <h3 th:text="${ingredient.name}" class="font-bold text-lg"></h3>
-            <p th:text="${ingredient.description}"></p>
-
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${ingredient.available}"
-                    class="favorite-remove-btn">❤️
-            </button>
-
-            <button th:attr="data-id=${ingredient.id}"
-                    th:if="${!ingredient.available}"
-                    class="favorite-add-btn">🤍
-            </button>
+    <section class="section">
+        <h2>Ингредиенты в вашем баре</h2>
+        <p class="muted" th:if="${ingredients == null or ingredients.isEmpty()}">
+            Пока список пуст. Добавьте ингредиенты из каталога.
+        </p>
+        <div class="grid">
+            <article th:each="ingredient : ${ingredients}" class="card">
+                <div class="card-content">
+                    <img class="entity-art ingredient-art" data-icon-kind="ingredient"
+                         th:attr="data-icon-name=${ingredient.name}" alt="">
+                    <h3 class="card-title" th:text="${ingredient.name}">Ингредиент</h3>
+                    <p class="muted" th:text="${ingredient.description}"></p>
+                    <button th:attr="data-id=${ingredient.id}" class="favorite-remove-btn"
+                            aria-label="Убрать ингредиент из бара">Есть в баре</button>
+                </div>
+            </article>
         </div>
-    </div>
-    <div th:if="${ingredients == null or ingredients.isEmpty()}" class="empty-message">
-        У вас нет ингредиентов. Добавьте имеющиеся ингредиенты.
-    </div>
+    </section>
 
-    <!-- Блок "Мои коктейли" -->
-    <h3 class="text-xl font-semibold text-black">Мои любимые коктейли </h3>
-    <div th:if="${favorites != null and !favorites.isEmpty()}" class="grid">
-        <div th:each="cocktail : ${favorites}" class="border rounded-lg p-4 shadow-sm mb-4">
-            <h3>
-                <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
-                   th:text="${cocktail.name}"
-                   class="text-xl font-semibold text-black no-underline hover:text-blue-600 hover:underline transition-colors duration-200">
+    <section class="section">
+        <h2>Любимые коктейли</h2>
+        <p class="muted" th:if="${favorites == null or favorites.isEmpty()}">
+            Нажмите на сердечко у рецепта, чтобы сохранить его здесь.
+        </p>
+        <div class="grid">
+            <article th:each="cocktail : ${favorites}" class="card">
+                <a class="cocktail-card-image-link" th:href="@{/page/cocktails/{id}(id=${cocktail.id})}"
+                   th:aria-label="|Открыть рецепт ${cocktail.name}|">
+                    <div class="cocktail-image-placeholder" aria-hidden="true"><span>🍸</span></div>
                 </a>
-            </h3>
-            <p th:text="${cocktail.description}">Описание</p>
-            <p><strong>Крепость:</strong> <span th:text="${cocktail.strength}">0</span>%</p>
-
-            <p class="ingredients">
-                <strong>Ингредиенты:</strong>
-                <span th:text="${cocktail.ingredients}">Водка, Лимон, Сахар</span>
-            </p>
-            </a>
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <a th:href="@{/page/cocktails/{id}(id=${cocktail.id})}" th:text="${cocktail.name}">Коктейль</a>
+                    </h3>
+                    <p class="card-description" th:text="${cocktail.description}"></p>
+                    <div class="meta">
+                        <span class="tag" th:if="${cocktail.strength > 0}" th:text="|${cocktail.strength}%|"></span>
+                        <span class="tag" th:if="${cocktail.strength == 0 and cocktail.containsAlcohol}">Крепость не указана</span>
+                        <span class="tag" th:if="${cocktail.strength == 0 and !cocktail.containsAlcohol}">Без алкоголя</span>
+                        <span class="tag" th:if="${cocktail.volume > 0}" th:text="|${cocktail.volume} мл|"></span>
+                        <span class="tag" th:if="${cocktail.volume <= 0}">Объём не указан</span>
+                    </div>
+                    <button th:attr="data-id=${cocktail.id}" class="favorite-remove-btn"
+                            aria-label="Убрать коктейль из избранного">♥ В избранном</button>
+                </div>
+            </article>
         </div>
-        <div th:if="${favorites == null or favorites.isEmpty()}" class="empty-message">
-            У вас пока нет любимых коктейлей. Ставьте им ❤️, а мы их запомним!
-        </div>
-
-    </div>
-</div>
+        <nav class="pagination" th:if="${favorites != null and favorites.totalPages > 1}">
+            <a th:if="${favorites.hasPrevious()}"
+               th:href="@{/page/my/bar(page=${favorites.number - 1},size=${favorites.size})}">← Раньше</a>
+            <span th:text="|Страница ${favorites.number + 1} из ${favorites.totalPages}|"></span>
+            <a th:if="${favorites.hasNext()}"
+               th:href="@{/page/my/bar(page=${favorites.number + 1},size=${favorites.size})}">Дальше →</a>
+        </nav>
+    </section>
+</main>
+<script th:src="@{/js/favorite_cocktail.js}"></script>
+<script th:src="@{/js/favorite_ingredient.js}"></script>
+<script th:src="@{/js/entity-icons.js}" defer></script>
 </body>
 </html>
-<script>
-    window.appContextPath = /*[[@{/}]]*/ '';
-</script>
-<script th:src="@{/js/favorite_ingredient.js}"></script>

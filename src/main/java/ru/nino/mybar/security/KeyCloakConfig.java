@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import ru.nino.mybar.service.UserBarService;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,6 +41,7 @@ public class KeyCloakConfig {
     private static final String ROLES_CLAIM = "roles";
 
     private final KeycloakLogoutHandler keycloakLogoutHandler;
+    private final UserBarService userBarService;
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -67,6 +70,14 @@ public class KeyCloakConfig {
                 .hasRole(USER)
                 .requestMatchers(HttpMethod.DELETE, "/**")
                 .hasRole(ADMIN)
+                .requestMatchers("/page/AdminPanel/**")
+                .hasRole(ADMIN)
+                .requestMatchers(HttpMethod.POST, "/cocktails/**")
+                .hasRole(ADMIN)
+                .requestMatchers(HttpMethod.PUT, "/cocktails/**")
+                .hasRole(ADMIN)
+                .requestMatchers("/page/my/**")
+                .authenticated()
                 .requestMatchers(HttpMethod.GET, "/my/**")
                 .authenticated()
                 .requestMatchers(HttpMethod.GET, "/page/my/**")
@@ -76,7 +87,18 @@ public class KeyCloakConfig {
                 .anyRequest()
                 .permitAll());
 
-        http.oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/page/my/bar", true))
+        http.oauth2Login(oauth2 -> oauth2.successHandler((request, response, authentication) -> {
+                    OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+                    var principal = token.getPrincipal();
+                    String username = firstNonBlank(principal.getAttribute("preferred_username"), token.getName());
+                    String email = principal.getAttribute("email");
+                    String firstName = firstNonBlank(principal.getAttribute("given_name"),
+                            principal.getAttribute("firstName"));
+                    String lastName = firstNonBlank(principal.getAttribute("family_name"),
+                            principal.getAttribute("lastName"));
+                    userBarService.getOrCreateUser(email, username, firstName, lastName);
+                    response.sendRedirect(request.getContextPath() + "/page/my/bar");
+                }))
                 .logout(logout -> logout.addLogoutHandler(keycloakLogoutHandler)
                         .logoutSuccessUrl("/page"));
         http.headers(headers -> headers
@@ -127,5 +149,14 @@ public class KeyCloakConfig {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
+    }
+
+    private String firstNonBlank(String... values) {
+        for (String value : values) {
+            if (value != null && !value.isBlank()) {
+                return value;
+            }
+        }
+        return null;
     }
 }
