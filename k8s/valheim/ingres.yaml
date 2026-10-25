@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: valheim-ingress
+  namespace: valheim
+spec:
+  rules:
+    - host: "valheim.dvmalkin.ru:2456"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: valheim-server
+                port:
+                  number: 2456
+
+    - host: "valheim.dvmalkin.ru:2457"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: valheim-server
+                port:
+                  number: 2457

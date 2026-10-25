@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: valheim-data-pvc
+  namespace: valheim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+  volumeName: valheim-file-storage-pv-data
+  storageClassName: manual
+  volumeMode: Filesystem

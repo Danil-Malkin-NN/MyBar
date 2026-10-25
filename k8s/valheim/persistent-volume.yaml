@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: valheim-file-storage-pv-data
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 25Gi
+  hostPath:
+    path: /storage/valheim/data
+    type: ''
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  volumeMode: Filesystem
